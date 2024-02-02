@@ -1,0 +1,2 @@
+# Leofee
+Digitale Kassa App
