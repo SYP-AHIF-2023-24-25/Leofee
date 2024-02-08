@@ -1,5 +1,5 @@
-# Leofee
-#User Stories
+## Leofee
+# User Stories
 1) OAUT, Angular ASP .dnet Prototype. Mobile App am Schüler Handy 
 
 2) SVA: Leofee Admin. Eigenes Design. Für Schülerverwaltung (CRUD). Import. Höhe des Bons festlegen. vlt Preise Festlegen? 
