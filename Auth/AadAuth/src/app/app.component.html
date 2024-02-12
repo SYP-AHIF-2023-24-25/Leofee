@@ -14,5 +14,5 @@
     <div *ngIf="profile">
         <p>Display name: {{ profile.displayName}}</p>
     </div>
-
+    <qrcode [qrdata]="'test-QR-Code'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
 </ng-template>

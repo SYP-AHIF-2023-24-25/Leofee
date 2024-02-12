@@ -20,6 +20,7 @@
     "@azure/msal-angular": "^3.0.12",
     "@azure/msal-browser": "^3.9.0",
     "@microsoft/microsoft-graph-types": "^2.40.0",
+    "angularx-qrcode": "^17.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
