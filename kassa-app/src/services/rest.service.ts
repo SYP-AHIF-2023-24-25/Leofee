@@ -16,8 +16,11 @@ export class RestService {
   constructor(
     private http: HttpClient) {
     this.baseUrl = environment.httpUrl;
+
+    console.log(this.baseUrl);
   }
   getProducts() : Observable<Product[]> {
+    console.log(this.baseUrl);
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.get<Product[]>(
         this.baseUrl + 'Products',
