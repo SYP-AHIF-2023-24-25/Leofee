@@ -61,6 +61,8 @@ export class KassaComponent implements OnInit {
       p.amount--;
   }
 
+  /*
+
   getCardColor(p: Product): any {
     if (p.amount > 0) {
       if (p.price > 0) {
@@ -71,7 +73,7 @@ export class KassaComponent implements OnInit {
       }
     }
     return 'black';
-  }
+  }*/
   getTotals() {
     if (!this.selectedBuffet) return 0;
     if (this.selectedBuffet.products.length === 0) {
@@ -113,7 +115,7 @@ export class KassaComponent implements OnInit {
         return;
       }
       // TODO: Buchung an REST-Service schicken
-      // // console.log('sending booking to server ...');
+      //console.log('sending booking to server ...');
       this.dataService.saveBookings(this.selectedBuffet);
       this.clear();
     });
@@ -124,11 +126,11 @@ export class KassaComponent implements OnInit {
   }
 
 
-  buffetChanged(event: any) {
+  /*buffetChanged(event: any) {
     // this.selectedBuffet = event.value;
     // // console.log("Buffet changed: ");
     // // console.log(this.selectedBuffet);
-  }
+  }*/
 
 }
 export interface DialogData {
