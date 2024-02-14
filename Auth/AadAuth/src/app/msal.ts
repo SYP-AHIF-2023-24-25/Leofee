@@ -26,7 +26,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
   // Define which permissions (=scopes) we need for Microsoft Graph
   protectedResourceMap.set('https://graph.microsoft.com/v1.0/', [
-    'user.read',
+    'User.Read',
     'User.ReadBasic.All',
   ]);
 

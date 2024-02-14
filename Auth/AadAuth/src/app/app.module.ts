@@ -7,7 +7,6 @@ import { MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalInterceptor, MsalModule, Ms
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MSALInstanceFactory, MSALInterceptorConfigFactory } from './msal';
-import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     AppRoutingModule,
     MsalModule,
     HttpClientModule,
-    FormsModule,
-    QRCodeModule
+    FormsModule
   ],
   providers: [
     {

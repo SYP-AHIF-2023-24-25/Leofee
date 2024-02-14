@@ -6,7 +6,7 @@ import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styles: []
+  styleUrl: 'app.component.css'
 })
 export class AppComponent implements OnInit{
   loggedIn: boolean = false;
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logoutPopup();
     this.loggedIn = false;
   }
 
