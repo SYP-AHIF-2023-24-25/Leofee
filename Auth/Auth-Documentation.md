@@ -197,7 +197,7 @@ export class AppComponent implements OnInit{
 ```  
 4. Create app.component.html and add following code:
    * app.component.html
-```
+``` HTML
 <div class="center-content">
     <h1>Login-Screen</h1>
     <div *ngIf="loggedIn == false; else logOutBlock">
@@ -212,3 +212,8 @@ export class AppComponent implements OnInit{
 ```
 
 
+If you want a more detailed toturial, watch this Youtube-video from [Prof. Rainer Stropek](https://github.com/rstropek).
+The link to the video: [https://youtu.be/ND6EKbGb7vQ?si=DjH8qMus4mAiSw9n](https://youtu.be/ND6EKbGb7vQ?si=DjH8qMus4mAiSw9n)
+
+**WARNING:**
+This toturial includes a lots of differences comparing to mine, because of the different Angualr-version.
