@@ -28,6 +28,9 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   protectedResourceMap.set('https://graph.microsoft.com/v1.0/', [
     'User.Read',
     'User.ReadBasic.All',
+    'offline_access',
+    'openid',
+    'profile'
   ]);
 
 //   protectedResourceMap.set(environment.customApi, [

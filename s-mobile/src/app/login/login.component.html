@@ -15,7 +15,7 @@
         <div class="text-center">
           <h1 class="mb-4">Login-Screen</h1>
           <div *ngIf="loggedIn == false; else logOutBlock">
-            <h3 class="mt-4">You are logged out!!!</h3>
+            <h3 class="mt-4">You are logged out!</h3>
             <button (click)="login()" class="btn btn-primary btn-lg mt-4">Login</button>
           </div>
           <ng-template #logOutBlock>
