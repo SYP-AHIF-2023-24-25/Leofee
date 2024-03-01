@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { QrCodeGeneratorComponent } from './qr-code-generator/qr-code-generator.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { GiftCardComponent } from './gift-card/gift-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QrCodeGeneratorComponent,
-    LoginComponent
+    LoginComponent,
+    GiftCardComponent
   ],
   imports: [
     BrowserModule,
