@@ -1,0 +1,49 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+.mat-select-trigger {
+    background-color: #666;
+    border-color: #666;
+  }
+  
+  /* Textfarbe des Dropdown-Buttons */
+  .mat-select-value-text {
+    color: #fff;
+  }
+  
+  /* Farbe des Dropdown-Pfeils */
+  .mat-select-arrow {
+    color: #fff;
+  }
+  
+  /* Hintergrundfarbe und Randfarbe des Dropdown-Menüs */
+  .mat-menu-content {
+    background-color: #666;
+    border-color: #666;
+  }
+  
+  /* Textfarbe der Dropdown-Optionen */
+  .mat-option-text {
+    color: #fff;
+  }
+  
+  /* Hintergrundfarbe der Dropdown-Optionen bei Hover */
+  .mat-option:hover {
+    background-color: #888;
+  }
+  
+  /* Textfarbe der Dropdown-Optionen bei Hover */
+  .mat-option:hover .mat-option-text {
+    color: #fff;
+  }
+
+.navbar {
+    background-color: #555;
+    border-bottom: 2px solid #444;
+   position: absolute;
+  }
+  .navbar-brand, .navbar-nav .nav-link {
+    color: #fff;
+  }
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+  
