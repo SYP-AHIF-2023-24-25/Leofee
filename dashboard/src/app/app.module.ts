@@ -10,13 +10,17 @@ import { StudentOverviewComponent } from './student-overview/student-overview.co
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { MatOptionModule } from '@angular/material/core';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { SignupPageComponent } from './signup-page/signup-page.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentOverviewComponent
+    StudentOverviewComponent,
+    LoginPageComponent,
+    SignupPageComponent
   ],
   imports: [
     BrowserAnimationsModule,
