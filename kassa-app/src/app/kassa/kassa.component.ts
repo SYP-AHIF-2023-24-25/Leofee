@@ -61,19 +61,6 @@ export class KassaComponent implements OnInit {
       p.amount--;
   }
 
-  /*
-
-  getCardColor(p: Product): any {
-    if (p.amount > 0) {
-      if (p.price > 0) {
-        return 'white';
-      }
-      else {
-        return 'red';
-      }
-    }
-    return 'black';
-  }*/
   getTotals() {
     if (!this.selectedBuffet) return 0;
     if (this.selectedBuffet.products.length === 0) {
@@ -124,13 +111,6 @@ export class KassaComponent implements OnInit {
   clear() {
     this.selectedBuffet.products.forEach(p => p.amount = 0);
   }
-
-
-  /*buffetChanged(event: any) {
-    // this.selectedBuffet = event.value;
-    // // console.log("Buffet changed: ");
-    // // console.log(this.selectedBuffet);
-  }*/
 
 }
 export interface DialogData {
