@@ -17,8 +17,7 @@ export class StudentOverviewComponent {
         // Add missing import for FileReader
         reader.onload = (e: ProgressEvent<FileReader>) => {
           const fileContent = reader.result as string;
-          let lines = fileContent.split('\n');
-          let studentsArray: Student[] = [];
+          let lines = fileContent.split('\n');          
         for(let i = 1; i < lines.length;i++){
           //Moritz;Passenbrunner;1CHIF
           let parts:string[] = lines[i].split(';');
