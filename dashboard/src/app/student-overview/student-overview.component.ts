@@ -52,6 +52,22 @@ export class StudentOverviewComponent {
   
 
   }
+  onFilterChange(event: any) {
+    // Diese Methode wird aufgerufen, wenn sich die Auswahl im Dropdown ändert
+    console.log('Auswahl geändert:', event.value);
+    if(event.value === 'lastname'){
+      this._students.sort((a, b) => a.lastName.localeCompare(b.lastName));
+    }
+    else if(event.value === 'class'){
+      this._students.sort((a, b) => a.className.localeCompare(b.className));
+    }
+    
+  }
+
+
+
+
+
   exportToCSV(): void {
     if (this._students.length === 0) {
       console.log('Keine Daten zum Exportieren vorhanden.');
