@@ -6,7 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataService } from 'src/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription, tap } from 'rxjs';
-
+import { QRScannerDialogComponent } from '../qrscanner-dialog-component/qrscanner-dialog-component.component';
 @Component({
   selector: 'app-kassa',
   templateUrl: './kassa.component.html',
@@ -24,11 +24,14 @@ export class KassaComponent implements OnInit {
     public dialog: MatDialog,
     public dataService: DataService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog2: MatDialog
   ) {
 
 
   }
+
+
 
   resizeObservable$!: Observable<Event>
   resizeSubscription$!: Subscription
@@ -71,6 +74,10 @@ export class KassaComponent implements OnInit {
       .reduce((total, current) => total += current);
     return products / 100.0;
 
+  }
+
+  openDialogasd() {
+    this.dialog.open(QRScannerDialogComponent);
   }
 
   hasSelectedProducts() {
