@@ -1,5 +1,5 @@
 
-import { Component , OnInit, ViewChild} from '@angular/core';
+import { Component , Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
 import {NgxScannerQrcodeModule} from 'ngx-scanner-qrcode';
 import {
   ScannerQRCodeConfig,
@@ -8,6 +8,7 @@ import {
   NgxScannerQrcodeComponent,
   ScannerQRCodeSelectedFiles,
 } from 'ngx-scanner-qrcode';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-qr-scanner-dialog',
@@ -16,28 +17,56 @@ import {
 })
 export class QRScannerDialogComponent  {
 
-  //@ViewChild('action') scanner: NgxScannerQrcodeModule = new NgxScannerQrcodeModule();
-  scannedValue: string = "";
+  @ViewChild('action') action!: NgxScannerQrcodeComponent;
+  //scannedValue: string = "";
+  @Output() scannedValue: EventEmitter<string> = new EventEmitter<string>();
 
   public qrCodeResult: ScannerQRCodeSelectedFiles[] = [];
   public qrCodeResult2: ScannerQRCodeSelectedFiles[] = [];
 
-  @ViewChild('action') action!: NgxScannerQrcodeComponent;
+  dialogRef: MatDialogRef<QRScannerDialogComponent>;
 
-  
+  constructor(dialogRef: MatDialogRef<QRScannerDialogComponent>) {
+    this.dialogRef = dialogRef;
+  }
+
+  public onEvent(e: ScannerQRCodeResult[]): void {
+    if (e && e.length > 0) {
+      // Schließe das Fenster
+      // Hier gehe ich davon aus, dass du einen Dialog schließt
+      //this.dialogRef.close();
+
+      // Gib den gescannten QR-Code auf der Konsole aus
+      console.log('Gescannter QR-Code:', e[0].value);
+    }
+  }
+
+
+  logScannedValue(value: any): void {
+    if( value != "[]") {
+      console.log('Scanned Value:', value);
+      this.scannedValue.emit(value);
+      this.dialogRef.close(value);
+     
+
+    }    
+  }
+
+
+}
+
+
+
+
+
+/*
+
+
+ /*
   public onEvent(e: ScannerQRCodeResult[], action?: any): void {
     // e && action && action.pause();
     console.log(e);
   }
-
-
-
-
-  
-}
-
-
-/*
 
 
   
@@ -86,9 +115,6 @@ handleQrCodeResult(resultString: string) {
 closeDialog(): void {
   this.dialogRef.close();
 }*/
-
-
-
 
 
 

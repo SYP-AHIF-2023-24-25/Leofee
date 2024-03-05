@@ -1,9 +1,10 @@
-
 <!-- start -->
 <span>{{ action.data.value | json }}</span><!-- value -->
 <span>{{ action.data | async | json }}</span><!-- async -->
 
-<span ></span>
+<span *ngIf="action.data.value| json ">
+    {{ logScannedValue(action.data.value| json ) }}
+  </span>
 <!-- Loading -->
 <p *ngIf="action.isLoading">⌛ Loading...</p>
 

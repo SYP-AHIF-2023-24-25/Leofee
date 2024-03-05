@@ -73,11 +73,17 @@ export class KassaComponent implements OnInit {
       .map(p => p.amount * p.price)
       .reduce((total, current) => total += current);
     return products / 100.0;
-
   }
 
-  openDialogasd() {
-    this.dialog.open(QRScannerDialogComponent);
+  receiveScannedValue(value: string): void {
+    //this.scannedValue = value;
+    console.log('Received Scanned Value in KassaComponent:', value);
+  }
+
+ async openDialogasd() {
+    var asd = await this.dialog.open(QRScannerDialogComponent);
+    console.log("In Kassa component ", asd);
+    
   }
 
   hasSelectedProducts() {
