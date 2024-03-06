@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImportData.Model
+namespace Core
 {
     public class Bon
     {
-        private int studentID = 0;
+        public string studentID { get; private set; } = string.Empty;
         private double value  = 0;
         private DateTime start;
         private DateTime end;
-        public Bon(int studentId,double value) {
+        public Bon(string studentId,double value) {
             this.studentID = studentId;
             this.value = value;
         }

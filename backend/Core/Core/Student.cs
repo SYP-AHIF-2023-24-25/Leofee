@@ -5,23 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Collections;
-namespace ImportData.Model
+namespace Core
 {
     public class Student
     {
-        private int id;
+        public string id { get; private set; } = string.Empty;
         public string firstname { get; set; } = string.Empty;
         public string lastname { get; set; } = string.Empty;
         private string password { get; set; } = string.Empty;
         public string email { get; set; } = string.Empty;
         public string schoolClass { get; set; } = string.Empty;
-        private List<Bon> bonList = new List<Bon>();
+        
 
         public Student(string firstname, string lastname,string password,string email, string schoolClass)
         {
             string idString = firstname + lastname + password;
             //wird noch geändert (UUID)
-            this.id = int.Parse(GenerateSHA256Hash(idString));
+            this.id = GenerateSHA256Hash(idString);
             this.firstname = firstname;
             this.lastname = lastname;
             this.password = password;
@@ -44,6 +44,7 @@ namespace ImportData.Model
                 return builder.ToString();
             }
         }
+       
 
     }
     

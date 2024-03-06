@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{EB515044-D26F-4ECD-9EBB-291FE91A52CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{EB515044-D26F-4ECD-9EBB-291FE91A52CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{0471F41C-67CC-4A00-953A-353F70CD867F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{0471F41C-67CC-4A00-953A-353F70CD867F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportData", "ImportData\ImportData.csproj", "{01E4C910-1A4B-4E55-A705-AD26BF771806}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportData", "ImportData\ImportData.csproj", "{01E4C910-1A4B-4E55-A705-AD26BF771806}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EB515044-D26F-4ECD-9EBB-291FE91A52CA} = {EB515044-D26F-4ECD-9EBB-291FE91A52CA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
