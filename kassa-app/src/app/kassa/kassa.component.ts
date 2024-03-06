@@ -75,14 +75,17 @@ export class KassaComponent implements OnInit {
     return products / 100.0;
   }
 
-  receiveScannedValue(value: string): void {
-    //this.scannedValue = value;
-    console.log('Received Scanned Value in KassaComponent:', value);
-  }
+
 
  async openDialogasd() {
-    var asd = await this.dialog.open(QRScannerDialogComponent);
-    console.log("In Kassa component ", asd);
+    const dialogRef =  this.dialog.open(QRScannerDialogComponent);
+    dialogRef.afterClosed().subscribe(scannedValue => {
+      if (scannedValue) {
+        console.log('Scanned Value in KassaComponent:', scannedValue);
+      } else {
+        console.log('Dialog wurde geschlossen, kein gescannter Wert verfügbar.');
+      }
+    });
     
   }
 

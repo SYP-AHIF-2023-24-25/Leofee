@@ -17,42 +17,37 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class QRScannerDialogComponent  {
 
-  @ViewChild('action') action!: NgxScannerQrcodeComponent;
-  //scannedValue: string = "";
-  @Output() scannedValue: EventEmitter<string> = new EventEmitter<string>();
-
-  public qrCodeResult: ScannerQRCodeSelectedFiles[] = [];
-  public qrCodeResult2: ScannerQRCodeSelectedFiles[] = [];
+  @ViewChild('action') action!: NgxScannerQrcodeComponent; 
 
   dialogRef: MatDialogRef<QRScannerDialogComponent>;
 
   constructor(dialogRef: MatDialogRef<QRScannerDialogComponent>) {
     this.dialogRef = dialogRef;
+  }  
+
+  ngAfterViewInit(): void {
+    this.startScanner();
   }
 
-  public onEvent(e: ScannerQRCodeResult[]): void {
-    if (e && e.length > 0) {
-      // Schließe das Fenster
-      // Hier gehe ich davon aus, dass du einen Dialog schließt
-      //this.dialogRef.close();
-
-      // Gib den gescannten QR-Code auf der Konsole aus
-      console.log('Gescannter QR-Code:', e[0].value);
-    }
+  startScanner(): void {
+    this.action.start();
   }
 
 
   logScannedValue(value: any): void {
-    if( value != "[]") {
-      console.log('Scanned Value:', value);
-      this.scannedValue.emit(value);
-      this.dialogRef.close(value);
-     
 
+    if( value != "[]") {
+      //Json data
+      console.log('Scanned Value:', value);
+
+      //Parse Json data
+      const jsonData = JSON.parse(value);
+      const scannedValue = jsonData[0].value;
+
+      //Wert zurückgeben
+      this.dialogRef.close(scannedValue);
     }    
   }
-
-
 }
 
 

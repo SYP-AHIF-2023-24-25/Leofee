@@ -1,38 +1,41 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      Leofee <!--{{
-      selectedBuffet.location }}--> 
-
+      Leofee <!--{{ selectedBuffet.location }}-->
     </mat-card-title>
-    <!-- <mat-card-subtitle>
-      <span>Wechseln: </span>
-      <mat-radio-group [disabled]="hasSelectedProducts()" [(ngModel)]="selectedBuffet" aria-label="Wähle Buffet:">
-        <mat-radio-button style="margin-left: 10px" *ngFor="let b of buffets" [value]="b" (change)="buffetChanged(b)">
-          {{ b.location }}
-        </mat-radio-button>
-      </mat-radio-group>
-    </mat-card-subtitle> -->
   </mat-card-header>
 </mat-card>
-<span style="font-size: 3vw;" class="top-right">
-  <button style=" margin-left: 10px; font-size: 2vw;" mat-raised-button [disabled]="!hasSelectedProducts()"
-    (click)="clear()">
-    <mat-icon>undo</mat-icon>
-  </button>
-  {{ getTotals().toFixed(2) }} €
-  <button style="margin-left: 10px; font-size: 2vw;" mat-raised-button color="accent"
-    [disabled]="!hasSelectedProducts() || getTotals() < 0" (click)="checkout()">Zahlen
-    <mat-icon>done</mat-icon></button>
 
-    <button (click)="openDialogasd()">QR CODE SCANNER öffnen</button>
+<span class="top-right">
+ 
+    <button class="ButtonMargin" mat-raised-button [disabled]="!hasSelectedProducts()" (click)="clear()">
+      <mat-icon>undo</mat-icon>
+    </button>
+
+  
+
+    <span class="ButtonMargin">{{ getTotals().toFixed(2) }} €</span>
+ 
+
+  
+    <button class="ButtonMargin" mat-raised-button color="accent" [disabled]="!hasSelectedProducts() || getTotals() < 0" (click)="checkout()">
+      Zahlen
+      <mat-icon>done</mat-icon>
+    </button>
+  
+
+    <button class="ButtonMargin" mat-raised-button color="accent" (click)="openDialogasd()">QR CODE SCANNER öffnen</button>
+
+ 
+ 
+ 
+  
 </span>
-
 
 <mat-grid-list *ngIf="selectedBuffet != undefined" [cols]="numberColumns" rowHeight="10em">
   <mat-grid-tile *ngFor="let product of selectedBuffet.products">
     <mat-card [ngClass]="product.amount > 0 ? 'product-card-selected' : 'product-card'">
-      <mat-card-content [ngStyle]="{'color': product.price < 0 ? 'red' : 'black' }">
+      <mat-card-content [ngStyle]="{'color': product.price < 0 ? 'red' : 'black'  }">
         <div class="text-inside-grid">
           {{ product.name}}
         </div>
@@ -41,7 +44,7 @@
         </div>
         <div class="buttons-inside-grid">
           <button color="basic" (click)="inc(product)" mat-mini-fab>+</button>
-          <span style="padding:20px">{{ product.amount }}</span>
+          <span>{{ product.amount }}</span>
           <button color="basic" [disabled]="product.amount == 0" (click)="dec(product)" mat-mini-fab>-</button>
         </div>
       </mat-card-content>

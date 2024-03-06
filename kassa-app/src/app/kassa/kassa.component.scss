@@ -1,71 +1,73 @@
-.toolbar-spacer {
-  flex: 1 1 auto;
+.top-right {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  margin-right: 40px;
 }
 
+.ButtonMargin{
+  margin-right: 20px;
+}
 
-.product-card {
-  width: 250px;
-  height: 100px;
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .top-right {
+    top: 0.5em;
+    right: 0.5em;
+  }
+}
+
+.product-card, .product-card-selected {
+  width: 600px; /* Breite der Kacheln */
   margin: 10px;
-  background-color: #e8eaf8;
 
+  height: 130px; /* Höhe automatisch anpassen */
+  border-radius: 10px; /* Abgerundete Ecken */
+  overflow: hidden; /* Overflow verstecken */
+  background-color: #e8eaf8; /* Hintergrundfarbe für nicht ausgewählte Kacheln */
+  display: flex; /* Flexbox verwenden */
+  flex-direction: column; /* Spaltenlayout für Flex */
+  
 }
 
 .product-card-selected {
-  width: 250px;
-  height: 100px;
-  background-color: #7986cb;
-  margin: 10px;
-  //color: white;
+  background-color: #7986cb; /* Hintergrundfarbe für ausgewählte Kacheln */
 }
 
-.text-inside-grid{
-  font-size: 2vw;
+.text-inside-grid {
+  font-size: 1.1vw; /* Schriftgröße */
   font-weight: bold;
-  height: 40px;
   text-align: center;
-  justify-content: center;
+ // padding: 10px; /* Padding hinzufügen */
 }
 
-.top {
-  position: absolute;
-  width: 70%;
-  margin-top: 1.5em;
-  top: 0;
-  left: 0;
-  font-size: 5vh;
-  text-align: right;
- // z-index: -50;
-}
-.grid-subtitle{
-  height: 100%;
-  font-size: 2vw;
+.grid-subtitle {
+  font-size: 1.2vw; /* Schriftgröße */
   text-align: center;
-  justify-content: center;
+  padding: 0 10px; /* Padding hinzufügen */
+  margin-bottom: 5px;
 }
 
-.buttons-inside-grid{
-  text-align: center;
-  vertical-align: center;
-  justify-content: center;
-  font-size: 2vw;
-  font-weight: bold;
+.buttons-inside-grid {
+  display: flex; /* Flexbox verwenden */
+  justify-content: center; /* Elemente horizontal zentrieren */
+  align-items: center; /* Elemente vertikal zentrieren */
+  padding: 10px; /* Padding hinzufügen */
+  margin-top: auto; /* Buttons immer am unteren Rand ausrichten */
 }
 
-.top-right{
-
-  top: 1.2em;
-  right: 1em;
-  position: absolute;
-  margin-right: -15%;
-  transform: translate(-50%, -50%)
+.buttons-inside-grid button {
+  margin: 0 5px; /* Abstand zwischen den Buttons */
 }
 
-.bottom-right{
+/* Stile für kleinere Bildschirme */
+@media screen and (max-width: 768px) {
+  .text-inside-grid, .grid-subtitle, .buttons-inside-grid {
+    font-size: 1vw; /* Schriftgröße für kleinere Bildschirme */
+  }
+}
 
-  bottom: 2%;
-  right: 10%;
-  position: absolute;
-  margin-right: -10%;
-  transform: translate(-50%, -50%)
+.mat-grid-tile {
+  margin-bottom: 50px; /* Abstand unter den Kacheln */
+  margin-top: 30px; /* Abstand über den Kacheln */  
 }
