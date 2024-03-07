@@ -88,6 +88,29 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Core.dll": {}
+        }
+      },
+      "ImportData/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ImportData.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ImportData.dll": {}
+        }
       }
     }
   },
@@ -420,10 +443,21 @@
         "swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "Core/1.0.0": {
+      "type": "project",
+      "path": "../Core/Core.csproj",
+      "msbuildProject": "../Core/Core.csproj"
+    },
+    "ImportData/1.0.0": {
+      "type": "project",
+      "path": "../ImportData/ImportData.csproj",
+      "msbuildProject": "../ImportData/ImportData.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "ImportData >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
@@ -459,7 +493,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+              "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

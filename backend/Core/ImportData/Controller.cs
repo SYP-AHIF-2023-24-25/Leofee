@@ -19,5 +19,11 @@ namespace ImportData
 
             return bonsForStudent;
         }
+        public static double getBalanceFromAllBons(List<Bon> bonsFromStudent)
+        {
+            var balance = bonsFromStudent
+                .Sum(bon => bon.value);
+            return balance;
+        }
     }
 }

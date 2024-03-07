@@ -9,7 +9,7 @@ namespace Core
     public class Bon
     {
         public string studentID { get; private set; } = string.Empty;
-        private double value  = 0;
+        public double value { get; private set; } = 0;
         private DateTime start;
         private DateTime end;
         public Bon(string studentId,double value) {
