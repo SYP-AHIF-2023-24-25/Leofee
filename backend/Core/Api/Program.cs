@@ -57,7 +57,7 @@ app.MapGet("/student/{id}/balance", (string id) =>
 });
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
-
+    ImportData.Controller.Pay(bons, 5);
 });
 app.MapDelete("/student/{id}", (string id) =>
 {

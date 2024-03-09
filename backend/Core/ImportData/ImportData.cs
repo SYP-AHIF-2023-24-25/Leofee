@@ -20,7 +20,7 @@ namespace ImportData
             var lines = File.ReadAllLines(path).Skip(1).ToList();
             var bons = lines
                 .Select(l => l.Split(';'))
-                .Select(bons => new Bon(bons[0], double.Parse(bons[1])))
+                .Select(bons => new Bon(bons[0], double.Parse(bons[1]), bons[2], bons[3]))
                 .ToList();
             return bons;
         }
