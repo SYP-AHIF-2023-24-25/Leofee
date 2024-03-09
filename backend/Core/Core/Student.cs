@@ -20,7 +20,7 @@ namespace Core
         public Student(string firstname, string lastname,string password,string email, string schoolClass)
         {
             string idString = firstname + lastname + password;
-            //wird noch geändert (UUID)
+            //wird noch geändert if.....
             this.id = GenerateSHA256Hash(idString);
             this.firstname = firstname;
             this.lastname = lastname;
