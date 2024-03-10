@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ngx-scanner-qrcode": "^1.6.9"
+  }
+}

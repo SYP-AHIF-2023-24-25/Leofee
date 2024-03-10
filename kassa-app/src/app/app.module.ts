@@ -11,16 +11,22 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { KassaComponent } from './kassa/kassa.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { NgxScannerQrcodeModule, LOAD_WASM } from 'ngx-scanner-qrcode';
+import { QRScannerDialogComponent } from './qrscanner-dialog-component/qrscanner-dialog-component.component';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    KassaComponent
+    KassaComponent,
+    QRScannerDialogComponent,    
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
     MaterialModule,
+    AppRoutingModule,
+    BrowserModule,
+    NgxScannerQrcodeModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -30,7 +36,9 @@ import { environment } from '../environments/environment';
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    
+
   ],
   providers: [
     HttpClient,

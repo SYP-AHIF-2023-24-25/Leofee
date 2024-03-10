@@ -6,7 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DataService } from 'src/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription, tap } from 'rxjs';
-
+import { QRScannerDialogComponent } from '../qrscanner-dialog-component/qrscanner-dialog-component.component';
 @Component({
   selector: 'app-kassa',
   templateUrl: './kassa.component.html',
@@ -24,11 +24,14 @@ export class KassaComponent implements OnInit {
     public dialog: MatDialog,
     public dataService: DataService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog2: MatDialog
   ) {
 
 
   }
+
+
 
   resizeObservable$!: Observable<Event>
   resizeSubscription$!: Subscription
@@ -61,19 +64,6 @@ export class KassaComponent implements OnInit {
       p.amount--;
   }
 
-  /*
-
-  getCardColor(p: Product): any {
-    if (p.amount > 0) {
-      if (p.price > 0) {
-        return 'white';
-      }
-      else {
-        return 'red';
-      }
-    }
-    return 'black';
-  }*/
   getTotals() {
     if (!this.selectedBuffet) return 0;
     if (this.selectedBuffet.products.length === 0) {
@@ -83,7 +73,37 @@ export class KassaComponent implements OnInit {
       .map(p => p.amount * p.price)
       .reduce((total, current) => total += current);
     return products / 100.0;
+  }
 
+  AmountDeduct(studentID: String) {
+    //Rest Service aufrufen und Bons holen 
+    //Gibt es keine Bons oder ist der QR Code nicht gültig, dann Fehlermeldung anzeigen
+    //
+    
+    
+
+  }
+
+
+
+ async openDialogQRCodeScanner() {
+  alert("QR Code erst am Ende der Bestellung scannen!");
+    const dialogRef =  this.dialog.open(QRScannerDialogComponent);
+    dialogRef.afterClosed().subscribe(scannedValue => {
+      if (scannedValue) {
+        console.log('Scanned Value in KassaComponent:', scannedValue);
+        //Gutscheine mit der StudentID Holen
+        //Betrag von dem Gutschein abziehen
+        //Betrag in der Kassa anzeigen
+        this.AmountDeduct(scannedValue);
+         
+
+
+      } else {
+        console.log('Dialog wurde geschlossen, kein gescannter Wert verfügbar.');
+      }
+    });
+    
   }
 
   hasSelectedProducts() {
@@ -124,13 +144,6 @@ export class KassaComponent implements OnInit {
   clear() {
     this.selectedBuffet.products.forEach(p => p.amount = 0);
   }
-
-
-  /*buffetChanged(event: any) {
-    // this.selectedBuffet = event.value;
-    // // console.log("Buffet changed: ");
-    // // console.log(this.selectedBuffet);
-  }*/
 
 }
 export interface DialogData {
