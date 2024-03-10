@@ -5,7 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { GiftCardComponent } from './gift-card/gift-card.component';
 
 const routes: Routes = [
-  { path: '', component: QrCodeGeneratorComponent },
+  { path: '', component: LoginComponent },
   { path: 'qr-code', component: QrCodeGeneratorComponent },
   { path: 'login', component: LoginComponent },
   { path: 'gift-card', component: GiftCardComponent }

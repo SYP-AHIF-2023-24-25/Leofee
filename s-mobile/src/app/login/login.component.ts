@@ -40,7 +40,9 @@ export class LoginComponent {
       .subscribe((response: AuthenticationResult) => {
         this.authService.instance.setActiveAccount(response.account);
         this.checkAccount();
-        this.getProfile();
+        localStorage.setItem('idToken', response.idToken);
+        this.router.navigate(['/gift-card']);
+        //this.getProfile();
       });
   }
 
@@ -55,8 +57,10 @@ export class LoginComponent {
       .subscribe((profile) => {
         this.profile = profile
         console.log('Setting profile in localStorage', profile);
-        localStorage.setItem('profile', JSON.stringify(profile));
+        localStorage.setItem('profile', JSON.stringify(profile.displayName));
+        localStorage.setItem('id', JSON.stringify(profile.id));
         this.router.navigate(['/gift-card']); // Navigiere erst nach dem Abrufen des Profils
+        
       });
   }
 }
