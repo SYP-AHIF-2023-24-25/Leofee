@@ -75,13 +75,30 @@ export class KassaComponent implements OnInit {
     return products / 100.0;
   }
 
+  AmountDeduct(studentID: String) {
+    //Rest Service aufrufen und Bons holen 
+    //Gibt es keine Bons oder ist der QR Code nicht gültig, dann Fehlermeldung anzeigen
+    //
+    
+    
+
+  }
 
 
- async openDialogasd() {
+
+ async openDialogQRCodeScanner() {
+  alert("QR Code erst am Ende der Bestellung scannen!");
     const dialogRef =  this.dialog.open(QRScannerDialogComponent);
     dialogRef.afterClosed().subscribe(scannedValue => {
       if (scannedValue) {
         console.log('Scanned Value in KassaComponent:', scannedValue);
+        //Gutscheine mit der StudentID Holen
+        //Betrag von dem Gutschein abziehen
+        //Betrag in der Kassa anzeigen
+        this.AmountDeduct(scannedValue);
+         
+
+
       } else {
         console.log('Dialog wurde geschlossen, kein gescannter Wert verfügbar.');
       }
