@@ -46,6 +46,7 @@ Typescript: Version 5.1.3
      + User.ReadBasic.All 
    * if you have done it, click on "Add permissions"
 9.  To test your API, go on [Microsoft Graph Explorer]("https://developer.microsoft.com/en-us/graph/graph-explorer")
+### WARNING: check if you require Admin consent for the Api-permissions!!!
 
 ## Create an Angular Client App
 1. Insert `npm install -g @angular/cli` into your terminal, to update your Angular-CLI
@@ -214,5 +215,6 @@ export class AppComponent implements OnInit{
 
 If you want a more detailed toturial, watch this Youtube-video from [Prof. Rainer Stropek](https://github.com/rstropek).
 The link to the video: [https://youtu.be/ND6EKbGb7vQ?si=DjH8qMus4mAiSw9n](https://youtu.be/ND6EKbGb7vQ?si=DjH8qMus4mAiSw9n)
+
 **WARNING:**
 This toturial includes a lots of differences comparing to mine, because of the different Angualr-version.
