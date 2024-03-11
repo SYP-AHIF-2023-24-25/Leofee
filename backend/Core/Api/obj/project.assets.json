@@ -462,23 +462,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rabed\\.nuget\\packages\\": {},
+    "C:\\Users\\Samuel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj",
-      "packagesPath": "C:\\Users\\rabed\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\obj\\",
+      "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\Samuel\\.nuget\\packages\\",
+      "outputPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\rabed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Samuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -487,15 +487,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
-              "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
+            "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+              "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
             }
           }
         }
