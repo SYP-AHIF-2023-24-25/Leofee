@@ -4,6 +4,8 @@ import { MsalService } from '@azure/msal-angular';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as QRCode from 'qrcode';
+import { ServiceService } from '../service/service.service';
+import { identifierName } from '@angular/compiler';
 
 
 //import { AuthService } from '../auth.service'; // Annahme: AuthService enthält Logik für die Benutzerauthentifizierung
@@ -16,20 +18,36 @@ import * as QRCode from 'qrcode';
 export class GiftCardComponent implements OnInit {
   geldbetrag: number = 0;
   eingeloggterBenutzer: string = "";
-  profile: string = "";
+  userId : any = "";
   qrCodeImage: string = "";
-  qrCodeData: string = 'Er Funktioniert zumindest'; // Hier gehört dann die Id vom eingeloggten Benutzer rein und der Geldbetrag
+  qrCodeData: string = this.userId // Hier gehört dann die Id vom eingeloggten Benutzer rein und der Geldbetrag
   showQRCode: boolean = false;
+  user: string = "";
 
-  constructor(private authService: MsalService, private client: HttpClient, private router: Router) {
+  constructor(private authService: MsalService, private client: HttpClient, private router: Router, private serviceService: ServiceService) {
     
   }
 
   ngOnInit(): void {
-    
-    //this.generateQRCode();
+    this.loadStudentData();
   }
   
+  async loadStudentData() {
+    const studentId = 'fe4ae22ae3f97a3ba0cc538ceb45f99469cd10d9686ff61296f97c6ca3f63490'; // Hier müssten Sie die Id des eingeloggten Benutzers abrufen, falls nicht statisch
+    
+    await this.serviceService.getStudentDataById(studentId).subscribe(student => {
+      console.log(student)
+      this.userId = student.id; 
+      this.user = student.lastname;
+    });
+
+    this.serviceService.getStudentBalanceById(studentId).subscribe(balance => {
+      this.geldbetrag = balance;
+      this.qrCodeData = `${studentId}-${balance}`; 
+      this.generateQRCode();
+    });
+  }
+
   generateQRCode() {
     QRCode.toDataURL(this.qrCodeData)
       .then(url => {
@@ -39,10 +57,10 @@ export class GiftCardComponent implements OnInit {
       .catch(err => {
         console.error(err);
       });
-  
+    }
       
     // Annahme: AuthService enthält eine Methode zum Abrufen des eingeloggten Benutzers und seines Geldbetrags
     //this.geldbetrag = this.authService.getGeldbetrag();
    // this.eingeloggterBenutzer = this.authService.getEingeloggterBenutzer();
-  }
+  
 }
