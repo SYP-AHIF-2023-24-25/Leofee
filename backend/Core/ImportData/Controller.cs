@@ -22,7 +22,7 @@ namespace ImportData
         public static double getBalanceFromAllBons(List<Bon> bonsFromStudent)
         {
             var balance = bonsFromStudent
-                .Sum(bon => bon.value);
+                .Sum(bon => bon.getBonValue());
             return balance;
         }
         public static List<Bon> getValidBonsForStudent(string studentId, List<Bon> allBons, List<Student> allStudents,DateTime current)

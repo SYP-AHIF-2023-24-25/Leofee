@@ -51,7 +51,7 @@ app.MapGet("/students/{id}", (string id) =>
 });
 app.MapGet("/student/{id}/balance", (string id) =>
 {
-    var bonsForStudent = ImportData.Controller.getBonsForStudent(id, bons, students);
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id, bons, students,DateTime.Now);
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
