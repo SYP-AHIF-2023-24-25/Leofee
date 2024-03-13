@@ -1,4 +1,5 @@
 
+using Core;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Runtime.CompilerServices;
 
@@ -55,10 +56,16 @@ app.MapGet("/student/{id}/balance", (string id) =>
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
+app.MapGet("student/{studentString}/getId", (string studentString) =>
+{
+    string studentId = Student.GenerateSHA256Hash(studentString);
+    return studentId;
+});
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
     ImportData.Controller.Pay(bons, 5);
 });
+
 app.MapDelete("/student/{id}", (string id) =>
 {
     
