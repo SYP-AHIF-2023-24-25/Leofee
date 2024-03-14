@@ -34,6 +34,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 
+app.UseCors(policy => policy
+    .WithOrigins("http://localhost:4200") // Hier geben Sie die Origin Ihrer Angular-Anwendung an
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+
 app.MapGet("/students", () =>
 {
     //var ids = students.Select(student => student.id).ToList();
@@ -57,7 +63,9 @@ app.MapGet("/student/{id}/balance", (string id) =>
 });
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
-    ImportData.Controller.Pay(bons, 5);
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
+
+    ImportData.Controller.Pay(bonsForStudent, value);
 });
 app.MapDelete("/student/{id}", (string id) =>
 {
