@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Student } from '../model/student';
 
+
 @Component({
   selector: 'app-student-overview',
   templateUrl: './student-overview.component.html',
@@ -21,7 +22,8 @@ export class StudentOverviewComponent {
         for(let i = 1; i < lines.length;i++){
           //Moritz;Passenbrunner;1CHIF
           let parts:string[] = lines[i].split(';');
-          this._students.push(new Student(parts[0],parts[1],parts[2]));
+          let studentBalance = this.fetchStudentBalance(parts[0], parts[1], parts[3]);          
+          this._students.push(new Student(parts[0],parts[1],parts[2],studentBalance));
         } 
         console.log('Zeilen:', this._students);
       };
@@ -132,4 +134,52 @@ export class StudentOverviewComponent {
     URL.revokeObjectURL(link.href);
     console.log('Daten wurden erfolgreich als PDF exportiert.');
   }
+  fetchStudentBalance(studentFirstname:string,studentLastname:string,studentPassword:string): number {
+    
+    
+
+
+    ///====================
+    let studentString:string = studentFirstname + studentLastname + studentPassword;
+    let studentIdString:string = "";
+    fetch(`http://localhost:5196/student/${studentString}/getId`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Fehler beim Laden des Kontostands: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(studentId => {
+        // Hier kannst du mit dem erhaltenen Kontostand arbeiten
+        
+        studentIdString = studentId;
+      })
+      .catch(error => {
+        console.error("Fehler beim Abrufen des Kontostands:", error);
+        
+      });
+      // ====================
+      if(studentIdString === ""){
+        return 0;
+      }
+      fetch(`http://localhost:5196/student/${studentIdString}/balance`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Fehler beim Laden des Kontostands: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(balance => {
+        // Hier kannst du mit dem erhaltenen Kontostand arbeiten
+        return balance;
+      })
+      .catch(error => {
+        console.error("Fehler beim Abrufen des Kontostands:", error);
+      });
+      return 0;
+
+      
+
+  }
+  
 }

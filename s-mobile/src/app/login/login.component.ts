@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { MsalService } from '@azure/msal-angular';
+import { AuthenticationResult } from '@azure/msal-browser';
+import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -6,15 +12,55 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = "";
-  password: string = "";
+  loggedIn: boolean = false;
+  profile?: MicrosoftGraph.User;
+  title = 'aad-auth';
 
-  constructor() { }
+  
 
-  onSubmit() {
-    // Hier würdest du die Logik für die Authentifizierung implementieren, z.B. eine Anfrage an einen Authentifizierungsservice senden.
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-    // Beispiel: Wenn die Authentifizierung erfolgreich ist, könntest du den Benutzer weiterleiten.
+  constructor(private authService: MsalService, private client: HttpClient, private router: Router) {
+    this.initializeMSAL();
+  }
+
+  ngOnInit(): void {
+    this.checkAccount();
+  }
+
+  checkAccount() {
+    this.loggedIn = this.authService.instance.getAllAccounts().length > 0;
+  }
+
+  async initializeMSAL() {
+    await this.authService.initialize();
+  }
+
+  login() {
+    this.authService
+      .loginPopup()
+      .subscribe((response: AuthenticationResult) => {
+        this.authService.instance.setActiveAccount(response.account);
+        this.checkAccount();
+        localStorage.setItem('idToken', response.idToken);
+        this.router.navigate(['/gift-card']);
+        //this.getProfile();
+      });
+  }
+
+  logout() {
+    this.authService.logoutPopup();
+    this.loggedIn = false;
+  }
+
+  getProfile() {
+    this.client
+      .get<MicrosoftGraph.User>("https://graph.microsoft.com/v1.0/me")
+      .subscribe((profile) => {
+        this.profile = profile
+        console.log('Setting profile in localStorage', profile);
+        localStorage.setItem('profile', JSON.stringify(profile.displayName));
+        localStorage.setItem('id', JSON.stringify(profile.id));
+        this.router.navigate(['/gift-card']); // Navigiere erst nach dem Abrufen des Profils
+        
+      });
   }
 }

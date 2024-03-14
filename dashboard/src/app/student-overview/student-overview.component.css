@@ -1,4 +1,32 @@
+
+
 .buttons{
     margin-top: 70px;
+    padding: 50px;
+}   
+
+.input{
+    color: black;
 }
 
+button{
+    margin-top: 20px;
+    margin-left: 20px;
+    align-items: right;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .container * {
+    font-size: 20px; /* Ändern Sie die Schriftgröße nach Bedarf */
+  }
+  
+#studentTable {
+    padding-top: 50 px;
+}

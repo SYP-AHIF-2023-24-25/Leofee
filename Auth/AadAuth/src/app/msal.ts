@@ -30,11 +30,6 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     'User.ReadBasic.All',
   ]);
 
-//   protectedResourceMap.set(environment.customApi, [
-//     'api://14f9a758-cdba-47ba-8178-c0d54de0ab88/read',
-//     'api://14f9a758-cdba-47ba-8178-c0d54de0ab88/write'
-//   ]);
-
   return {
     interactionType: InteractionType.Popup,
     protectedResourceMap,

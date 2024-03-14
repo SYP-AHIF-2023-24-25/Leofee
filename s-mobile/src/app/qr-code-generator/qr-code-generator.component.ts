@@ -8,7 +8,7 @@ import * as QRCode from 'qrcode';
   styleUrls: ['./qr-code-generator.component.css']
 })
 export class QrCodeGeneratorComponent implements OnInit {
-  qrCodeData: string = 'http://152.67.74.231/login'; // Hier gehört dann der Link zu meiner oracle vm rein
+  qrCodeData: string = 'http://152.67.74.231/'; // Hier gehört dann der Link zu meiner oracle vm rein
   qrCodeImage: string = '';
   guthaben: number = 3;
 

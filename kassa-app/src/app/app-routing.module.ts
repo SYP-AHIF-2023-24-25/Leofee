@@ -4,6 +4,7 @@ import { KassaComponent } from './kassa/kassa.component';
 
 const routes: Routes = [
   { path: '', component: KassaComponent, pathMatch: 'full' },
+  
 ];
 
 @NgModule({
