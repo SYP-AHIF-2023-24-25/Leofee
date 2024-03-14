@@ -29,7 +29,7 @@ namespace Core
             this.schoolClass = schoolClass;
 
         }
-        static string GenerateSHA256Hash(string input)
+        public static string GenerateSHA256Hash(string input)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
