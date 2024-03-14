@@ -33,13 +33,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
 app.UseCors(policy => policy
     .WithOrigins("http://localhost:4200") // Hier geben Sie die Origin Ihrer Angular-Anwendung an
     .AllowAnyMethod()
     .AllowAnyHeader());
 
+
 app.MapGet("/students", () =>
 {
+    //var ids = students.Select(student => student.id).ToList();
     return Results.Ok(students);
 });
 app.MapGet("/students/{id}", (string id) =>
@@ -58,16 +61,11 @@ app.MapGet("/student/{id}/balance", (string id) =>
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
-app.MapGet("student/{studentString}/getId", (string studentString) =>
-{
-    string studentId = Student.GenerateSHA256Hash(studentString);
-    return studentId;
-});
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
-    var bonsForStudent = ImportData.DataController.exportBons(bons, bonsPath);
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
+
     ImportData.Controller.Pay(bonsForStudent, value);
-    
 });
 app.MapDelete("/student/{id}", (string id) =>
 {
