@@ -7,6 +7,10 @@ import { DataService } from 'src/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription, tap } from 'rxjs';
 import { QRScannerDialogComponent } from '../qrscanner-dialog-component/qrscanner-dialog-component.component';
+
+
+
+
 @Component({
   selector: 'app-kassa',
   templateUrl: './kassa.component.html',
@@ -75,13 +79,41 @@ export class KassaComponent implements OnInit {
     return products / 100.0;
   }
 
-  AmountDeduct(studentID: String) {
-    //Rest Service aufrufen und Bons holen 
-    //Gibt es keine Bons oder ist der QR Code nicht gültig, dann Fehlermeldung anzeigen
-    //
-    
+  async AmountDeduct(studentID: string) {  
     
 
+    (await this.dataService.getStudentBalance(studentID)).subscribe(data => {
+
+      let bonAmount = 0;
+        
+      if (data !== null ){
+        
+
+        console.log(data);
+        console.log(this.getTotals());
+        
+        let result = this.getTotals() - data;
+
+        console.log("Result: ",result);
+  
+        if(result > 0){        
+          bonAmount  = data;                
+        }
+        else{
+
+          bonAmount =result * -1 ;          
+        }
+        console.log("Total: ",bonAmount);
+
+        this.dataService.Pay( studentID,  bonAmount).then(observable => {
+          observable.subscribe(response => {
+            console.log('Payment successful', response);
+          }, error => {
+            console.error('Payment failed', error);
+          });
+        });       
+      }       
+    });    
   }
 
 
@@ -95,10 +127,8 @@ export class KassaComponent implements OnInit {
         //Gutscheine mit der StudentID Holen
         //Betrag von dem Gutschein abziehen
         //Betrag in der Kassa anzeigen
+       
         this.AmountDeduct(scannedValue);
-         
-
-
       } else {
         console.log('Dialog wurde geschlossen, kein gescannter Wert verfügbar.');
       }

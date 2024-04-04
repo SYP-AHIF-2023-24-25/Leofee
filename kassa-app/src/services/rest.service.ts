@@ -19,6 +19,15 @@ export class RestService {
 
     console.log(this.baseUrl);
   }
+
+  async BonPayment(id: String, amount: number): Promise<Observable<any>> {
+    console.log(amount);
+    let url = "http://localhost:5196/student/" + id + "/pay/" + amount ;
+    return this.http.post<any>(url, {}, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+
+  }
   getProducts() : Observable<Product[]> {
     console.log(this.baseUrl);
     let headers: HttpHeaders = new HttpHeaders();
@@ -30,6 +39,13 @@ export class RestService {
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.get<IBuffet[]>(
         this.baseUrl + 'Buffets',
+        {headers});
+  }
+
+  getStudentBalance(id: String): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    return this.http.get<any>(
+      "http://localhost:5196/student/"+ id + '/balance',
         {headers});
   }
   async sendOrder(order: Order) {

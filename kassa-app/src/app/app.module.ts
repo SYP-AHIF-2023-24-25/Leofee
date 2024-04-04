@@ -14,6 +14,8 @@ import { environment } from '../environments/environment';
 import { NgxScannerQrcodeModule, LOAD_WASM } from 'ngx-scanner-qrcode';
 import { QRScannerDialogComponent } from './qrscanner-dialog-component/qrscanner-dialog-component.component';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -26,6 +28,8 @@ import { QRScannerDialogComponent } from './qrscanner-dialog-component/qrscanner
     MaterialModule,
     AppRoutingModule,
     BrowserModule,
+    MatCardModule,
+    MatIconModule,
     NgxScannerQrcodeModule,
     FormsModule,
     ReactiveFormsModule,
