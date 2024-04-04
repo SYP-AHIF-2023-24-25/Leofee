@@ -58,16 +58,20 @@ app.MapGet("/student/{id}/balance", (string id) =>
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
-app.MapGet("student/{studentString}/getId", (string studentString) =>
+app.MapGet("student/{studentString}/getId", (string id) =>
 {
-    string studentId = Student.GenerateSHA256Hash(studentString);
-    return studentId;
+    var studentForId = students
+                        .SingleOrDefault(student => student.id == id);
+    if(studentForId == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(studentForId);
 });
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
-    var bonsForStudent = ImportData.DataController.exportBons(bons, bonsPath);
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
     ImportData.Controller.Pay(bonsForStudent, value);
-    
 });
 app.MapDelete("/student/{id}", (string id) =>
 {
