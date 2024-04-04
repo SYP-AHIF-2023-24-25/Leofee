@@ -33,7 +33,7 @@ export class GiftCardComponent implements OnInit {
   }
   
   async loadStudentData() {
-    const studentId = 'fe4ae22ae3f97a3ba0cc538ceb45f99469cd10d9686ff61296f97c6ca3f63490'; // Hier müssten Sie die Id des eingeloggten Benutzers abrufen, falls nicht statisch
+    const studentId = '532d83eb807aa78eba671ee7875abc201a5835e2d4e41aa2b0959aacb3e80aae'; // Hier müssten Sie die Id des eingeloggten Benutzers abrufen, falls nicht statisch
     
     await this.serviceService.getStudentDataById(studentId).subscribe(student => {
       console.log(student)
