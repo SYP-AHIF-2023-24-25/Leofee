@@ -34,6 +34,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors(policy => policy
+    .WithOrigins("http://localhost:4200") // Hier geben Sie die Origin Ihrer Angular-Anwendung an
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.MapGet("/students", () =>
 {
