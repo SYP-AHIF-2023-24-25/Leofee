@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\micha\\OneDrive\\4AHIF\\mergeLeofe1\\Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
+      "projectUniqueName": "C:\\Users\\micha\\OneDrive\\4AHIF\\Syp_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\mergeLeofe1\\Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
+      "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Syp_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\mergeLeofe1\\Leofee\\Leofee\\backend\\Core\\Core\\obj\\",
+      "outputPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Syp_Leofee\\Leofee\\backend\\Core\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
