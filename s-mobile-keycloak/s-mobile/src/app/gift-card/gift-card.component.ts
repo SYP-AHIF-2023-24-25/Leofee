@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentService } from '../service/student.service';
 import { CommonModule } from '@angular/common';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { KeycloakService } from 'keycloak-angular';
 
 
 
@@ -28,10 +29,15 @@ export class GiftCardComponent {
   showQRCode: boolean = false;
   user: string = "";
 
+  //keycloak section
+  private readonly keycloakService: KeycloakService = inject(KeycloakService);
+
 
   constructor(private client: HttpClient, private router: Router, private studentService: StudentService) {
 
   }
+
+
 
   ngOnInit(): void {
     this.loadStudentData();
@@ -44,7 +50,6 @@ export class GiftCardComponent {
       console.log(student)
       this.userId = student.id; 
       this.user = student.lastname;
-      this.generateQRCode();
     });
 
     this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
@@ -53,16 +58,16 @@ export class GiftCardComponent {
     });
   }
 
-  generateQRCode() {
-    QRCode.toDataURL(this.qrCodeData)
-      .then(url => {
-        this.qrCodeImage = url;
-        this.showQRCode = true;
-      })
-      .catch(err => {
-        console.error(err);
-      });
-    }
+  // generateQRCode() {
+  //   QRCode.toDataURL(this.qrCodeData)
+  //     .then(url => {
+  //       this.qrCodeImage = url;
+  //       this.showQRCode = true;
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //     });
+  //   }
       
     // Annahme: AuthService enthält eine Methode zum Abrufen des eingeloggten Benutzers und seines Geldbetrags
     //this.geldbetrag = this.authService.getGeldbetrag();

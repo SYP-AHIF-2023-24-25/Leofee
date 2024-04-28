@@ -16,13 +16,13 @@
       </div>
     </nav>
     
-    <div class="container text-center mt-4">
+    <!-- <div class="container text-center mt-4">
       <div class="row justify-content-center">
         <div class="col-12">
           <img *ngIf="showQRCode" [src]="qrCodeImage" class="img-fluid qr-code" alt="QR-Code">
         </div>
       </div>
-    </div>
+    </div> -->
     
     
     <div class="container mt-4">
@@ -33,13 +33,14 @@
       </div>
     </div>
     
-
     <div class="container mt-4">
-      <div class="row justify-content-center">
-        <div class="col-md-6 text-center"> <!-- Button auf der gleichen Ebene wie das Guthaben -->
-          <button *ngIf="!showQRCode" class="btn btn-primary btn-lg" style="background-color: #6c757d; border-color: #6c757d;" (click)="generateQRCode()">QR-Code anzeigen</button>
+      <div class="row justify-content-center"> 
+      <div class="col-md-6 text-center">  Button auf der gleichen Ebene wie das Guthaben
+          <button class="btn btn-primary btn-lg" style="background-color: #6c757d; border-color: #6c757d;" (click)="showQRCode = true">QR-Code anzeigen</button>
+        </div>
+        <div *ngIf="showQRCode">
+            <qrcode [qrdata]="qrCodeData" size="300" errorCorrectionLevel="M"></qrcode>
         </div>
       </div>
     </div>
-    
     </body>
