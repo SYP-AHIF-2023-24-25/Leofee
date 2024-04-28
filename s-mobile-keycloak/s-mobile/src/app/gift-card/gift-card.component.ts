@@ -22,7 +22,7 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class GiftCardComponent {
   amountOfMoney: number = 0;
-  eingeloggterBenutzer: string = "";
+  //eingeloggterBenutzer: string = "";
   userId : any = "";
   qrCodeImage: string = "";
   qrCodeData: string = this.userId // Hier gehört dann die Id vom eingeloggten Benutzer rein und der Geldbetrag
@@ -31,14 +31,13 @@ export class GiftCardComponent {
 
   //keycloak section
   private readonly keycloakService: KeycloakService = inject(KeycloakService);
-
+  
 
   constructor(private client: HttpClient, private router: Router, private studentService: StudentService) {
 
   }
 
-
-
+  
   ngOnInit(): void {
     this.loadStudentData();
   }

@@ -1,20 +1,17 @@
-<p>profile-keycloak works!</p>
-<!-- <div *NgFor="let item in leUser">
-    <h2>{{ item }}</h2>
-</div> -->
-
- 
-<!-- @for (item of leUser; track item) {
-    <h3>{{item}}</h3>
-}  -->
-
-<!-- <button (click)="getUserInfo()">Details</button>
-<div >
-    <h2>User: {{ leUser }}</h2>
-</div> -->
-
+<h1>Your profile</h1>
+<br>
 <div>
-    <h1>{{userName()}}</h1>
-    <button class="btn btn-primary btn-lg" style="background-color: #6c757d; border-color: #6c757d;"  (click)="getFullName()">get the full-name of you account</button>
-
+    <h2>{{userName()}}</h2>
+    <div *ngIf="leoUserRole() == 1; else elseBlock">
+        <h1>Student</h1>
+    </div>
+    <ng-template #elseBlock>
+        <h1>Teacher</h1>
+    <h2>{{leoUserRole()}}</h2>
+    </ng-template>
+    <h2>{{username()}}</h2>
 </div>
+<br>
+<br>
+<h3>Qr-Code</h3>
+<qrcode [qrdata]="qrCodeData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
