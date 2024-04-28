@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-md-6">
+        <div class="card p-4">
+          <div class="text-center">
+            <h1 class="mb-4">Login-Screen</h1>
+            <div *ngIf="isLoggedIn == false; else logOutBlock">
+              <h3 class="mt-4">You are logged out!</h3>
+              <button (click)="login()" class="btn btn-primary btn-lg mt-4">Login</button>
+            </div>
+            <ng-template #logOutBlock>
+              <h3 class="mt-4">You are already logged in!</h3>
+              <button (click)="logout()" class="btn btn-danger btn-lg mt-4">Logout</button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
