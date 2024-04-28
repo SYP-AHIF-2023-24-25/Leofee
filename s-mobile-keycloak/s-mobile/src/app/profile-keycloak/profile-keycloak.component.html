@@ -1,4 +1,20 @@
 <p>profile-keycloak works!</p>
+<!-- <div *NgFor="let item in leUser">
+    <h2>{{ item }}</h2>
+</div> -->
+
+ 
+<!-- @for (item of leUser; track item) {
+    <h3>{{item}}</h3>
+}  -->
+
+<!-- <button (click)="getUserInfo()">Details</button>
+<div >
+    <h2>User: {{ leUser }}</h2>
+</div> -->
+
 <div>
-    <h2>{{ this.userData }}</h2>
+    <h1>{{userName()}}</h1>
+    <button class="btn btn-primary btn-lg" style="background-color: #6c757d; border-color: #6c757d;"  (click)="getFullName()">get the full-name of you account</button>
+
 </div>
