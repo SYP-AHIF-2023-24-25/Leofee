@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj": {}
+    "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Api\\Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj": {
+    "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\Api.csproj",
+        "projectPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Api\\Api.csproj",
         "packagesPath": "C:\\Users\\rabed\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Api\\obj\\",
+        "outputPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
-                "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
+              "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+                "projectPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
               }
             }
           }
@@ -49,6 +49,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -77,14 +81,14 @@
         }
       }
     },
-    "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\Core.csproj": {
+    "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\Core.csproj",
+        "projectPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\rabed\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\obj\\",
+        "outputPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -117,6 +121,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -137,14 +147,14 @@
         }
       }
     },
-    "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+    "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
+        "projectUniqueName": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
         "projectName": "ImportData",
-        "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
+        "projectPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
         "packagesPath": "C:\\Users\\rabed\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\ImportData\\obj\\",
+        "outputPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\ImportData\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -166,8 +176,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\rabed\\OneDrive\\Desktop\\Schule\\SYP\\Leofee\\backend\\Core\\Core\\Core.csproj"
+              "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\rabed\\Desktop\\Leofee\\backend\\Core\\Core\\Core.csproj"
               }
             }
           }
@@ -181,6 +191,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
