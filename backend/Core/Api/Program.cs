@@ -1,6 +1,7 @@
 
 using Core;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 
@@ -67,8 +68,14 @@ app.MapGet("/student/{id}/balance", (string id) =>
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
     var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
-    ImportData.Controller.Pay(bonsForStudent, value);
+    var finishedResult = ImportData.Controller.Pay(bonsForStudent, value);
+    if (finishedResult == false)
+    {
+        return Results.BadRequest();
+
+    }
     bons = ImportData.DataController.importBons();
+    return Results.Ok();
 });
 
 app.MapDelete("/student/{id}", (string id) =>

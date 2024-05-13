@@ -35,8 +35,9 @@ namespace ImportData
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
+                conn.Open();
                 Console.WriteLine("Connecting to MySQL...");
-                string selectAllBonsQuery = "SELECT * FROM bon";
+                string selectAllBonsQuery = "SELECT * FROM Bon";
                 MySqlCommand selectAllBonsCmd = new MySqlCommand(selectAllBonsQuery, conn);
                 MySqlDataReader bonReader = selectAllBonsCmd.ExecuteReader();
 

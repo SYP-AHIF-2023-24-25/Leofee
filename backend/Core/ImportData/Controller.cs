@@ -1,4 +1,5 @@
 ﻿using Core;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,19 +40,52 @@ namespace ImportData
 
             return validBons;
         }
-        public static void Pay(List<Bon> validBons, double amountToDeduct)
+        public static bool Pay(List<Bon> validBons, double amountToDeduct)
         {
-            var orderedBons = validBons
-                .OrderBy(bon => bon.getBonEnd())
-                .ToList();
-            foreach (var bon in orderedBons.TakeWhile(bon => amountToDeduct > 0))
+                        string connStr = "server=flr.h.filess.io;user=Leofee_rollshowam;database=Leofee_rollshowam;port=3307;password=89ff40891b7ecf236aa06e6da9f07be68be04447";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
             {
-                double deductionAmount = Math.Min(amountToDeduct, bon.getBonValue());
-                bon.pay(deductionAmount);
-                amountToDeduct -= deductionAmount;
-            }
-            
+                conn.Open();
+                var fullValue = validBons
+                .Sum(bon => bon.getBonValue());
+                if (amountToDeduct > fullValue)
+                {
+                    return false;
+                }
+                var orderedBons = validBons
+                    .OrderBy(bon => bon.getBonEnd())
+                    .ToList();
+                foreach (var bon in orderedBons.TakeWhile(bon => amountToDeduct > 0))
+                {
+                    double deductionAmount = Math.Min(amountToDeduct, bon.getBonValue());
+                    bon.pay(deductionAmount);
+                    amountToDeduct -= deductionAmount;
+                    string updateQuery = "UPDATE Bon SET usedValue = usedValue + @deductionAmount WHERE bonId = @bonId";
 
+
+                    //
+                    MySqlCommand updateCommand = new MySqlCommand(updateQuery, conn);
+                    updateCommand.Parameters.AddWithValue("@deductionAmount", deductionAmount);
+                    updateCommand.Parameters.AddWithValue("@bonId", bon.bonId);
+                    updateCommand.ExecuteNonQuery();
+
+                    // Value des Bons in der Datenbank aktualisieren
+                    string updateValueQuery = "UPDATE Bon SET Value = Value - @deductionAmount WHERE bonId = @bonId";
+                    MySqlCommand updateValueCommand = new MySqlCommand(updateValueQuery, conn);
+                    updateValueCommand.Parameters.AddWithValue("@deductionAmount", deductionAmount);
+                    updateValueCommand.Parameters.AddWithValue("@bonId", bon.bonId);
+                    updateValueCommand.ExecuteNonQuery();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            conn.Close();
+            return true;
         }
     }
 }
