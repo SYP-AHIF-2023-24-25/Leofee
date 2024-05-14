@@ -8,16 +8,19 @@ namespace Core
 {
     public class Bon
     {
-        public string studentID { get; private set; } = string.Empty;
+        public string studentID { get;  set; } = string.Empty;
+        public string bonId { get; set; } = string.Empty;
         private double value { get; set; } = 0;
         private DateTime start;
         private DateTime end;
         private double usedValue { get; set; } = 0;
-        public Bon(string studentId,double value, string dateTimeStart, string dateTimeEnd) {
+        public Bon(string bonId,string studentId,double value, string dateTimeStart, string dateTimeEnd,double usedValue) {
+            this.bonId = bonId;
             this.studentID = studentId;
             this.value = value;
             this.start = DateTime.Parse(dateTimeStart);
             this.end = DateTime.Parse(dateTimeEnd);
+            this.usedValue = usedValue;
         }
         public DateTime getBonStart()
         {
