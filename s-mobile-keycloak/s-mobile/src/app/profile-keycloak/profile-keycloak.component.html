@@ -1,17 +1,77 @@
-<h1>Your profile</h1>
-<br>
-<div>
-    <h2>{{userName()}}</h2>
-    <div *ngIf="leoUserRole() == 1; else elseBlock">
-        <h1>Student</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Add Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active" >
+                <a class="nav-link" aria-current="page" href="#">{{userName()}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">{{userCredit}}</a>
+                </li>
+                <li class="nav-item">
+                    <a (click)="logout()" class="nav-link" >Logout</a>
+                </li>
+            </ul>
+        
+
+          </div>
+
+        </div>
+      </nav>
+
+    <div class="container mt-5">
+        <h1>Your Profile</h1>
+        <div>
+            <h2>{{userName()}}</h2>
+            <div *ngIf="leoUserRole() == 1; else elseBlock">
+                <h1>Student</h1>
+            </div>
+            <ng-template #elseBlock>
+                <h1>Teacher</h1>
+            </ng-template>
+            <h2>{{userName()}}</h2>
+        </div>
+
+        <br>
+        <br>
+
+        <h3>QR-Code</h3>
+        <div class="text-center">
+            <qrcode [qrdata]="qrCodeData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <div class="text-center">
+            <h4>{{ valueTest }}</h4>
+        </div>
     </div>
-    <ng-template #elseBlock>
-        <h1>Teacher</h1>
-    <h2>{{leoUserRole()}}</h2>
-    </ng-template>
-    <h2>{{username()}}</h2>
-</div>
-<br>
-<br>
-<h3>Qr-Code</h3>
-<qrcode [qrdata]="qrCodeData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

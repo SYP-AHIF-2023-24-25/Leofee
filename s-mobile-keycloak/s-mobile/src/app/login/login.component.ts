@@ -30,8 +30,7 @@ export class LoginComponent {
       return
     }
     await this.keycloakService.login()
-    this.router.navigate(['/gift-card'])
-
+    this.routeToGiftCard();
   }
 
   async logout(): Promise<void> {
