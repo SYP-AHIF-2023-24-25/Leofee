@@ -7,7 +7,7 @@ import { DataService } from 'src/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription, tap } from 'rxjs';
 import { QRScannerDialogComponent } from '../qrscanner-dialog-component/qrscanner-dialog-component.component';
-
+import { BonBooking } from 'src/model/buffet/bonBooking';
 
 
 
@@ -23,6 +23,10 @@ export class KassaComponent implements OnInit {
   selectedBuffet: IBuffet = this.buffets[0];
   total = 0.0;
   numberColumns = 4;
+  AmountOfBon: number = 0.0; 
+  bonUsed: boolean = false; 
+  studentID: string = '';
+
 
   constructor(
     public dialog: MatDialog,
@@ -68,6 +72,8 @@ export class KassaComponent implements OnInit {
       p.amount--;
   }
 
+
+
   getTotals() {
     if (!this.selectedBuffet) return 0;
     if (this.selectedBuffet.products.length === 0) {
@@ -76,23 +82,43 @@ export class KassaComponent implements OnInit {
     let products = this.selectedBuffet.products
       .map(p => p.amount * p.price)
       .reduce((total, current) => total += current);
-    return products / 100.0;
-  }
 
-  async AmountDeduct(studentID: string) {  
+    //console.log(this.AmountOfBon)
+    //console.log((products / 100.0) - this.AmountOfBon);
+    console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
+     
+    return ((products / 100.0) - this.AmountOfBon);
+  }
+ 
+
+  async AmountDeduct(studentID: string) {     
     
+    //ID überprüfen
+    (await this.dataService.getStudentById(studentID)).subscribe({
+      next: (data) => {
+       //Schüler exesiterit 
+        console.log("Student: ", data);
+      },
+      error: (err) => {
+        //Schüer existiert nicht
+        this.openDialogBonRespond("Kein Gültiger QR Code!");
+        return;
+      }
+    });
 
     (await this.dataService.getStudentBalance(studentID)).subscribe(data => {
 
       let bonAmount = 0;
         
-      if (data !== null ){
+      if (data !== null  ){ 
         
+        if(data === 0){
+          this.openDialogBonRespond("Kein Guthaben vorhanden");
+          return;
+        }
 
-        console.log(data);
-        console.log(this.getTotals());
-        
         let result = this.getTotals() - data;
+
 
         console.log("Result: ",result);
   
@@ -100,35 +126,37 @@ export class KassaComponent implements OnInit {
           bonAmount  = data;                
         }
         else{
-
           bonAmount =result * -1 ;          
-        }
-        console.log("Total: ",bonAmount);
+        }       
+        this.AmountOfBon = bonAmount;
 
         this.dataService.Pay( studentID,  bonAmount).then(observable => {
-          observable.subscribe(response => {
-            console.log('Payment successful', response);
-          }, error => {
-            console.error('Payment failed', error);
-          });
-        });       
+          
+        });     
+        this.openDialogBonRespond("Gutschein wurde erfoglreich eingelöst! Wert: " + bonAmount + "€");  
+        
       }       
-    });    
+    });   
+    
+   
   }
 
+  //Bon Amount speichern 
 
 
- async openDialogQRCodeScanner() {
+ async openDialogQRCodeScanner() { 
+
   alert("QR Code erst am Ende der Bestellung scannen!");
     const dialogRef =  this.dialog.open(QRScannerDialogComponent);
     dialogRef.afterClosed().subscribe(scannedValue => {
       if (scannedValue) {
-        console.log('Scanned Value in KassaComponent:', scannedValue);
-        //Gutscheine mit der StudentID Holen
-        //Betrag von dem Gutschein abziehen
-        //Betrag in der Kassa anzeigen
-       
+        console.log('Scanned Value in KassaComponent:', scannedValue);        
+        this.bonUsed = true; 
+        this.studentID = scannedValue; 
         this.AmountDeduct(scannedValue);
+
+       
+       
       } else {
         console.log('Dialog wurde geschlossen, kein gescannter Wert verfügbar.');
       }
@@ -150,23 +178,48 @@ export class KassaComponent implements OnInit {
     this.openDialog();
   }
 
+
+
   exit() {
     this.router.navigate(['home']);
   }
 
-  openDialog(): void {
+  openDialogBonRespond(Messeage: string): void{
+    console.log("Bon Respond anzeigen");
+    const dialogRef = this.dialog.open(DialogRespond, {
+      width: '400px',
+      data: { message: Messeage }
+    });
+
+    dialogRef.afterClosed().subscribe(result => { 
+     
+    });
+
+
+  }
+
+   openDialog(): void {
     const dialogRef = this.dialog.open(DialogQuestion, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //// console.log(`The dialog was closed with answer ${result}`);
+     
       if (result === 'no') {
         return;
       }
-      // TODO: Buchung an REST-Service schicken
-      //console.log('sending booking to server ...');
-      this.dataService.saveBookings(this.selectedBuffet);
+     
+      if(this.bonUsed){
+        let bon: BonBooking = new BonBooking(this.studentID, this.AmountOfBon )
+      
+        this.dataService.saveBookings(this.selectedBuffet, bon );
+      }
+      else{
+        this.dataService.saveBookings(this.selectedBuffet, new BonBooking('', 0.0));
+      }
+
+      this.AmountOfBon = 0.0;
+     
       this.clear();
     });
   }
@@ -179,6 +232,7 @@ export class KassaComponent implements OnInit {
 export interface DialogData {
   answer: string;
 }
+
 @Component({
   selector: 'dialog-question',
   templateUrl: 'dialog-question.html',
@@ -192,4 +246,27 @@ export class DialogQuestion {
   clicked(answer: string) {
     this.dialogRef.close(answer);
   }
+}
+
+
+@Component({
+  selector: 'dialog-BonRespond',
+  templateUrl: 'dialog-BonRespond.html',
+})
+
+export class DialogRespond{  
+  
+  message: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogRespond>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string } 
+  ) {
+    this.message = data.message;
+  }
+
+  clicked(){
+    this.dialogRef.close();
+  }
+  
 }

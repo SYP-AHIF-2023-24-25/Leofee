@@ -9,6 +9,7 @@ import { OrderItem } from 'src/model/buffet/order-items';
 import { Student } from 'src/model/Student';
 import {Bons} from 'src/model/Bon';
 import { Observable } from 'rxjs';
+import { BonBooking } from 'src/model/buffet/bonBooking';
 
 
 
@@ -41,6 +42,12 @@ export class DataService {
   }
 
 
+  async getStudentById(id: string): Promise<Observable<any>> {
+    return this.bonsService.get<any>(
+      "http://localhost:5196/students/" + id);
+  }
+
+
 
   async getStudentBalance(id: string ): Promise<Observable<any>> {  
   
@@ -70,10 +77,14 @@ export class DataService {
 
 
 
-  async saveBookings(buffet: IBuffet) {
-    const order = new Order(new Date(), buffet);
+  async saveBookings(buffet: IBuffet, bonBooking: BonBooking) {
+    
+    const order = new Order(new Date(), buffet, bonBooking);    
+    console.log(order.bonBooking);
+    console.log(buffet.products);
+    console.log(buffet.location);
     order.orderItems = buffet.products.filter(b => b.amount > 0).map(p => {
-      //// console.log(p);
+      console.log(p);
       const oi = new OrderItem(p.id, p.amount);
       return oi;
     });

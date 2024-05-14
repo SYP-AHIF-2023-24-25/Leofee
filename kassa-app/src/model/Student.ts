@@ -6,5 +6,4 @@ export interface Student{
     password: String ,
     email: String ,
     schoolClass: String
-
 }

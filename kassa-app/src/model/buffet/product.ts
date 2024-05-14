@@ -1,5 +1,4 @@
 export class Product {
-
   amount = 0;
   rank = 0;
 
@@ -9,5 +8,4 @@ export class Product {
     public price: number,
     public measure: string){
   }
-
 }
