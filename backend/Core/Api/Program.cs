@@ -77,10 +77,28 @@ app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
     bons = ImportData.DataController.importBons();
     return Results.Ok();
 });
+app.MapPost("/student/{creationString}", (string creationString) =>
+{
+    var result = ImportData.Controller.addStudent(creationString);
+    if (result == false)
+    {
+        return Results.Problem();   
+
+    }
+    students = ImportData.DataController.importStudents();
+    return Results.Ok();
+});
 
 app.MapDelete("/student/{id}", (string id) =>
 {
-    
+    var result = ImportData.Controller.deleteStudent(int.Parse(id));
+    if (result == false)
+    {
+        return Results.Problem();
+
+    }
+    students = ImportData.DataController.importStudents();
+    return Results.Ok();
 });
 
 
