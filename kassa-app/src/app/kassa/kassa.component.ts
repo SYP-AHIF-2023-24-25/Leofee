@@ -83,8 +83,7 @@ export class KassaComponent implements OnInit {
       .map(p => p.amount * p.price)
       .reduce((total, current) => total += current);
 
-    //console.log(this.AmountOfBon)
-    //console.log((products / 100.0) - this.AmountOfBon);
+ 
     console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
      
     return ((products / 100.0) - this.AmountOfBon);
