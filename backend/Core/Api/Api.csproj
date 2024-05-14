@@ -16,4 +16,10 @@
     <ProjectReference Include="..\ImportData\ImportData.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update=".gitignore">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
