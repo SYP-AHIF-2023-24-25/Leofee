@@ -7,7 +7,7 @@ namespace Api.Controllers
     public class StudentController
     {
        
-        
+        Console.WriteLine("Hello World");   
 
     }
 }
