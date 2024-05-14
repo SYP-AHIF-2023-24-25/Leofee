@@ -100,6 +100,28 @@ app.MapDelete("/student/{id}", (string id) =>
     students = ImportData.DataController.importStudents();
     return Results.Ok();
 });
+app.MapPost("/bon/{creationString}", (string creationString) =>
+{
+    var result = ImportData.Controller.addBon(creationString);
+    if (result == false)
+    {
+        return Results.Problem();
 
+    }
+    bons = ImportData.DataController.importBons();
+    return Results.Ok();
+});
+
+app.MapDelete("/bon/{id}", (string id) =>
+{
+    var result = ImportData.Controller.deleteBon(int.Parse(id));
+    if (result == false)
+    {
+        return Results.Problem();
+
+    }
+    bons = ImportData.DataController.importBons();
+    return Results.Ok();
+});
 
 app.Run();
