@@ -103,3 +103,4 @@ C:\Users\rabed\Desktop\Leofee\backend\Core\Api\obj\Debug\net8.0\refint\Api.dll
 C:\Users\rabed\Desktop\Leofee\backend\Core\Api\obj\Debug\net8.0\Api.pdb
 C:\Users\rabed\Desktop\Leofee\backend\Core\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\Users\rabed\Desktop\Leofee\backend\Core\Api\obj\Debug\net8.0\ref\Api.dll
+C:\Users\rabed\Desktop\Leofee\backend\Core\Api\bin\Debug\net8.0\.gitignore
