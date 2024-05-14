@@ -14,7 +14,7 @@
     <!-- Add Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="#">S-Mobile</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -40,31 +40,23 @@
     <div class="container mt-5">
         <h1>Your Profile</h1>
         <div>
-            <h2>{{userName()}}</h2>
+            <h2>Username: {{userName()}}</h2>
             <div *ngIf="leoUserRole() == 1; else elseBlock">
-                <h1>Student</h1>
+                <h1>Role: Student</h1>
             </div>
             <ng-template #elseBlock>
-                <h1>Teacher</h1>
+                <h1>Role: Teacher</h1>
             </ng-template>
-            <h2>{{userName()}}</h2>
+            <h2>Fullname: {{fullName()}}</h2>
         </div>
-
-        <br>
-        <br>
 
         <h3>QR-Code</h3>
-        <div class="text-center">
-            <qrcode [qrdata]="qrCodeData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        <div  class="text-center">
+            <qrcode [qrdata]="generateQRCode()" [width]="256" [errorCorrectionLevel]="'M'" ></qrcode>
         </div>
 
 
-        <br>
-        <br>
-        <br>
-        <div class="text-center">
-            <h4>{{ valueTest }}</h4>
-        </div>
+       
     </div>
 
     <!-- Bootstrap JS and dependencies -->

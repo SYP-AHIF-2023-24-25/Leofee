@@ -24,9 +24,13 @@ import { Router } from '@angular/router';
 export class ProfileKeycloakComponent {
   private readonly keycloakService: KeycloakService = inject(KeycloakService);
   public readonly userName: WritableSignal<string | null> = signal(null);
+  public readonly fullName: WritableSignal<string | null> = signal(null);
   public leoUserRole: WritableSignal<Role | null> = signal(null);
   public readonly qrCodeData: WritableSignal<string> = signal("");
+  public anotherQrCodeData: string = ""
   public valueTest = "";
+  public amountOfMoney = 0;
+
   constructor (private client: HttpClient, private router: Router, private studentService: StudentService) {
   }
 
@@ -38,12 +42,16 @@ export class ProfileKeycloakComponent {
     this.getFullName(user);
     this.getRole(user);
     this.getUsername(user);
-    this.generateQRCodeData(user);
     this.loadStudentData();
   }
 
+  public generateQRCode() {
+    this.anotherQrCodeData = `${this.userName}-${this.amountOfMoney}`;
+    return this.anotherQrCodeData;
+  }
+
   public async getFullName(user: LeoUser): Promise<void> {
-    this.userName.set(user.fullName);
+    this.fullName.set(user.fullName);
   }
 
   public async getRole(user: LeoUser): Promise<void> {
@@ -54,23 +62,20 @@ export class ProfileKeycloakComponent {
     this.userName.set(user.username);
   }
 
-  public async generateQRCodeData(user: LeoUser): Promise<void> {
-    this.qrCodeData.set(`${user.username}`)
-  }
-
   public async logout(): Promise<void> {
     await this.keycloakService.logout();
   }
 
   public async loadStudentData() {
-    const studentId = this.userName.toString().split(":").pop();
-    // this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
-    //   this.amountOfMoney = balance;
-    //   this.qrCodeData = `${studentId}-${balance}`; 
-
-    // });
-
+    const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
     console.log(studentId);
+    this.valueTest = studentId
+    // this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
+    //    this.amountOfMoney = balance;
+    //    this.qrCodeData.set(`${studentId}-${balance}`);
+    //  });
+    this.qrCodeData.set(`${studentId}`);
+
   }
 }
 
