@@ -44,6 +44,7 @@ app.MapGet("/students", () =>
     
     return Results.Ok(students);
 });
+//Returnt den gesuchten Schüler wenn es ihn gibt, oder den Result NotFound wenn es ihn nicht gibt
 app.MapGet("/students/{id}", (string id) =>
 {
     var studentForId = students
@@ -54,12 +55,14 @@ app.MapGet("/students/{id}", (string id) =>
     }
     return Results.Ok(studentForId);
 });
+//Returnt das gesamte Guthaben für einen SChüler
 app.MapGet("/student/{id}/balance", (string id) =>
 {
     var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id, bons, students,DateTime.Now);
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
+//Bezahl Endpoint, gibt BadRequest zurück wenn der Schüler nicht genug Guthaben hat
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
     var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
