@@ -41,7 +41,7 @@ app.UseCors(policy => policy
 
 app.MapGet("/students", () =>
 {
-    //var ids = students.Select(student => student.id).ToList();
+    
     return Results.Ok(students);
 });
 app.MapGet("/students/{id}", (string id) =>
@@ -60,11 +60,6 @@ app.MapGet("/student/{id}/balance", (string id) =>
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
-//app.MapGet("student/{studentString}/getId", (string studentString) =>
-//{
-//    string studentId = Student.GenerateSHA256Hash(studentString);
-//    return studentId;
-//});
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
     var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
