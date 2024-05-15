@@ -44,6 +44,7 @@ app.MapGet("/students", () =>
     
     return Results.Ok(students);
 });
+//Returnt den gesuchten Schüler wenn es ihn gibt, oder den Result NotFound wenn es ihn nicht gibt
 app.MapGet("/students/{id}", (string id) =>
 {
     var studentForId = students
