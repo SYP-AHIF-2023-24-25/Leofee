@@ -10,6 +10,7 @@ namespace Core
     {
         public string studentID { get;  set; } = string.Empty;
         public string bonId { get; set; } = string.Empty;
+        //Als Standardwert wird 0 gesetzt
         private double value { get; set; } = 0;
         private DateTime start;
         private DateTime end;

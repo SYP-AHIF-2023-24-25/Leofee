@@ -1,5 +1,6 @@
 ﻿using Core;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace ImportData
 {
@@ -11,8 +12,6 @@ namespace ImportData
                 .Select(bon => bon)
                 .Where(bon => bon.studentID == studentId)
                 .ToList();
-
-
             return bonsForStudent;
         }
         public static double getBalanceFromAllBons(List<Bon> bonsFromStudent)
@@ -86,6 +85,89 @@ namespace ImportData
                     deleteStudentCmd.Parameters.AddWithValue("@StudentId", studentId);
                     deleteStudentCmd.ExecuteNonQuery();
                     Console.WriteLine("Insertion completed.");
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+                return false;
+            }
+            return true;
+        }
+        //
+        public static bool addBon(string inputString)
+        {
+            //studentId;startTime;endTime;usedValue;Value
+            var parts = inputString.Split(';');
+            string studentId = parts[0];
+            string startTime= parts[1];
+            string endTime= parts[2];
+            string usedValue = parts[3];
+            string Value = parts[4];
+            string connStr = "server=flr.h.filess.io;user=Leofee_rollshowam;database=Leofee_rollshowam;port=3307;password=89ff40891b7ecf236aa06e6da9f07be68be04447";
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connStr))
+                {
+                    conn.Open();
+                    Console.WriteLine("Try to Insert new Student:");
+                    string insertBonQueryFromFile = "INSERT INTO Bon (studentId,Value, startTime, endTime, usedValue) VALUES (@studentId, @Value, @startTime, @endTime, @usedValue)";
+                    MySqlCommand insertBonCmdFromFile = new MySqlCommand(insertBonQueryFromFile, conn);
+                    insertBonCmdFromFile.Parameters.AddWithValue("@studentId", decimal.Parse(studentId));
+                    insertBonCmdFromFile.Parameters.AddWithValue("@Value", decimal.Parse(Value, CultureInfo.InvariantCulture));
+                    insertBonCmdFromFile.Parameters.AddWithValue("@startTime", DateTime.Parse(startTime));
+                    insertBonCmdFromFile.Parameters.AddWithValue("@endTime", DateTime.Parse(endTime));
+                    insertBonCmdFromFile.Parameters.AddWithValue("@usedValue", 0); // Assuming initial used value is 0
+                    insertBonCmdFromFile.ExecuteNonQuery();
+                    conn.Close();
+                }
+                Console.WriteLine("Insertion completed.");
+                    
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+                return false;
+            }
+            return true;
+        }
+        public static bool deleteBon(int bonId)
+        {
+            string connStr = "server=flr.h.filess.io;user=Leofee_rollshowam;database=Leofee_rollshowam;port=3307;password=89ff40891b7ecf236aa06e6da9f07be68be04447";
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connStr))
+                {
+                    conn.Open();
+                    string deleteStudentQuery = "DELETE FROM Bon WHERE bonId = @BonId";
+                    MySqlCommand deleteStudentCmd = new MySqlCommand(deleteStudentQuery, conn);
+                    deleteStudentCmd.Parameters.AddWithValue("@BonId", bonId);
+                    deleteStudentCmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+                return false;
+            }
+            return true;
+        }
+        //
+        public static bool deleteBonsForStudent(int studentId)
+        {
+            string connStr = "server=flr.h.filess.io;user=Leofee_rollshowam;database=Leofee_rollshowam;port=3307;password=89ff40891b7ecf236aa06e6da9f07be68be04447";
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connStr))
+                {
+                    conn.Open();
+                    string deleteStudentQuery = "DELETE FROM Bon WHERE studentId = @StudentId";
+                    MySqlCommand deleteStudentCmd = new MySqlCommand(deleteStudentQuery, conn);
+                    deleteStudentCmd.Parameters.AddWithValue("@StudentId", studentId);
+                    deleteStudentCmd.ExecuteNonQuery();
                     conn.Close();
                 }
             }
