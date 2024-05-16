@@ -7,7 +7,13 @@ import { AuthGuard } from '../core/util/auth-guard';
 import { LeoUser, Role } from '../core/util/leo-token';
 
 export const routes: Routes = [
-    {path: '', redirectTo:'/login', pathMatch: 'full'},
+    {path: '', 
+        component: LoginComponent,
+        canActivate: [AuthGuard],
+        data: {
+            roles: [Role.Student]
+    } 
+    },
     {path: 'login',
      component: LoginComponent,
      canActivate: [AuthGuard],
@@ -15,7 +21,7 @@ export const routes: Routes = [
         roles: [Role.Student]
     }
     },
-    {path: 'gift-card', component: GiftCardComponent},
+    //{path: 'gift-card', component: GiftCardComponent},
     {path: 'profile-keycloak',
      component: ProfileKeycloakComponent,
      canActivate: [AuthGuard],

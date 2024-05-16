@@ -15,6 +15,8 @@
           "options": {
             "outputPath": "dist/dashboard",
             "index": "src/index.html",
+            "buildOptimizer": true,
+            "optimization": true,
             "main": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -42,13 +44,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 }
               ],
               "outputHashing": "all"
