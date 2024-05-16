@@ -6,7 +6,7 @@ namespace ImportData
 {
     public class Controller
     {
-        public static List<Bon> getBonsForStudent(string studentId, List<Bon> allBons, List<Student> allStudents)
+        public static List<Bon> getBonsForStudent(string studentId, List<Bon> allBons)
         {
             var bonsForStudent = allBons
                 .Select(bon => bon)
@@ -20,9 +20,14 @@ namespace ImportData
                 .Sum(bon => bon.getBonValue());
             return balance;
         }
-        public static List<Bon> getValidBonsForStudent(string studentId, List<Bon> allBons, List<Student> allStudents, DateTime current)
+        public static double getValueOfAllUsedBons(List<Bon> bonList)
+        {            
+            double sumUsedValue = bonList.Sum(bon => bon.usedValue);
+            return sumUsedValue;
+        }
+        public static List<Bon> getValidBonsForStudent(string studentId, List<Bon> allBons, DateTime current)
         {
-            var bons = getBonsForStudent(studentId, allBons, allStudents);
+            var bons = getBonsForStudent(studentId, allBons);
             var validBons = getValidBons(bons, current);
             return validBons;
         }
