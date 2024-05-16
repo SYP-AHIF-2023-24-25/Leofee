@@ -14,7 +14,7 @@ namespace Core
         private double value { get; set; } = 0;
         private DateTime start;
         private DateTime end;
-        private double usedValue { get; set; } = 0;
+        public double usedValue { get; private set; } = 0;
         public Bon(string bonId,string studentId,double value, string dateTimeStart, string dateTimeEnd,double usedValue) {
             this.bonId = bonId;
             this.studentID = studentId;

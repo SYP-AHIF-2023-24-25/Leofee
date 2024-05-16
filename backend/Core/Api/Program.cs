@@ -58,14 +58,25 @@ app.MapGet("/students/{id}", (string id) =>
 //Returnt das gesamte Guthaben für einen SChüler
 app.MapGet("/student/{id}/balance", (string id) =>
 {
-    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id, bons, students,DateTime.Now);
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id, bons,DateTime.Now);
     var balanceForStudent = ImportData.Controller.getBalanceFromAllBons(bonsForStudent);
+    return Results.Ok(balanceForStudent);
+});
+//
+app.MapGet("/student/{id}/usedValue", (string id) =>
+{
+    var bonsForStudent = ImportData.Controller.getBonsForStudent(id, bons);
+    var balanceForStudent = ImportData.Controller.getValueOfAllUsedBons(bonsForStudent);
     return Results.Ok(balanceForStudent);
 });
 //Bezahl Endpoint, gibt BadRequest zurück wenn der Schüler nicht genug Guthaben hat
 app.MapPost("/student/{id}/pay/{value}", (string id, double value) =>
 {
-    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,students,DateTime.Now);
+    if(value < 0)
+    {
+        return Results.BadRequest();
+    }
+    var bonsForStudent = ImportData.Controller.getValidBonsForStudent(id,bons,DateTime.Now);
     var finishedResult = ImportData.Controller.Pay(bonsForStudent, value);
     if (finishedResult == false)
     {
