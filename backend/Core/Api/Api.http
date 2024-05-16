@@ -1,6 +1,7 @@
 GET http://localhost:5196/students
 Accept: application/json
 
+
 ###
 
 GET http://localhost:5196/students/{id}
