@@ -30,7 +30,7 @@ public class ApplicationDbContext : DbContext
         {
             //We need this for migration
             var connectionString = ConfigurationHelper.GetConfiguration().Get("DefaultConnection", "ConnectionStrings");
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         optionsBuilder.LogTo(message => Debug.WriteLine(message));

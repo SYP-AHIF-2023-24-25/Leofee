@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "Server=localhost;Database=tdot;Uid=root;Pwd=Abcdefg1;";//muss nacher noch geändert werden
+connectionString = "Server=localhost;Database=tdot;Uid=root;Pwd=Abcdefg1;";//muss nacher noch geï¿½ndert werden
 Log.Information($"Api db connectionString: {connectionString}");
 
 builder.Services
