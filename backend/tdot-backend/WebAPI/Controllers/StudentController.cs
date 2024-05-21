@@ -94,5 +94,26 @@ public class StudentController : Controller
         }
         return CreatedAtRoute(new { id = newStudent.StudentId }, newStudent);
     }
-    
+    [HttpPost("/pay")]
+    public async Task<IActionResult> Pay(double amount,string studentId)
+    {        
+        var result = await _uow.StudentRepository.PayAsync(studentId,amount);
+        return Ok(result);      
+        
+    }
+    [HttpGet("student/{id}/usedValue")]
+    public async Task<ActionResult<StudentDto?>> GetUsedValueForStudent(string studentId)
+    {
+        var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
+        if (studentEntity == null)
+        {
+            return NotFound();
+        }
+        var bonsForStudent = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
+        var usedValue = bonsForStudent
+                            .Sum(b => b.UsedValue);
+        return Ok(usedValue);
+    }
+
+
 }

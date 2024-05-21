@@ -82,60 +82,42 @@ public class BonController : Controller
     public class BonUpdateDto : BonCreateDto
     {
         public int Id { get; set; }
-    }   
+    }
 
-    /*
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDto customer)
+    public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bon)
     {
-        Log.Information("UpdateCustomer called with id: {id}, customer: {@customer}", id, customer);
-        // client data consistent?
-        if (id != customer.Id)
+        Log.Information("Update Bon called with id: {id}, Bon: {@bon}", id, bon);
+        
+        if (id != bon.Id)
         {
             return BadRequest($"Invalid Ids in client request");
         }
-
-        // client data valid?
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-
-        // customer exists?
-        var customerEntity = await _uow.CustomerRepository.GetByIdAsync(id);
-        if (customerEntity == null)
+        var bonEntity = await _uow.BonRepository.GetByIdAsync(id);
+        if (bonEntity == null)
         {
-            return NotFound($"There exists no customer with id ${id}!");
+            return NotFound($"There exists no Bon with id ${id}!");
         }
 
-        // update customer
-        customerEntity.FirstName = customer.FirstName;
-        customerEntity.LastName = customer.LastName;
-        customerEntity.Email = customer.Email;
-        customerEntity.Iban = customer.Iban;
+        // update Bon
+        bonEntity.StartDate = bon.From;
+        bonEntity.EndDate = bon.To;
+        bonEntity.StudentId = bon.StudentId;
+        bonEntity.Value = bon.Value;
+
         try
         {
             await _uow.SaveChangesAsync();
         }
         catch (Exception e)
         {
-            Log.Error(e, "Error while updating a customer");
+            Log.Error(e, "Error while updating a bon");
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         return Ok();
     }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCustomer(int id)
-    {
-        var customerEntity = await _uow.CustomerRepository.GetByIdAsync(id);
-        if (customerEntity == null)
-        {
-            return NotFound($"There exists no customer with id ${id}!");
-        }
-        _uow.CustomerRepository.Remove(customerEntity);
-        await _uow.SaveChangesAsync();
-        return NoContent();
-    }
-    */
 }
