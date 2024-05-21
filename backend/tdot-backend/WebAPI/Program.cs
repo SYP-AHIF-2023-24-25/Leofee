@@ -25,12 +25,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "Server=localhost;Database=tdot;Uid=root;Pwd=Abcdefg1;";//muss nacher noch ge�ndert werden
+connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LeofeeDb;Integrated Security=True;";//muss nacher noch ge�ndert werden
 Log.Information($"Api db connectionString: {connectionString}");
 
 builder.Services
     .AddDbContext<ApplicationDbContext>(options =>
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)))
+        options.UseSqlServer(connectionString))
     .AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
