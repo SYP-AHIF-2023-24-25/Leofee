@@ -30,7 +30,7 @@ export class ProfileKeycloakComponent {
   public anotherQrCodeData: string = ""
   public valueTest = "";
   public amountOfMoney = 0;
-
+  public generateQrCodeButton: boolean = false;
   constructor (private client: HttpClient, private router: Router, private studentService: StudentService) {
   }
 
@@ -82,6 +82,15 @@ export class ProfileKeycloakComponent {
 
     this.qrCodeData.set(`${studentId}`);
 
+  }
+
+  public async clickOnQrCodeButton() {
+    if (this.generateQrCodeButton) {
+      this.generateQrCodeButton = false;
+    } else {
+      this.generateQrCodeButton = true;
+    }
+    console.log(this.generateQrCodeButton);
   }
 }
 

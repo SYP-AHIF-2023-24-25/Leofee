@@ -45,16 +45,24 @@
             </table>
         </div>
 
-        <h3 class="mt-4">QR-Code</h3>
+        <h3 class="mt-4 d-flex justify-content-center font-weight-bold">QR-Code</h3>
+        
         <div class="text-center mt-3">
-            <qrcode [qrdata]="generateQRCode()" [width]="350" [errorCorrectionLevel]="'M'" ></qrcode>
-        </div>
-    </div>
+            <button class="btn btn-dark" type="button" (click)="clickOnQrCodeButton()"> Qr-Code</button>
+            <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center">
+                <qrcode [qrdata]="generateQRCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+            </div>
 
+        </div>
+        
     <!-- Logout Button -->
-    <div class="container mt-3">
+    <div class="container mt-3 d-flex justify-content-center">
         <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
     </div>
+
+    </div>
+
+    
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
