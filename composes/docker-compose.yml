@@ -1,0 +1,77 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:444"
+    ports:
+      - "80:80"
+      - "444:444"
+      - "8098:8098" # traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./trafik.yml:/etc/traefik/traefik.yml:ro  # Update the file name here
+      - ./certs:/letsencrypt
+    networks:
+      - leofee-network
+
+  leofee-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: leofee-db-sqlserver
+    restart: always
+    environment:
+      # MSSQL_SA_USERNAME: "sa"
+      MYSQL_DATABASE: 'db'
+      MSSQL_SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - leofee-mssql-data:/var/lib/mssql
+    ports:
+      - 1433:1433
+    networks:
+      - leofee-network
+
+  leofee-adminer:
+    image: adminer
+    container_name: leofee-adminer
+    ports:
+      - 8083:8080
+    depends_on:
+      - leofee-db
+    networks:
+      - leofee-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.samuelatzi.com`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8099"
+
+  leofee-backend:
+    image: samuel010203/leofeebackend
+    container_name: leofee-backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: 'Production'
+    links:
+      - leofee-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leofee-backend.rule=Host(`leofee.samuelatzi.com`) && (PathPrefix(`/WebAPI`))"
+      - "traefik.http.services.leofee-backend.loadbalancer.server.port=8090"
+    networks:
+      - leofee-network
+
+volumes:
+  leofee-mssql-data:
+
+networks:
+  leofee-network:
+    driver: bridge
+    external: false
+    ipam:
+      config:
+        - subnet: 10.4.0.0/16
