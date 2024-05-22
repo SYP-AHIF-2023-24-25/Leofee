@@ -60,8 +60,34 @@ public class StudentController : Controller
         }
         return new StudentDto(studentEntity.StudentId,studentEntity.FirstName,studentEntity.LastName,studentEntity.StudentClass);
     }
+    [HttpDelete("student/{studentId}")]
+    public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
+    {
+        var result = await _uow.StudentRepository.DeleteStudentAsync(studentId);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return Ok(result);        
+    }
+    [HttpGet("student/{id}/balance")]
+    public async Task<double> GetBalanceForStudentById(string studentId)
+    {
+        try
+        {
+            var bons = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
+            var result = bons
+            .Sum(b => b.Value);
+            return result;
+        } catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return -1;
+        }
+        
+    }
 
-    
+
 
     [HttpPost]
     public async Task<IActionResult> CreateStudent([FromBody] StudentDto student)
