@@ -1,0 +1,35 @@
+<p>guthaben-verwaltung works!</p>
+
+<br>
+<br>
+<br>
+
+<div class="container mt-4">
+    <table *ngIf="_students.length > 2" class="table table-bordered mt-3" id="studentTable" >
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>IF Number</th>
+            <th>Class</th>
+            <th>Balance</th>  
+            <th>Bons</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let entry of _studentsWithBalance">
+            <td>{{entry.student.firstName}}</td>
+            <td>{{entry.student.lastName}}</td>
+            <td>{{entry.student.studentId}}</td>
+            <td>{{entry.student.studentClass}}</td>
+            <td>{{entry.balance}}€</td>
+            <td>
+              <button class="btn btn-primary" (click)="ShowDetails(entry.student.studentId)">Show Bons</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+
+

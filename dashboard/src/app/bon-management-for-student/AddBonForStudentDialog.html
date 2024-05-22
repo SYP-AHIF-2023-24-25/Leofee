@@ -1,0 +1,39 @@
+<!-- student-dialog.component.html -->
+<h1 mat-dialog-title>Student Information</h1>
+<div mat-dialog-content>
+  
+  <form [formGroup]="studentForm">
+    <!--
+    <mat-form-field appearance="fill">
+      <mat-label>Student ID</mat-label>
+      <input matInput formControlName="studentId" required>
+      <mat-error *ngIf="studentForm.get('studentId')?.invalid">Student ID is required</mat-error>
+    </mat-form-field>-->
+
+    <mat-form-field appearance="fill">
+      <mat-label>From</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="from" required>
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
+      <mat-error *ngIf="studentForm.get('from')?.invalid">Valid From date is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>To</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="to" required>
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+      <mat-error *ngIf="studentForm.get('to')?.invalid">Valid To date is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Value</mat-label>
+      <input matInput type="number" formControlName="value" required>
+      <mat-error *ngIf="studentForm.get('value')?.invalid">Value is required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button [disabled]="!studentForm.valid" (click)="onSubmit()">Submit</button>
+</div>

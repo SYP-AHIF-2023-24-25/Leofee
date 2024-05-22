@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Input Form</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>IFnummer</mat-label>
+      <input matInput formControlName="IFnummer">
+      <mat-error *ngIf="form.controls['IFnummer'].hasError('required')">
+        IFnummer ist erforderlich.
+      </mat-error>
+      <mat-error *ngIf="form.controls['IFnummer'].hasError('minlength') || form.controls['IFnummer'].hasError('maxlength')">
+        IFnummer muss genau 8 Zeichen lang sein.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Vorname</mat-label>
+      <input matInput formControlName="vorname">
+      <mat-error *ngIf="form.controls['vorname'].hasError('required')">
+        Vorname ist erforderlich.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nachname</mat-label>
+      <input matInput formControlName="nachname">
+      <mat-error *ngIf="form.controls['nachname'].hasError('required')">
+        Nachname ist erforderlich.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Klasse</mat-label>
+      <input matInput formControlName="klasse">
+      <mat-error *ngIf="form.controls['klasse'].hasError('required')">
+        Klasse ist erforderlich.
+      </mat-error>
+      <mat-error *ngIf="form.controls['klasse'].hasError('minlength') || form.controls['klasse'].hasError('maxlength')">
+        Klasse muss genau 4 Zeichen lang sein.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Abbrechen</button>
+  <button mat-button (click)="save()" [disabled]="form.invalid">Speichern</button>
+</div>

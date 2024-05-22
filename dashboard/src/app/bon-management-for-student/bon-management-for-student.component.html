@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <br>
+  <br>
+  <br>
+
+    <h1 class=" mat-display-4 mat-text-center">Bons for the student: {{studentId}} </h1>
+
+
+    <table *ngIf="bonsForStudent.length > 0" class="table table-bordered mt-3" id="studentTable" >
+        <thead>
+          <tr>
+            <!--<th>Student</th>-->
+            <th>Value</th>
+            <th>Used Value</th>
+            <th>Start Date</th>  
+            <th>End Date</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let bon of bonsForStudent">
+            
+            <!--<td>{{ bon.studentId }}</td>-->
+            <td>{{ bon.value }}€</td>
+            <td>{{ bon.usedValue }}€</td>
+            <td>{{ bon.from }}</td>
+            <td>{{ bon.to }}</td>
+            <!--<td>
+              <button class="btn btn-primary" (click)="ShowDetails(student.id)">ShowDetails</button>
+            </td>-->
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-primary" (click)="AddBon()">Add Bon</button>
+
+      
+
+</div>
+
+
+

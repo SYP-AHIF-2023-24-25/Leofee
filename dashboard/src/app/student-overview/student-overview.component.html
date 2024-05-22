@@ -1,7 +1,16 @@
 <div class="container mt-4">
-  <div class="buttons mb-3">
-    <input type="file" class="form-control">
+
+  <br>
+  <br>
+  <br>
+  <!---->
+  
+  <div>
+    <input type="file" (change)="onFileSelected($event)" accept=".csv, .txt" />
+    <button class="btn btn-primary mb-3" (click)="importStudents()">Import Students</button>
   </div>
+
+  <!--<button class="btn btn-primary mb-3" (click)="importStudents()">Import Students</button>-->
   <mat-form-field appearance="fill" class="mb-3">
     <mat-label>Filter</mat-label>
     <mat-select (selectionChange)="onFilterChange($event)">
@@ -10,27 +19,33 @@
       <mat-option value="class">Klasse</mat-option>      
     </mat-select>
   </mat-form-field>
+  
   <button class="btn btn-primary mb-3" (click)="exportToCSV()">Export CSV</button>
-  <button class="btn btn-primary ml-2 mb-3" (click)="exportToPDF()">Export PDF</button>
+  <!--<button class="btn btn-primary ml-2 mb-3" (click)="exportToPDF()">Export PDF</button>-->
     
-  <table class="table table-bordered mt-3" id="studentTable">
+  <table *ngIf="_students.length > 2" class="table table-bordered mt-3" id="studentTable" >
     <thead>
       <tr>
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Class</th>
-        <th></th>   
+        <th>Balance</th>           
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of _students">
-        <td>{{student.firstName}}</td>
-        <td>{{student.lastName}}</td>
-        <td>{{student.className}}</td>
+      <tr  *ngFor="let entry of _studentsWithBalance">
+        <td>{{entry.student.firstName}}</td>
+        <td>{{entry.student.lastName}}</td>
+        <td>{{entry.student.studentClass}}</td>
+        <td>{{entry.balance}}€</td>
         <td>
-          <button class="btn btn-danger" (click)="deleteStudentFromList(student.lastName, student.firstName)">Delete</button>
+          <button class="btn btn-danger" (click)="deleteStudentFromList(entry.student.lastName, entry.student.firstName)">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <button  class="btn btn-primary ml-2 mb-3" (click)="AddStudent()">Add Student</button>   
+  <button  class="btn btn-danger ml-2 mb-3" (click)="deleteAllStudents()">Delete All Students</button> 
+
 </div>
