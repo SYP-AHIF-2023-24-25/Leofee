@@ -1,0 +1,5 @@
+StudentId;Firstname;Lastname;StudentClass
+if200107;Marcus;Rabeder;4AHIF
+if200143;Vincents;Eichinger;4AHIF
+if200145;Michael;Werner;4AHIF
+if200177;Samuel;Atzlesberger;4AHIF
