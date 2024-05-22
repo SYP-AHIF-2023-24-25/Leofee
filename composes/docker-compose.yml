@@ -21,6 +21,20 @@ services:
     networks:
       - leofee-network
 
+  mobileapp:
+    image: samuel010203/mobileapp
+    container_name: mobileapp
+    ports:
+      - "8120:80"  
+    restart: always
+
+  Dashboard:
+    image: samuel010203/dashboard
+    container_name: dashboard
+    ports:
+      - "8121:80"  
+    restart: always
+
   leofee-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: leofee-db-sqlserver
