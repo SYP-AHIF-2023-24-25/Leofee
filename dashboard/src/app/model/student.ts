@@ -1,13 +1,29 @@
-export class Student {
-    firstName: string;
-    lastName: string;
-    className: string;
+/*export class Student {
+    firstname: string;
+    lastname: string;
+    schoolClass: string;
     studentBalance:number;
-    constructor(firstName: string, lastName: string, className: string, balance:number) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.className = className;       
+    id: string;
+    constructor(firstName: string, lastName: string, className: string, balance:number, id: string) {
+        this.firstname = firstName;
+        this.lastname = lastName;
+        this.id = id;
+        this.schoolClass = className;       
         this.studentBalance = balance;
     }
+}*/
+
+
+
+export interface Student{
+    studentId: string;
+    firstName: string;
+    lastName: string;
+    studentClass: string;  
+}
+
+export interface StudentBalance{
+    balance: number;
+    student : Student;
 }
 

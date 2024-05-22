@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj": {}
+    "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Api\\Api.csproj": {}
   },
   "projects": {
-    "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj": {
+    "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\Api.csproj",
-        "packagesPath": "C:\\Users\\Samuel\\.nuget\\packages\\",
-        "outputPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Api\\obj\\",
+        "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Api\\Api.csproj",
+        "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Samuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\micha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
-                "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
+              "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+                "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj"
               }
             }
           }
@@ -42,6 +42,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -72,24 +77,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj": {
+    "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\Samuel\\.nuget\\packages\\",
-        "outputPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\obj\\",
+        "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Samuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\micha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -110,6 +115,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -131,24 +141,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
+    "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
         "projectName": "ImportData",
-        "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
-        "packagesPath": "C:\\Users\\Samuel\\.nuget\\packages\\",
-        "outputPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\ImportData\\obj\\",
+        "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\ImportData.csproj",
+        "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\ImportData\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Samuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\micha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -163,8 +173,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj": {
-                "projectPath": "C:\\Samuel\\4.Klase_htl_leonding\\01_Leofee\\Leofee\\backend\\Core\\Core\\Core.csproj"
+              "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\micha\\OneDrive\\4AHIF\\Leofee_Dashboard\\Leofee\\backend\\Core\\Core\\Core.csproj"
               }
             }
           }
@@ -173,6 +183,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -194,7 +209,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

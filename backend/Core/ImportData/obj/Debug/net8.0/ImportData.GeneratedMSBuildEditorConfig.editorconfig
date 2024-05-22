@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ImportData
-build_property.ProjectDir = C:\Samuel\4.Klase_htl_leonding\01_Leofee\Leofee\backend\Core\ImportData\
+build_property.ProjectDir = C:\Users\micha\OneDrive\4AHIF\Leofee_Dashboard\Leofee\backend\Core\ImportData\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
