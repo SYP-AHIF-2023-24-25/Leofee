@@ -27,7 +27,7 @@ public class BonController : Controller
         return await _uow.BonRepository.GetAllAsync();
     }
 
-    [HttpGet("bon/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<BonDto?>> GetBonById(int id)
     { 
         var bonEntity = await _uow.BonRepository.GetBonWithIdAsync(id);

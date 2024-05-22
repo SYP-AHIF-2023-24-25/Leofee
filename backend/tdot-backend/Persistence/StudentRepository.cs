@@ -39,21 +39,7 @@ public class StudentRepository: GenericRepository<Student>, IStudentRepository
 
         return new StudentDto(student.StudentId, student.FirstName, student.LastName, student.StudentClass);
     }
-    public async Task<bool> CreateStudentAsync(StudentDto studentDto)
-    {
-        var student = new Student
-        {
-            StudentId = studentDto.StudentId,
-            FirstName = studentDto.FirstName,
-            LastName = studentDto.LastName,
-            StudentClass = studentDto.StudentClass
-        };
-
-        _dbContext.Students!.Add(student);
-        var result = await _dbContext.SaveChangesAsync();
-
-        return result > 0;
-    }
+    
     public async Task<bool> StudentExistsAsync(string studentId)
     {
         return await _dbContext.Students!

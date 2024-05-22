@@ -28,7 +28,7 @@ public class StudentController : Controller
     }
     //public record CustomerBookingDto(string? FirstName, string LastName, DateTime From, DateTime? To, string RoomNumber);
 
-    [HttpGet("student/{studentId}/bons")]
+    [HttpGet("{studentId}/bons")]
     public async Task<ActionResult<IList<BonDto>>> GetBonsForStudent(string studentId)
     {        
         var studentExists = await _uow.StudentRepository.StudentExistsAsync(studentId);
@@ -50,7 +50,7 @@ public class StudentController : Controller
         return Ok(bonDtos);
     }
 
-    [HttpGet("student/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<StudentDto?>> GetStudentById(string studentId)
     { 
         var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
@@ -60,7 +60,7 @@ public class StudentController : Controller
         }
         return new StudentDto(studentEntity.StudentId,studentEntity.FirstName,studentEntity.LastName,studentEntity.StudentClass);
     }
-    [HttpDelete("student/{studentId}")]
+    [HttpDelete("{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
     {
         var result = await _uow.StudentRepository.GetDeleteStudentAsync(studentId);
@@ -72,7 +72,7 @@ public class StudentController : Controller
         await _uow.SaveChangesAsync();
         return Ok(result);        
     }
-    [HttpGet("student/{studentId}/balance")]
+    [HttpGet("{studentId}/balance")]
     public async Task<double> GetBalanceForStudentById(string studentId)
     {
         try
@@ -129,7 +129,8 @@ public class StudentController : Controller
         return Ok(result);              
     }
 
-    [HttpGet("student/{id}/usedValue")]
+
+    [HttpGet("{id}/usedValue")]
     public async Task<ActionResult<StudentDto?>> GetUsedValueForStudent(string studentId)
     {
         var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
