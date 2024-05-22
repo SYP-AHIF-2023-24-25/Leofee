@@ -78,6 +78,9 @@ export class ProfileKeycloakComponent {
       /*this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
         this.amountOfMoney = balance;
       });*/
+
+
+    this.userCredit = await this.studentService.getBalanceForStudent(studentId);
     
 
     this.qrCodeData.set(`${studentId}`);
@@ -93,4 +96,3 @@ export class ProfileKeycloakComponent {
     console.log(this.generateQrCodeButton);
   }
 }
-

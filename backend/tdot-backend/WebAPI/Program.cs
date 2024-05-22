@@ -24,8 +24,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //ZUm Testen:
+
+
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LeofeeDb;Integrated Security=True;";//muss nacher noch geï¿½ndert werden
+Log.Information($"Api db connectionString: {connectionString}");
+
+builder.Services
+    .AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString))
+    .AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddCors(options =>
 {
+    /*
     options.AddPolicy("AllowAllOrigins", b => b
         //.WithOrigins("http://localhost:4200")
         //.WithOrigins("http://49.12.203.83:8090")
@@ -33,18 +46,10 @@ builder.Services.AddCors(options =>
         //.WithOrigins("http://leohoot.sophiehaider.com")
         .AllowAnyMethod()
         .AllowAnyHeader()
-        .AllowCredentials());
+        .AllowCredentials());*/
+         options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
-
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LeofeeDb;Integrated Security=True;";//muss nacher noch ge�ndert werden
-Log.Information($"Api db connectionString: {connectionString}");
-
-builder.Services
-    .AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString))
-    .AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 app.UseRouting();
@@ -60,13 +65,13 @@ app.UseSwagger();
 app.UseSwaggerUI();
 //}
 
-app.MapControllers();
+//app.MapControllers();
 
 //app.UseHttpsRedirection();
-
+app.MapControllers();
 app.UseAuthorization();
 
-app.MapControllers();
+
 
 Log.Information("Starting up api service ...");
 

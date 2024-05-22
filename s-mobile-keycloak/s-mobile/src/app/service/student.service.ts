@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class StudentService {
 
   private baseUrl = 'http://localhost:5196'; // Change this according to your backend URL
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, 
+    private restService: RestService
+  ) { }
 
   // Example GET-Request
   getData(): Observable<any> {
@@ -26,7 +29,9 @@ export class StudentService {
   }
 
   // Methode zum Abrufen des Guthabens eines Studenten anhand seiner ID
-  getStudentBalanceById(studentId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/student/${studentId}/balance`);
-  }
+  public async getBalanceForStudent(id: string): Promise<number> {
+    let balance = await this.restService.getStudentBalance(id).toPromise();
+    return balance! /100;
+}
+
 }

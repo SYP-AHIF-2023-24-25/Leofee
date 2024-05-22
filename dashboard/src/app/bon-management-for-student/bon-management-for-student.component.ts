@@ -83,7 +83,7 @@ export class AddBonForStudentDialog {
     if (this.studentForm.valid) {
       console.log(this.studentForm.value);
       //TODO
-      await this.dataService.addBonForStudent(this.data.studentId,this.studentForm.value.from,this.studentForm.value.to, this.studentForm.value.value);
+      await this.dataService.addBonForStudent(this.data.studentId,this.studentForm.value.from,this.studentForm.value.to, this.studentForm.value.value * 100);
       this.dialogRef.close(this.studentForm.value);
       location.reload();
     }
