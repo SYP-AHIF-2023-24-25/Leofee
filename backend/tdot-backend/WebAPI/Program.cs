@@ -33,16 +33,7 @@ builder.Services
         options.UseSqlServer(connectionString))
     .AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-    });
-
 var app = builder.Build();
-
-app.UseRouting();
-app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
 Log.Information("Service configuration complete, preparing request pipeline ...");
