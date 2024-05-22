@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
-import { GiftCardComponent } from './gift-card/gift-card.component';
 import { ProfileKeycloakComponent } from './profile-keycloak/profile-keycloak.component';
 import { AuthGuard } from '../core/util/auth-guard';
 import { LeoUser, Role } from '../core/util/leo-token';
