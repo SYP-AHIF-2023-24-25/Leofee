@@ -28,44 +28,32 @@ export class DataService {
   constructor(
     private sourceLoader: HttpClient,
     private restService: RestService,
-    private bonsService: HttpClient) {
+    ) {
 
   }
 
 
   async loadProducts() {
-    // console.log('loadProducts');
     const products = await this.restService.getProducts().toPromise();
     if (products)
       this.products = products;
-    // console.log(this.products);
+ 
   }
 
-
-  async getStudentById(id: string): Promise<Observable<any>> {
-    return this.bonsService.get<any>(
-      "http://localhost:5196/students/" + id);
+  async getStudentById(id: string): Promise<any> {
+    return await this.restService.getStudentById(id);
   }
 
+  public async getBalanceForStudent(id: string): Promise<number> {
+    let balance = await this.restService.getStudentBalance(id).toPromise();
+    return balance! /100;
+}
 
-
-  async getStudentBalance(id: string ): Promise<Observable<any>> {  
-  
-    return this.bonsService.get<any>(
-      "http://localhost:5196/student/"+ id + '/balance')  ;
-  }
-
-
-  async Pay( id: string, amount: number): Promise<Observable<any>> {
-    console.log(amount);
-    console.log(id);
-    let headers: HttpHeaders = new HttpHeaders();
-    //http://localhost:5196/student/fe4ae22ae3f97a3ba0cc538ceb45f99469cd10d9686ff61296f97c6ca3f63490/pay/6.05`;
-    //'http://localhost:5196/student/fe4ae22ae3f97a3ba0cc538ceb45f99469cd10d9686ff61296f97c6ca3f63490/pay/6.05'
-    const url = `http://localhost:5196/student/${id}/pay/${amount}`;  
-    //console.log(this.bonsService.post<any>(url, {}));
-    console.log(url);
-    return  this.bonsService.post<any>(url, {});
+  async Pay( id: string, amount: number): Promise<any> {
+    console.log(amount * 100);
+    console.log(id);   
+    amount = amount * 100;
+    return await this.restService.Pay(id, amount).toPromise();
   }
 
   async loadBuffetProducts() {

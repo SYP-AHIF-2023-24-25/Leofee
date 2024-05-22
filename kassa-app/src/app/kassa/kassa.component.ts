@@ -84,16 +84,19 @@ export class KassaComponent implements OnInit {
       .reduce((total, current) => total += current);
 
  
-    console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
+    //console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
+    console.log(this.AmountOfBon);
+    var result = ((products / 100.0) - this.AmountOfBon);
      
-    return ((products / 100.0) - this.AmountOfBon);
+    return result;
   }
  
 
   async AmountDeduct(studentID: string) {     
     
     //ID überprüfen
-    (await this.dataService.getStudentById(studentID)).subscribe({
+    /*
+    await this.dataService.getStudentById(studentID).then( data =>{
       next: (data) => {
        //Schüler exesiterit 
         console.log("Student: ", data);
@@ -103,9 +106,11 @@ export class KassaComponent implements OnInit {
         this.openDialogBonRespond("Kein Gültiger QR Code!");
         return;
       }
-    });
+    });*/
 
-    (await this.dataService.getStudentBalance(studentID)).subscribe(data => {
+    
+
+    await this.dataService.getBalanceForStudent(studentID).then(async data => {
 
       let bonAmount = 0;
         
@@ -119,7 +124,7 @@ export class KassaComponent implements OnInit {
         let result = this.getTotals() - data;
 
 
-        console.log("Result: ",result);
+        //console.log("Result: ",result);
   
         if(result > 0){        
           bonAmount  = data;                
@@ -129,9 +134,9 @@ export class KassaComponent implements OnInit {
         }       
         this.AmountOfBon = bonAmount;
 
-        this.dataService.Pay( studentID,  bonAmount).then(observable => {
-          
-        });     
+        console.log(bonAmount);
+
+        await this.dataService.Pay( studentID,  bonAmount);
         this.openDialogBonRespond("Gutschein wurde erfoglreich eingelöst! Wert: " + bonAmount + "€");  
         
       }       
@@ -149,7 +154,7 @@ export class KassaComponent implements OnInit {
     const dialogRef =  this.dialog.open(QRScannerDialogComponent);
     dialogRef.afterClosed().subscribe(scannedValue => {
       if (scannedValue) {
-        console.log('Scanned Value in KassaComponent:', scannedValue);        
+        //console.log('Scanned Value in KassaComponent:', scannedValue);        
         this.bonUsed = true; 
         this.studentID = scannedValue; 
         this.AmountDeduct(scannedValue);
