@@ -1,0 +1,43 @@
+services:
+  leofee-test-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: leofee-test-db
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'password'
+      ACCEPT_EULA: "Y"
+    volumes:
+      - leofee-test-mssql-data:/var/opt/mysql
+    ports:
+      - 3309:3309
+
+  leofee-test-adminer:
+    image: adminer
+    container_name: leofee-test-adminer
+    ports:
+      - 8083:8080
+    networks:
+      - leofee-test-network
+    depends_on:
+      - leofee-test-db
+
+  leofee-test-web:
+    image: nginx
+    container_name: leofee-test-web-nginx
+    ports:
+      - 8087:80
+    networks:
+      - leofee-test-network
+
+volumes:
+  leofee-test-mssql-data:
+    
+
+networks:
+  leofee-test-network:
+    name: leofee-test-network
+    driver: bridge
+    external: false
+    ipam:
+      config:
+        - subnet: 10.7.0.0/16

@@ -23,6 +23,19 @@ Log.Information("Configure Services for DI ...");
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//ZUm Testen:
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", b => b
+        //.WithOrigins("http://localhost:4200")
+        //.WithOrigins("http://49.12.203.83:8090")
+        //.WithOrigins("http://leofee.samuelatzi.com")
+        //.WithOrigins("http://leohoot.sophiehaider.com")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+});
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LeofeeDb;Integrated Security=True;";//muss nacher noch ge�ndert werden
@@ -34,6 +47,8 @@ builder.Services
     .AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
+app.UseRouting();
+app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
 Log.Information("Service configuration complete, preparing request pipeline ...");
