@@ -70,7 +70,7 @@ public class StudentController : Controller
         }
         return Ok(result);        
     }
-    [HttpGet("student/{id}/balance")]
+    [HttpGet("student/{studentId}/balance")]
     public async Task<double> GetBalanceForStudentById(string studentId)
     {
         try
