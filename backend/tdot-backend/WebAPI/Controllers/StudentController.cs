@@ -63,11 +63,13 @@ public class StudentController : Controller
     [HttpDelete("student/{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
     {
-        var result = await _uow.StudentRepository.DeleteStudentAsync(studentId);
-        if (!result)
+        var result = await _uow.StudentRepository.GetDeleteStudentAsync(studentId);
+        if (result == null)
         {
             return NotFound();
         }
+        _uow.StudentRepository.Remove(result);
+        await _uow.SaveChangesAsync();
         return Ok(result);        
     }
     [HttpGet("student/{studentId}/balance")]
@@ -124,9 +126,9 @@ public class StudentController : Controller
     public async Task<IActionResult> Pay(double amount,string studentId)
     {        
         var result = await _uow.StudentRepository.PayAsync(studentId,amount);
-        return Ok(result);      
-        
+        return Ok(result);              
     }
+
     [HttpGet("student/{id}/usedValue")]
     public async Task<ActionResult<StudentDto?>> GetUsedValueForStudent(string studentId)
     {

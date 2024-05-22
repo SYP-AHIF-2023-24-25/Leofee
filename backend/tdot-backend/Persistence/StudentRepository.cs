@@ -105,16 +105,14 @@ public class StudentRepository: GenericRepository<Student>, IStudentRepository
         }
 
     }
-    public async Task<bool> DeleteStudentAsync(string studentId)
+    public async Task<Student?> GetDeleteStudentAsync(string studentId)
     {        
         var student = await _dbContext.Students!.FindAsync(studentId);
         if (student == null)
         {
-            return false;
+            return null;
         }
-        var result = _dbContext.Students.Remove(student!);       
-        await _dbContext.SaveChangesAsync();
-        return true;
+        return student;
     }
 }
 
