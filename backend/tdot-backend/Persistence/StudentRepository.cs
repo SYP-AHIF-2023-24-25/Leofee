@@ -17,43 +17,27 @@ public class StudentRepository: GenericRepository<Student>, IStudentRepository
         _dbContext = dbContext;
     }    
     public async Task<IList<StudentDto>> GetAllAsync()
-    {
-        IQueryable<Student> studentQuery = _dbContext.Students!;      
+    {           
 
-        return await studentQuery
+        return await _dbContext.Students!
             .Select(c => new StudentDto(c.StudentId, c.FirstName, c.LastName, c.StudentClass))
             .ToListAsync();
     }
 
-    public async Task<StudentDto?> GetStudentWithIdAsync(string studentId)
+    public async Task<Student?> GetStudentWithIdAsync(string studentId)
     {
-        IQueryable<Student> studentQuery = _dbContext.Students!;
-        var student = await studentQuery
+        var student = await _dbContext.Students!
             .Where(c => c.StudentId == studentId)
             .SingleOrDefaultAsync();
+        
 
         if (student == null)
         {
             return null;
         }
 
-        return new StudentDto(student.StudentId, student.FirstName, student.LastName, student.StudentClass);
-    }
-    public async Task<bool> CreateStudentAsync(StudentDto studentDto)
-    {
-        var student = new Student
-        {
-            StudentId = studentDto.StudentId,
-            FirstName = studentDto.FirstName,
-            LastName = studentDto.LastName,
-            StudentClass = studentDto.StudentClass
-        };
-
-        _dbContext.Students!.Add(student);
-        var result = await _dbContext.SaveChangesAsync();
-
-        return result > 0;
-    }
+        return student;
+    }    
     public async Task<bool> StudentExistsAsync(string studentId)
     {
         return await _dbContext.Students!
@@ -92,8 +76,7 @@ public class StudentRepository: GenericRepository<Student>, IStudentRepository
                 // Bon aktualisieren
                 _dbContext.Bons!.Update(bon);
             }
-
-            await _dbContext.SaveChangesAsync();
+            
             await transaction.CommitAsync();
 
             return true;
@@ -105,17 +88,7 @@ public class StudentRepository: GenericRepository<Student>, IStudentRepository
         }
 
     }
-    public async Task<bool> DeleteStudentAsync(string studentId)
-    {        
-        var student = await _dbContext.Students!.FindAsync(studentId);
-        if (student == null)
-        {
-            return false;
-        }
-        var result = _dbContext.Students.Remove(student!);       
-        await _dbContext.SaveChangesAsync();
-        return true;
-    }
+    
 }
 
 
