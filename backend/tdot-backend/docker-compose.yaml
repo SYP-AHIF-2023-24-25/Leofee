@@ -1,13 +1,13 @@
 services:
   leofee-test-db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mysql
     container_name: leofee-test-db
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'password'
-      ACCEPT_EULA: "Y"
     volumes:
       - leofee-test-mssql-data:/var/opt/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     ports:
       - 3309:3309
 

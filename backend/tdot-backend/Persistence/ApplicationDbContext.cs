@@ -28,9 +28,8 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            //We need this for migration
-            var connectionString = ConfigurationHelper.GetConfiguration().Get("DefaultConnection", "ConnectionStrings");
-            optionsBuilder.UseSqlServer(connectionString);
+            string connectionString = "server=172.27.0.2;Port=3309;Database=db;user=root;password=password;";            
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
         optionsBuilder.LogTo(message => Debug.WriteLine(message));
