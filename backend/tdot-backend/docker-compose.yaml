@@ -9,7 +9,7 @@ services:
       - leofee-test-mssql-data:/var/opt/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
     ports:
-      - 3309:3309
+      - 3306:3306
 
   leofee-test-adminer:
     image: adminer

@@ -28,7 +28,7 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string connectionString = "server=172.27.0.2;Port=3309;Database=db;user=root;password=password;";            
+            string connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";            
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
