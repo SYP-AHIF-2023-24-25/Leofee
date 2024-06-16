@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +24,7 @@ import { GuthabenVerwaltungComponent } from './guthaben-verwaltung/guthaben-verw
 import { AddStudentDialog } from './student-overview/student-overview.component';
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component'; // EditBalanceDialog hinzugefügt
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
+import { ImportDialog } from './student-overview/student-overview.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import {AddBonForStudentDialog} from './bon-management-for-student/bon-managemen
     GuthabenVerwaltungComponent,
     AddStudentDialog,
     BonManagementForStudentComponent,
-    AddBonForStudentDialog
+    AddBonForStudentDialog,
+    ImportDialog
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
@@ -55,6 +58,7 @@ import {AddBonForStudentDialog} from './bon-management-for-student/bon-managemen
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

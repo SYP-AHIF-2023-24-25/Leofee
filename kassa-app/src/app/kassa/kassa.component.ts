@@ -3,11 +3,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { IBuffet } from 'src/model/buffet/buffet';
 import { Product } from 'src/model/buffet/product';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataService } from 'src/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription, tap } from 'rxjs';
 import { QRScannerDialogComponent } from '../qrscanner-dialog-component/qrscanner-dialog-component.component';
 import { BonBooking } from 'src/model/buffet/bonBooking';
+import { RestService } from 'src/services/rest.service';
+import { lastValueFrom } from 'rxjs';
+import { Student } from 'src/model/Student';
 
 
 
@@ -29,11 +31,11 @@ export class KassaComponent implements OnInit {
 
 
   constructor(
-    public dialog: MatDialog,
-    public dataService: DataService,
+    public dialog: MatDialog,   
     private router: Router,
     private _snackBar: MatSnackBar,
-    public dialog2: MatDialog
+    public dialog2: MatDialog,
+    private restService: RestService
   ) {
 
 
@@ -45,9 +47,10 @@ export class KassaComponent implements OnInit {
   resizeSubscription$!: Subscription
 
   async ngOnInit() {
-    await this.dataService.loadBuffetProducts();
+
+    await lastValueFrom(this.restService.getProducts());
     //console.log(this.dataService.buffets);
-    this.buffets = this.dataService.buffets;
+    this.buffets = await lastValueFrom(this.restService.getBuffets());
     this.selectedBuffet = this.buffets[0];
     this.numberColumns = window.innerWidth / 250;
     this.resizeObservable$ = fromEvent(window, 'resize')
@@ -94,54 +97,46 @@ export class KassaComponent implements OnInit {
 
   async AmountDeduct(studentID: string) {     
     
-    //ID überprüfen
-    /*
-    await this.dataService.getStudentById(studentID).then( data =>{
-      next: (data) => {
-       //Schüler exesiterit 
-        console.log("Student: ", data);
-      },
-      error: (err) => {
-        //Schüer existiert nicht
-        this.openDialogBonRespond("Kein Gültiger QR Code!");
+
+    let student: Student;
+    try {
+      student = await lastValueFrom(this.restService.getStudentById(studentID));
+    } catch (error) {
+      
+        this.openDialogBonRespond("Kein gültiger QR Code!");
         return;
-      }
-    });*/
+    } 
 
+    let balance = await lastValueFrom(this.restService.getStudentBalance(studentID));
     
-
-    await this.dataService.getBalanceForStudent(studentID).then(async data => {
-
-      let bonAmount = 0;
-        
-      if (data !== null  ){ 
-        
-        if(data === 0){
-          this.openDialogBonRespond("Kein Guthaben vorhanden");
-          return;
-        }
-
-        let result = this.getTotals() - data;
+    if (balance === 0) {
+      this.openDialogBonRespond("Kein Guthaben vorhanden");
+      return;
+    }
 
 
-        //console.log("Result: ",result);
-  
-        if(result > 0){        
-          bonAmount  = data;                
-        }
-        else{
-          bonAmount =result * -1 ;          
-        }       
-        this.AmountOfBon = bonAmount;
+    console.log("Aktuelles Guthaben: ", balance);
 
-        console.log(bonAmount);
+    // Gesamtkosten der Bestellung
+    const totalCost = this.getTotals();
 
-        await this.dataService.Pay( studentID,  bonAmount);
-        this.openDialogBonRespond("Gutschein wurde erfoglreich eingelöst! Wert: " + bonAmount + "€");  
-        
-      }       
-    });   
-    
+    // Berechnung des verwendeten Gutscheinbetrags
+    let usedBonAmount = 0;
+    if (balance >= totalCost) {
+      usedBonAmount = totalCost;
+      balance -= totalCost;
+    } else {
+      usedBonAmount = balance;
+      balance = 0;
+    }
+
+    this.AmountOfBon = usedBonAmount;
+
+    console.log("Verwendeter Gutscheinbetrag: ", this.AmountOfBon);
+    console.log("Verbleibendes Guthaben nach Zahlung: ", balance);
+
+    await this.restService.Pay(studentID, this.AmountOfBon).subscribe();
+    this.openDialogBonRespond(`Gutschein wurde erfolgreich eingelöst! Wert: ${this.AmountOfBon}€`);
    
   }
 
@@ -216,10 +211,10 @@ export class KassaComponent implements OnInit {
       if(this.bonUsed){
         let bon: BonBooking = new BonBooking(this.studentID, this.AmountOfBon )
       
-        this.dataService.saveBookings(this.selectedBuffet, bon );
+        this.restService.saveBookings(this.selectedBuffet, bon );
       }
       else{
-        this.dataService.saveBookings(this.selectedBuffet, new BonBooking('', 0.0));
+        this.restService.saveBookings(this.selectedBuffet, new BonBooking('', 0.0));
       }
 
       this.AmountOfBon = 0.0;

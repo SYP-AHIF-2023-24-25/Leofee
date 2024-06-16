@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Student, StudentBalance } from '../model/student';
-import { DataService } from 'src/services/data.service';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RestService } from 'src/services/rest.service';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -18,14 +20,17 @@ export class StudentOverviewComponent {
   
 
 
-  constructor(public dataService: DataService,
+  constructor(public restService: RestService,
     public dialog: MatDialog
   ) {
   }
 
  async ngOnInit() {
+ 
+    this._students = await lastValueFrom(this.restService.getStudents());
+
   
-    this._students = await this.dataService.getAllStudents();
+   
 
     this._students.forEach(async student => {
       let studentBalance = await this.getBalanceForStudent(student.studentId);
@@ -40,99 +45,65 @@ export class StudentOverviewComponent {
   AddStudent(){
     this.dialog.open(AddStudentDialog, {
       width: '400px',
-      height: '400px'      
+      height: '450px'      
     });
     
   }
 
   async getBalanceForStudent(id: string): Promise<number>{
-    let balance = await this.dataService.getBalanceForStudent(id);
-    console.log(balance);
+
+   let balance = await lastValueFrom(this.restService.getStudentBalance(id));
+    
     return balance;
+    
    
   }
   
 
 
-  onFileSelected(event: any) {
-    this._selectedFile = event.target.files[0];
-  }
+ 
+  importStudents(): void {
 
-  async importStudents() {
-    if (this._selectedFile) {
-      const reader = new FileReader();
 
-      reader.onload = async (e: ProgressEvent<FileReader>) => {
-        const fileContent = reader.result as string;
-        let lines = fileContent.split('\n');
-        console.log(lines);
-        for (let i = 1; i < lines.length; i++) {
-          let parts: string[] = lines[i].split(';');
-          if (parts.length === 4) {
-            let student: Student = {
-              studentId: parts[0],
-              firstName: parts[1],
-              lastName: parts[2],
-              studentClass: parts[3],
-            };
+ 
+    this.dialog.open(ImportDialog, {
+      width: '450px',
+      height: '240px'
+    });
 
-            if (this._students.find(s => s.studentId === student.studentId)) {
-              console.log('Student bereits vorhanden');
-            } else {
-              await this.dataService.addStudent(student);
-            }
-          } else {
-            console.warn(`Invalid line format: ${lines[i]}`);
-          }
-        }
-
-        location.reload();
-      };
-
-      reader.readAsText(this._selectedFile);
-    }
+    
   }
 
 
-  test(){
-    console.log('test');
-  }
   async deleteStudentFromList(lastName:string, firstName:string){
     
     const index = this._students.findIndex(
       student => student.firstName === firstName && student.lastName === lastName
     );
     if (index !== -1) {
-      // Wenn der Student gefunden wurde, entferne ihn aus dem Array
-      //this._students.splice(index, 1);
-      await this.dataService.deleteStudent(this._students[index].studentId);
+      
+      await lastValueFrom(this.restService.deleteStudent(this._students[index].studentId));
       location.reload();
     }
   
 
   }
-  onFilterChange(event: any) {
-    
-    // Diese Methode wird aufgerufen, wenn sich die Auswahl im Dropdown ändert
+  onFilterChange(event: any) {   
     console.log('Auswahl geändert:', event.value);
-    if(event.value === 'lastname'){
-      this._students.sort((a, b) => a.firstName.localeCompare(b.lastName));
+    if (event.value === 'lastname') {
+      this._studentsWithBalance.sort((a, b) => a.student.lastName.localeCompare(b.student.lastName));
+    } else if (event.value === 'class') {
+      this._studentsWithBalance.sort((a, b) => a.student.studentClass.localeCompare(b.student.studentClass));
     }
-    else if(event.value === 'class'){
-      this._students.sort((a, b) => a.studentClass.localeCompare(b.studentClass));
-    }   
+    
   }
 
   deleteAllStudents(){
     this._students.forEach(async student => {
-      await this.dataService.deleteStudent(student.studentId);
+      await lastValueFrom(this.restService.deleteStudent(student.studentId));
     });
     location.reload();
   }
-
-
-
-
 
   exportToCSV(): void {
     
@@ -199,51 +170,6 @@ export class StudentOverviewComponent {
     URL.revokeObjectURL(link.href);
     console.log('Daten wurden erfolgreich als PDF exportiert.');
   }
-  /*
-  fetchStudentBalance(studentFirstname:string,studentLastname:string,studentPassword:string): number {
-    ///====================
-    let studentString:string = studentFirstname + studentLastname + studentPassword;
-    let studentIdString:string = "";
-    fetch(`http://localhost:5196/student/${studentString}/getId`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Fehler beim Laden des Kontostands: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(studentId => {
-        // Hier kannst du mit dem erhaltenen Kontostand arbeiten
-        
-        studentIdString = studentId;
-      })
-      .catch(error => {
-        console.error("Fehler beim Abrufen des Kontostands:", error);
-        
-      });
-      // ====================
-      if(studentIdString === ""){
-        return 0;
-      }
-      fetch(`http://localhost:5196/student/${studentIdString}/balance`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Fehler beim Laden des Kontostands: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(balance => {
-        // Hier kannst du mit dem erhaltenen Kontostand arbeiten
-        return balance;
-      })
-      .catch(error => {
-        console.error("Fehler beim Abrufen des Kontostands:", error);
-      });
-      return 0;
-
-      
-
-  }*/
-  
 }
 
 
@@ -251,15 +177,13 @@ export class StudentOverviewComponent {
   selector: 'AddStudentDialog',
   templateUrl: './AddStudentDialog.html',
 })
-export class AddStudentDialog{  
-  
-  
+export class AddStudentDialog{    
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddStudentDialog>,
-    private dataService: DataService
+    private restService: RestService
   ) {
     this.form = this.fb.group({
       IFnummer: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
@@ -278,7 +202,8 @@ export class AddStudentDialog{
         lastName: this.form.value.nachname,
         studentClass: this.form.value.klasse
       };
-      await this.dataService.addStudent(student)
+
+      await lastValueFrom(this.restService.addStudent(student));
       this.dialogRef.close(this.form.value);
       location.reload();
     }
@@ -289,5 +214,93 @@ export class AddStudentDialog{
   clicked(){
     this.dialogRef.close();
   }  
+}
+
+
+@Component({
+  selector: 'ImportDialog',
+  templateUrl: './ImportDialog.html',
+})
+export class ImportDialog{
+  
+  _selectedFile: File | null = null;
+  _students: Student[] = [];
+  amount: number=0;
+
+
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<AddStudentDialog>,
+    private restService: RestService,
+    
+  ) {
+    
+    
+  }
+
+  onFileSelected(event: any) {
+    this._selectedFile = event.target.files[0];
+  } 
+
+
+  async importStudent(){
+
+    //students von der Datenbank holen
+    this._students = await lastValueFrom(this.restService.getStudents());
+
+    //File auslesen und Students machen
+    if (this._selectedFile) {
+      const reader = new FileReader();
+
+      reader.onload = async (e: ProgressEvent<FileReader>) => {
+        const fileContent = reader.result as string;
+        let lines = fileContent.split('\n');
+        console.log(lines);
+        for (let i = 0; i < lines.length; i++) {
+          let parts: string[] = lines[i].split(';');
+          if (parts.length === 4) {
+            let student: Student = {
+              studentId: parts[0],
+              firstName: parts[1],
+              lastName: parts[2],
+              studentClass: parts[3],
+            };
+            
+            //Ist der Schüler schon vorhanden?
+            if (this._students.find(s => s.studentId === student.studentId)) {
+              console.log('Student bereits vorhanden');
+              
+            } else {
+              //Nein => ab in die Datenbank
+              console.log(student.firstName);
+              await lastValueFrom(this.restService.addStudent(student));
+
+              //Betrag zu den Schülern hinzufügen
+              const from = new Date();
+              const to = new Date();
+              to.setDate(from.getDate() + 14);
+
+              console.log(this.amount);              
+              await lastValueFrom(this.restService.addBonForStudent(student.studentId, from, to, this.amount));
+             
+            }
+          } else {
+            console.warn(`Invalid line format: ${lines[i]}`);
+          }
+        }
+      };
+      reader.readAsText(this._selectedFile);    
+    }
+  }
+  validateAmount() {
+    if (this.amount < 0) {
+        this.amount = 0;
+    }
+  }
+
+  close(): void {
+    location.reload();
+    this.dialogRef.close();      
+  }
 }
 

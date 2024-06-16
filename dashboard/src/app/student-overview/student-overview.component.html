@@ -3,16 +3,27 @@
   <br>
   <br>
   <br>
-  <!---->
-  
-  <div>
-    <input type="file" (change)="onFileSelected($event)" accept=".csv, .txt" />
-    <button class="btn btn-primary mb-3" (click)="importStudents()">Import Students</button>
+
+  <h1 class="d-flex ">Import/Export Students</h1>
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-primary" (click)="importStudents()">Import Students</button>
+    <button class="btn btn-primary" (click)="exportToCSV()">Export CSV</button>
   </div>
 
-  <!--<button class="btn btn-primary mb-3" (click)="importStudents()">Import Students</button>-->
+  <br>
+  <br>
+
+  <h1 class="d-flex ">Manage Students</h1>
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary" (click)="AddStudent()">Add Student</button>   
+    <button class="btn btn-danger" (click)="deleteAllStudents()">Delete All Students</button> 
+  </div>
+
+  <br>
+  <br>
+
   <mat-form-field appearance="fill" class="mb-3">
-    <mat-label>Filter</mat-label>
+    <mat-label>Sortieren</mat-label>
     <mat-select (selectionChange)="onFilterChange($event)">
       <!-- Add your filter options here -->
       <mat-option value="lastname">Nachname</mat-option>
@@ -20,10 +31,7 @@
     </mat-select>
   </mat-form-field>
   
-  <button class="btn btn-primary mb-3" (click)="exportToCSV()">Export CSV</button>
-  <!--<button class="btn btn-primary ml-2 mb-3" (click)="exportToPDF()">Export PDF</button>-->
-    
-  <table *ngIf="_students.length > 2" class="table table-bordered mt-3" id="studentTable" >
+  <table *ngIf="_students.length > 0" class="table table-bordered mt-3" id="studentTable">
     <thead>
       <tr>
         <th>Firstname</th>
@@ -33,7 +41,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr  *ngFor="let entry of _studentsWithBalance">
+      <tr *ngFor="let entry of _studentsWithBalance">
         <td>{{entry.student.firstName}}</td>
         <td>{{entry.student.lastName}}</td>
         <td>{{entry.student.studentClass}}</td>
@@ -45,7 +53,7 @@
     </tbody>
   </table>
 
-  <button  class="btn btn-primary ml-2 mb-3" (click)="AddStudent()">Add Student</button>   
-  <button  class="btn btn-danger ml-2 mb-3" (click)="deleteAllStudents()">Delete All Students</button> 
+ 
 
 </div>
+
