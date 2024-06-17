@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Student } from '../app/model/student';
 import { Bons } from 'src/app/model/Bons';
-
+import { environment } from 'src/environments/environment.prod';
 
 
 @Injectable({
@@ -11,53 +11,54 @@ import { Bons } from 'src/app/model/Bons';
 })
 export class RestService {
 
+    baseURL = '';
     constructor(
         private http: HttpClient) {
+
+          this.baseURL =  environment.httpUrlLeofeeBackend;
     }
 
     getStudents(): Observable<Student[]> {
         let headers: HttpHeaders = new HttpHeaders();
         return this.http.get<Student[]>(
-          "http://localhost:5015/api/Student",
+          this.baseURL + "api/Student",
             {headers});
     }
 
-    deleteStudent(id: String): Observable<any> {
+    
+    deleteStudent(id: String): Observable<void> {
         let headers: HttpHeaders = new HttpHeaders();
         return this.http.delete<any>(
-          "http://localhost:5015/api/Student/student/" + id,
+          this.baseURL +"api/Student/" + id,
             {headers});
     }
 
     getStudentBalance(id: String): Observable<number> {
-        let headers: HttpHeaders = new HttpHeaders();
-       // console.log("http://localhost:5196/student/"+ id + '/balance');
+        let headers: HttpHeaders = new HttpHeaders();       
         return this.http.get<any>(
-          "http://localhost:5015/api/Student/student/"+ id+"/balance",
+          this.baseURL+ "api/Student/"+ id+"/balance",
             {headers});
     }
 
 
     getBonsForStudent(id: String): Observable<Bons[]>  {
       let headers: HttpHeaders = new HttpHeaders();
-      console.log("http://localhost:5015/api/Student/student/"+ id + "/bons" );
+    
       return this.http.get<Bons[]>(
-        "http://localhost:5015/api/Student/student/"+ id + "/bons" ,
+        this.baseURL+ "api/Student/"+ id + "/bons" ,
           {headers});
 
     }
 
     addStudent(student: Student): Observable<any> {
-      const url = `http://localhost:5015/api/Student`;
+      const url =  this.baseURL + `api/Student`;
       const headers: HttpHeaders = new HttpHeaders();
       return this.http.post<any>(url, student, { headers });
     }
 
     addBonForStudent(id: String,from: Date, to:Date,  amount: number): Observable<any> {
 
-      console.log(id, amount);
-
-      const url = `http://localhost:5015/api/Bon`;
+      const url =  this.baseURL+ `/api/Bon`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
         studentId: id,
@@ -66,8 +67,7 @@ export class RestService {
         value: amount
       };
 
-      console.log(url);
-
+      console.log(payload)
       return this.http.post<any>(url, payload, { headers });
 
     }

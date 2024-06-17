@@ -1,12 +1,14 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from 'src/services/data.service';
+
 import { Bons } from '../model/Bons';
 import { Student } from '../model/student';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RestService } from 'src/services/rest.service';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -22,7 +24,7 @@ export class BonManagementForStudentComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute,
-    public dataService: DataService,
+    public restService: RestService,
     public dialog: MatDialog
   ) {}
 
@@ -33,9 +35,8 @@ export class BonManagementForStudentComponent implements OnInit {
     });
     console.log(this.studentId);
     
-    await this.dataService.getBonsForStudent(this.studentId).then(bons => {
-      this.bonsForStudent = bons;
-    }); 
+    this.bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(this.studentId));
+   
 
 
   }
@@ -64,7 +65,7 @@ export class AddBonForStudentDialog {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddBonForStudentDialog>,
-    private dataService: DataService,
+    private restService: RestService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.studentForm = this.fb.group({
@@ -83,7 +84,7 @@ export class AddBonForStudentDialog {
     if (this.studentForm.valid) {
       console.log(this.studentForm.value);
       //TODO
-      await this.dataService.addBonForStudent(this.data.studentId,this.studentForm.value.from,this.studentForm.value.to, this.studentForm.value.value * 100);
+      await lastValueFrom(this.restService.addBonForStudent(this.data.studentId,this.studentForm.value.from,this.studentForm.value.to, this.studentForm.value.value ));
       this.dialogRef.close(this.studentForm.value);
       location.reload();
     }

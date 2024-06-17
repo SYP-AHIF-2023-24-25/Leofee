@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  httpUrl: "https://vm64.htl-leonding.ac.at/tadeot-backend/api/",
+  httpUrlTadeotBackend: "https://vm64.htl-leonding.ac.at/tadeot-backend/api/",
+  httpUrlLeofeeBackend: "http://localhost:5015/",
+
 };
