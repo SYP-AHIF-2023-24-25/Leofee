@@ -28,9 +28,8 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            //We need this for migration
-            var connectionString = ConfigurationHelper.GetConfiguration().Get("DefaultConnection", "ConnectionStrings");
-            optionsBuilder.UseSqlServer(connectionString);
+            string connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";            
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
         optionsBuilder.LogTo(message => Debug.WriteLine(message));
@@ -38,6 +37,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       
+        modelBuilder.Entity<Bon>()
+           .HasOne<Student>()
+           .WithMany()
+           .HasForeignKey(b => b.StudentId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }
