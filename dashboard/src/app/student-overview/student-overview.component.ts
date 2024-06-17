@@ -66,10 +66,16 @@ export class StudentOverviewComponent {
 
 
  
-    this.dialog.open(ImportDialog, {
+    const dialogRef = this.dialog.open(ImportDialog, {
       width: '450px',
       height: '240px'
+    });  
+
+    dialogRef.afterClosed().subscribe(result => {     
+       location.reload();
     });
+
+     
 
     
   }
@@ -289,8 +295,13 @@ export class ImportDialog{
           }
         }
       };
-      reader.readAsText(this._selectedFile);    
+      reader.readAsText(this._selectedFile);  
+      
+     
     }
+
+
+    //this.dialogRef.close(); 
   }
   validateAmount() {
     if (this.amount < 0) {
@@ -299,8 +310,9 @@ export class ImportDialog{
   }
 
   close(): void {
-    location.reload();
-    this.dialogRef.close();      
+    
+    this.dialogRef.close(); 
+      
   }
 }
 

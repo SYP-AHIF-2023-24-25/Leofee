@@ -58,7 +58,7 @@ export class RestService {
 
     addBonForStudent(id: String,from: Date, to:Date,  amount: number): Observable<any> {
 
-      const url =  this.baseURL+ `/api/Bon`;
+      const url =  this.baseURL+ `api/Bon`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
         studentId: id,
