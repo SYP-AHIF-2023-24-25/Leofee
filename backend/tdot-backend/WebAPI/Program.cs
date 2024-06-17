@@ -28,12 +28,12 @@ builder.Services.AddSwaggerGen();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LeofeeDb;Integrated Security=True;";//muss nacher noch geï¿½ndert werden
+connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";//muss nacher noch geï¿½ndert werden
 Log.Information($"Api db connectionString: {connectionString}");
 
 builder.Services
     .AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString))
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)))
     .AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddCors(options =>

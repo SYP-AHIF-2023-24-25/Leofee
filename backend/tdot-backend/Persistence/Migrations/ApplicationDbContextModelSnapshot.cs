@@ -38,7 +38,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("StudentId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<double>("UsedValue")
                         .HasColumnType("double");
@@ -47,6 +47,8 @@ namespace Persistence.Migrations
                         .HasColumnType("double");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Bons");
                 });
@@ -71,6 +73,15 @@ namespace Persistence.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Core.Entities.Bon", b =>
+                {
+                    b.HasOne("Core.Entities.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

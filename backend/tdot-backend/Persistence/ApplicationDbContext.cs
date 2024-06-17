@@ -37,6 +37,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Bon>()
+           .HasOne<Student>()
+           .WithMany()
+           .HasForeignKey(b => b.StudentId)
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }
