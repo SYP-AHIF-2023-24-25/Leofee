@@ -8,7 +8,7 @@ import { RestService } from './rest.service';
 })
 export class StudentService {
 
-  private baseUrl = 'http://localhost:5196'; // Change this according to your backend URL
+  private baseUrl = 'http://localhost:5015'; // Change this according to your backend URL
 
   constructor(private http: HttpClient, 
     private restService: RestService
