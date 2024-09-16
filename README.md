@@ -18,6 +18,10 @@
 - Als Administrator möchte ich Statistiken für das Buffet erstellen können, einschließlich Summen und Graphen, um einen 
   Überblick über die Aktivitäten zu erhalten.
 
+- Als Administrator möchte ich, dass das gesamte Projekt auf einer VM läuft, damit ich jederzeit darauf zugreifen und
+  die Webanwendung flexibel und sicher verwalten kann.
+
+
 
 
 ## Anwendung
