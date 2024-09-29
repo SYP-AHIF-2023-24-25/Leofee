@@ -5,7 +5,7 @@ import { ProfileKeycloakComponent } from './profile-keycloak/profile-keycloak.co
 import { AuthGuard } from '../core/util/auth-guard';
 import { LeoUser, Role } from '../core/util/leo-token';
 
-export const routes: Routes = [
+/* export const routes: Routes = [
     {path: '', 
         component: LoginComponent,
         canActivate: [AuthGuard],
@@ -28,7 +28,18 @@ export const routes: Routes = [
          roles: [Role.Student]
      }
     }
+]; */
+
+export const routes: Routes = [
+    {path:'', redirectTo:'/profile-keycloak', pathMatch:'full'},
+    {path:'login', component: LoginComponent},
+    {
+        path: 'profile-keycloak',
+        component: ProfileKeycloakComponent,
+        canActivate: [AuthGuard]
+    }
 ];
+
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]

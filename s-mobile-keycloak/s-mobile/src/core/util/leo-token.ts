@@ -15,6 +15,13 @@ export class LeoUser {
     return `${this.firstName} ${this.lastName}`;
   }
 
+  public get roleAsString(): string | null {
+    if (this.role === null){
+      return null;
+    }
+    return Role[this.role]
+  }
+
   public hasRole(role: Role): boolean {
     if (this.role === null) {
       return false;

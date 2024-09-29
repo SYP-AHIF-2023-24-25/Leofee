@@ -25,12 +25,13 @@ export class ProfileKeycloakComponent {
   private readonly keycloakService: KeycloakService = inject(KeycloakService);
   public readonly userName: WritableSignal<string | null> = signal(null);
   public readonly fullName: WritableSignal<string | null> = signal(null);
-  public leoUserRole: WritableSignal<Role | null> = signal(null);
+  public leoUserRole: WritableSignal<string | null> = signal(null);
   public readonly qrCodeData: WritableSignal<string> = signal("");
   public anotherQrCodeData: string = ""
   public valueTest = "";
   public amountOfMoney = 0;
   public generateQrCodeButton: boolean = false;
+
   constructor (private client: HttpClient, private router: Router, private studentService: StudentService) {
   }
 
@@ -46,7 +47,7 @@ export class ProfileKeycloakComponent {
   }
 
   public generateQRCode() {
-    this.anotherQrCodeData = `${this.userName}}`;
+    this.anotherQrCodeData = `${this.userName}`;
     return this.anotherQrCodeData;
   }
 
@@ -55,7 +56,7 @@ export class ProfileKeycloakComponent {
   }
 
   public async getRole(user: LeoUser): Promise<void> {
-    this.leoUserRole.set(user.role);
+    this.leoUserRole.set(user.roleAsString);
   }
 
   public async getUsername(user: LeoUser): Promise<void> {
@@ -64,6 +65,7 @@ export class ProfileKeycloakComponent {
 
   public async logout(): Promise<void> {
     await this.keycloakService.logout();
+    this.router.navigate(['/login'])
   }
 
   public async loadStudentData() {

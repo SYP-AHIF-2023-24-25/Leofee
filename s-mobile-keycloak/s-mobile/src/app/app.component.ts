@@ -19,6 +19,4 @@ import { QRCodeModule } from 'angularx-qrcode';
 })
 export class AppComponent {
   title = 's-mobile';
-  
-  
 }
