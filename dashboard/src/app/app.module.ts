@@ -14,8 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 
-
-import { AppRoutingModule } from './app-routing.module';
+//import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentOverviewComponent } from './student-overview/student-overview.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -25,6 +24,7 @@ import { AddStudentDialog } from './student-overview/student-overview.component'
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component'; // EditBalanceDialog hinzugefügt
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
+import { AppRoutingModule } from './app.routes';
 
 @NgModule({
   declarations: [
