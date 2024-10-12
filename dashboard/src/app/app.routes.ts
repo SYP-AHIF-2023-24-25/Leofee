@@ -7,12 +7,13 @@ import { GuthabenVerwaltungComponent } from './guthaben-verwaltung/guthaben-verw
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component';
 import { NgModel } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { AuthGuard } from 'src/core/util/auth-guard';
 
 export const routes: Routes = [
   
     {path: '', redirectTo: '/loginPage', pathMatch: 'full'},
     {path: 'studentsOverview', component: StudentOverviewComponent},
-    {path: 'loginPage', component: LoginPageComponent},
+    {path: 'loginPage', component: LoginPageComponent, canActivate: [AuthGuard]},
     {path: 'signupPage', component: SignupPageComponent},
     {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent},
     {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent}

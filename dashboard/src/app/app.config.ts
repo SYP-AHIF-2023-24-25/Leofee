@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@ang
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 // Function to initialize Keycloak with the necessary configurations
-function initializeKeycloak(keycloak: KeycloakService) {
+export function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
