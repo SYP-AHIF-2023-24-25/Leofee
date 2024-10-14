@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -102,8 +103,7 @@ public class BonController : Controller
         {
             return NotFound($"There exists no Bon with id ${id}!");
         }
-
-        // update Bon
+        
         bonEntity.StartDate = bon.From;
         bonEntity.EndDate = bon.To;
         bonEntity.StudentId = bon.StudentId;
