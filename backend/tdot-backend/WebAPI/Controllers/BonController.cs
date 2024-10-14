@@ -38,13 +38,7 @@ public class BonController : Controller
         return new BonDto(bonEntity.Id,bonEntity.StudentId,bonEntity.From,bonEntity.To,bonEntity.UsedValue,bonEntity.Value);
     }
     
-    public class BonCreateDto
-    {
-        public required string StudentId { get; set; }
-        public required DateTime From { get; set; }
-        public required DateTime To { get; set; }
-        public required double  Value { get; set; }
-    }
+    
 
     [HttpPost]
     public async Task<IActionResult> CreateBon([FromBody] BonCreateDto bon)
@@ -79,17 +73,14 @@ public class BonController : Controller
         return CreatedAtRoute(new { id = newBon.Id }, newBon);
     }
 
-    public class BonUpdateDto : BonCreateDto
-    {
-        public int Id { get; set; }
-    }
+    
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bon)
+    public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bonDto)
     {
-        Log.Information("Update Bon called with id: {id}, Bon: {@bon}", id, bon);
+        Log.Information("Update Bon called with id: {id}, Bon: {@bon}", id, bonDto);
         
-        if (id != bon.Id)
+        if (id != bonDto.Id)
         {
             return BadRequest($"Invalid Ids in client request");
         }
@@ -97,21 +88,10 @@ public class BonController : Controller
         {
             return BadRequest(ModelState);
         }
-        var bonEntity = await _uow.BonRepository.GetByIdAsync(id);
-        if (bonEntity == null)
-        {
-            return NotFound($"There exists no Bon with id ${id}!");
-        }
-
-        // update Bon
-        bonEntity.StartDate = bon.From;
-        bonEntity.EndDate = bon.To;
-        bonEntity.StudentId = bon.StudentId;
-        bonEntity.Value = bon.Value;
-
+        
         try
         {
-            await _uow.SaveChangesAsync();
+            await _uow.BonRepository.UpdateBonsWithIdAsync(id,bonDto);
         }
         catch (Exception e)
         {

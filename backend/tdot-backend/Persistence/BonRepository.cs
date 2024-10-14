@@ -48,4 +48,19 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
             .OrderBy(b => b.From)
             .ToList();
     }
+    public async Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto)
+    {
+
+        var bon = await _dbContext.Bons!
+            .SingleOrDefaultAsync(c => c.Id == bonId);
+        if(bon is not null)
+        {
+            bon.StartDate = updateBonDto.From;
+            bon.EndDate = updateBonDto.To;
+            bon.UsedValue = updateBonDto.UsedValue;
+            bon.Value = updateBonDto.Value;
+            await _dbContext.SaveChangesAsync();            
+        }
+        return updateBonDto;
+    }
 }

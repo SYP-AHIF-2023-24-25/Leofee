@@ -14,4 +14,5 @@ public interface IBonRepository: IGenericRepository<Bon>
     Task<IList<BonDto>> GetAllAsync();
     Task<IList<BonDto>> GetBonsForStudentAsync(string studentId);
     Task<BonDto?> GetBonWithIdAsync(int Id);
+    Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto);
 }
