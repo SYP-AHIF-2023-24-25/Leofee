@@ -1,43 +1,99 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using Core.Contracts;
+using Core.DataTransferObjects;
+using Core.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
 	[Route("api/[controller]")]
-	[ApiController]
-	public class WhiteListUserController : ControllerBase
+	public class WhiteListUserController : Controller
 	{
-		// GET: api/<WhiteListUserController>
+		private readonly IUnitOfWork _uow;
+
+		public WhiteListUserController(IUnitOfWork uow)
+		{
+			_uow = uow;
+		}
+
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public async Task<IList<WhiteListUserDto>> GetAllWhiteListUsers()
 		{
-			return new string[] { "value1", "value2" };
+			return await _uow.WhiteListUserRepository.GetAllAsync();
 		}
 
-		// GET api/<WhiteListUserController>/5
-		[HttpGet("{id}")]
-		public string Get(int id)
+		[HttpGet("{userId}")]
+		public async Task<WhiteListUserDto> GetWhiteListUserPerUserId(string userId)
 		{
-			return "value";
+			return await _uow.WhiteListUserRepository.GetWhiteListUserPerIdAsync(userId);
 		}
 
-		// POST api/<WhiteListUserController>
+		//[HttpGet("{firstName} {lastName}")]
+		//public async Task<WhiteListUserDto> GetWhiteListUserPerUsername(string firstName, string lastName)
+		//{
+		//	var userDto = await _uow.WhiteListUserRepository.GetWhiteListUserPerUsernameAsync(firstName, lastName);
+
+		//}
+
 		[HttpPost]
-		public void Post([FromBody] string value)
+		public async Task<IActionResult> PostWhiteListUser([FromBody] WhiteListUserDto whiteListUser)
 		{
+			
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+			var newWhiteListUser = new WhiteListUser
+			{
+				UserId = whiteListUser.UserId,
+				FirstName = whiteListUser.FirstName,
+				LastName = whiteListUser.LastName
+			};
+
+			if (await _uow.WhiteListUserRepository.CheckIfUserExists(whiteListUser.UserId))
+			{
+				return BadRequest($"User with id {whiteListUser.UserId} exits");
+			}
+
+			try
+			{
+				await _uow.WhiteListUserRepository.AddAsync(newWhiteListUser);
+				await _uow.SaveChangesAsync();
+			}
+			catch (ValidationException e)
+			{
+				Log.Error(e, "Error while adding a new whiteListUser");
+				return BadRequest($"data base error: {e.InnerException!.Message}");
+			}
+			catch (DbUpdateException dbException)
+			{
+				Log.Error(dbException, "Error while adding a new whiteListUser");
+				return BadRequest($"data base error: {dbException.InnerException!.Message}");
+			}
+			return CreatedAtRoute(new { id = newWhiteListUser.UserId }, newWhiteListUser);
 		}
 
-		// PUT api/<WhiteListUserController>/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		[HttpDelete("{userId}")]
+		public async Task<IActionResult> DeleteWhiteListUser(string userId)
 		{
-		}
+			bool check = await _uow.WhiteListUserRepository.CheckIfUserExists(userId);
+			if (!check)
+			{
+				return NotFound("User does not exits");
+			}
+			WhiteListUserDto whiteListUser = await _uow.WhiteListUserRepository.GetWhiteListUserPerIdAsync(userId);
+			WhiteListUser deletedUser = new WhiteListUser
+			{
+				UserId = whiteListUser.UserId,
+				FirstName = whiteListUser.FirstName,
+				LastName = whiteListUser.LastName
+			};
+			_uow.WhiteListUserRepository.Remove(deletedUser);
+			await _uow.SaveChangesAsync();
 
-		// DELETE api/<WhiteListUserController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			return Accepted($"User {userId} deleted");
 		}
 	}
 }
