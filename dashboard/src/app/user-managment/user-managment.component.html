@@ -1,1 +1,29 @@
-<p>user-managment works!</p>
+<div class="table-container">
+    <div>
+        <div>
+            <label for="userIdInput">UserId</label>
+            <input type="text" [(ngModel)]="userIdInput" name="userIdInput" required>
+
+        </div>
+        <button (click)="addUser">Add</button>
+    </div>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>UserId</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let whiteListUser of _whiteListUsers; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{whiteListUser.userId}}</td>
+            <td>{{whiteListUser.firstName}}</td>
+            <td>{{whiteListUser.lastName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
