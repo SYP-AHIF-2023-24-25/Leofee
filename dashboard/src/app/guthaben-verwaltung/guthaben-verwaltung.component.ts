@@ -132,7 +132,8 @@ get hoeheValue(): number {
             existingBon.id,  // Hier müsste der korrekte Bon-ID Parameter hinzugefügt werden
             this.voucherForm.value.from,
             this.voucherForm.value.to,
-            this.voucherForm.value.hoehe
+            this.voucherForm.value.hoehe,
+            0
           ));
           console.log(`Bon für Student ${student.studentId} wurde aktualisiert.`);
         } else {

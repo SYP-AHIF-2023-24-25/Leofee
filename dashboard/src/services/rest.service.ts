@@ -79,13 +79,16 @@ export class RestService {
 
     }
 
-    updateBonForStudent(id: number,from: Date, to:Date,  amount: number): Observable<any> {
+    updateBonForStudent(id: number,from: Date, to:Date,  amount: number, usedValue: number): Observable<any> {
       const url =  this.baseURL+ `api/Bon/${id}`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
+        studentId: "",
         from: from,
         to: to,
-        value: amount
+        value: amount,
+        usedValue: usedValue,
+        id: id
       };
       return this.http.put<any>(url, payload, { headers });
     }
