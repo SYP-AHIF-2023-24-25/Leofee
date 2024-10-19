@@ -12,9 +12,13 @@ public class UnitOfWork : BaseUnitOfWork, IUnitOfWork
     {        
         StudentRepository = new StudentRepository(dBContext);
         BonRepository = new BonRepository(dBContext);
+        TransactionRepository = new TransactionRepository(dBContext);
+
     }    
     public IStudentRepository StudentRepository { get; }
     public IBonRepository BonRepository { get; }
+
+    public ITransactionRepository TransactionRepository {get;}
 
     // Validations sonst noch
 }

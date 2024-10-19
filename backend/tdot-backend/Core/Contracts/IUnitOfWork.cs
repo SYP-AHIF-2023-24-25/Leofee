@@ -7,4 +7,5 @@ public interface IUnitOfWork : IBaseUnitOfWork
 
     IStudentRepository StudentRepository { get; }
     IBonRepository BonRepository { get; }
+    ITransactionRepository TransactionRepository {get;}
 }

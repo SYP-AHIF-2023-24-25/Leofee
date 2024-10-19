@@ -48,4 +48,24 @@ public class ImportController
         return students;
 
     }
+
+    public async static Task<IList<Transaction>> ReadTransactionAsync()
+    {
+        var lines = await File.ReadAllLinesAsync("ImportData/Transaction.txt");
+       
+        var students = lines
+            .Skip(1)
+            .Select(line => line.Split(';'))
+            .Select(cols => new Transaction
+            {
+                Id = int.Parse(cols[0]),
+                TransactionTime = DateTime.Parse(cols[1]),
+                Value = double.Parse(cols[2]),
+                AmountOfBon = double.Parse(cols[3])
+
+            }).ToList();
+
+        return students;
+
+    }
 }
