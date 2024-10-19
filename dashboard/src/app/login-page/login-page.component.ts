@@ -25,7 +25,7 @@ export class LoginPageComponent {
     await this.keycloakService.login()
   }
 
-  async logout(): Promise<void> {
+  public async logout(): Promise<void> {
     if (!this.isLoggedIn) {
       return;
     }

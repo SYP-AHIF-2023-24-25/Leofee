@@ -1,19 +1,21 @@
+import { FormsModule, NgModel } from '@angular/forms';
 import { Component } from '@angular/core';
 import { WhiteListUser } from '../model/white-list-user';
 import { RestService } from 'src/services/rest.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-managment',
-  standalone: true,
-  imports: [],
   templateUrl: './user-managment.component.html',
   styleUrl: './user-managment.component.css'
 })
-export class UserManagmentComponent {
+export class UserManagementComponent {
   userIdInput: string = '';
-  firstNameInput: string = "";
-  lastNameInput: string = "";
+  firstNameInput: string = '';
+  lastNameInput: string = '';
 
   _whiteListUsers: WhiteListUser[] = [];
 
@@ -21,19 +23,24 @@ export class UserManagmentComponent {
   }
 
   async ngOnInit() {
-    let oberserableValues = await this.whiteListService.getAllWhiteListUsers();
-    let test = oberserableValues.subscribe({
-      next: whiteListUsers => this._whiteListUsers = whiteListUsers,
-      error: err => console.error('Observer got an error: ' + err),
-      complete: () => console.log('Observer got a complete notification') 
-    }) ;
+    this._whiteListUsers = await lastValueFrom(this.whiteListService.getAllWhiteListUsers());
+    // let oberserableValues = await this.whiteListService.getAllWhiteListUsers();
+    // let test = oberserableValues.subscribe({
+    //   next: whiteListUsers => this._whiteListUsers = whiteListUsers,
+    //   error: err => console.error('Observer got an error: ' + err),
+    //   complete: () => console.log('Observer got a complete notification') 
+    // }) ;
+
+    for (let i = 0; i < this._whiteListUsers.length; i++) {
+      console.log(this._whiteListUsers[i]);
+    }
   }
 
-  async addUser(userId: string, firstName: string, lastName: string) {
+  async addUser() {
     let newUser: WhiteListUser = {
-      userId: userId,
-      FirstName: firstName,
-      LastName: lastName
+      userId: this.userIdInput,
+      firstName: this.firstNameInput,
+      lastName: this.lastNameInput
     }
     await this.whiteListService.addWhiteListUser(newUser)
   }

@@ -5,9 +5,9 @@ import { StudentOverviewComponent } from './student-overview/student-overview.co
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { GuthabenVerwaltungComponent } from './guthaben-verwaltung/guthaben-verwaltung.component';
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component';
-import { NgModel } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from 'src/core/util/auth-guard';
+import { UserManagementComponent } from './user-managment/user-managment.component';
 
 export const routes: Routes = [
   
@@ -16,7 +16,8 @@ export const routes: Routes = [
     {path: 'loginPage', component: LoginPageComponent, canActivate: [AuthGuard]},
     {path: 'signupPage', component: SignupPageComponent},
     {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent},
-    {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent}
+    {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent},
+    {path: 'userManagement', component: UserManagementComponent}
 ];
 
 @NgModule({

@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment.prod';
 export class WhiteListServiceService {
   baseURL = 'api/WhiteListUser';
   constructor(private http: HttpClient) { 
-    this.baseURL = environment.httpUrlLeofeeBackend;
+    this.baseURL = environment.httpUrlLeofeeBackend + 'api/WhiteListUser';
   }
   
   

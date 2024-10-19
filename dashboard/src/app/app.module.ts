@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
 import { AuthGuard } from 'src/core/util/auth-guard';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
+import { UserManagementComponent } from './user-managment/user-managment.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { initializeKeycloak } from './app.config';
     AddStudentDialog,
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
-    ImportDialog
+    ImportDialog,
+    UserManagementComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
@@ -48,6 +50,7 @@ import { initializeKeycloak } from './app.config';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -62,7 +65,6 @@ import { initializeKeycloak } from './app.config';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FormsModule,
     KeycloakAngularModule
   ],
   providers: [
