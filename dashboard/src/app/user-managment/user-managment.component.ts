@@ -42,17 +42,33 @@ export class UserManagementComponent {
       firstName: this.firstNameInput,
       lastName: this.lastNameInput
     }
-    await this.whiteListService.addWhiteListUser(newUser)
+    if (this.checkIfUserIsValid(newUser)){
+      let msg = await this.whiteListService.addWhiteListUser(newUser)
+      console.log(msg.subscribe({
+        next: msg => console.log(msg),
+        error: err => console.error('Observer got an error: ' + err),
+        complete: () => this.ngOnInit()
+      }));
+      
+    }
+
   }
 
   async deleteUse(userId: string) {
     await this.whiteListService.deleteWhiteListUser(userId);
   }
 
-  private checkIfIdIsValid(userId: string) {
-    if (userId.substring(0, 1).toLocaleLowerCase() == "if") {
+  private checkIfUserIsValid(newUser: WhiteListUser): boolean {
+    // if (new.substring(0, 1).toLocaleLowerCase() == "if") {
+    //   return true;
+    // }
+    // return false;
+
+    if (!(newUser.userId === '' && newUser.firstName === '' && newUser.lastName === '')) {
+      console.log("User is valid");
       return true;
     }
+    console.log("User is not valid");
     return false;
   }
 }

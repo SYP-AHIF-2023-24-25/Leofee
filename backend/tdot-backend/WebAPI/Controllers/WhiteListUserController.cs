@@ -24,6 +24,12 @@ namespace WebAPI.Controllers
 			return await _uow.WhiteListUserRepository.GetAllAsync();
 		}
 
+		[HttpGet("exists/{userId}")]
+		public async Task<bool> CheckIfWhiteListUserExists(string userId)
+		{
+			return await _uow.WhiteListUserRepository.CheckIfUserExists(userId);
+		}
+
 		[HttpGet("{userId}")]
 		public async Task<WhiteListUserDto> GetWhiteListUserPerUserId(string userId)
 		{
