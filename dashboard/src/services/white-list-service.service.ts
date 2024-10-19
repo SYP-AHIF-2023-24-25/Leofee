@@ -47,4 +47,13 @@ export class WhiteListServiceService {
       {headers});
     return addedUser;
   }
+
+  checkIfUserIsWhiteListed(userId: any): Observable<boolean> {
+    let headers: HttpHeaders = new HttpHeaders();
+    let newUrl = this.baseURL + '/' + userId;
+    let isWhiteListed: Observable<boolean> = this.http.get<boolean>(
+      newUrl, 
+      {headers});
+    return isWhiteListed;
+  }
 }
