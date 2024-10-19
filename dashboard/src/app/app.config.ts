@@ -17,6 +17,7 @@ export function initializeKeycloak(keycloak: KeycloakService) {
       },
       initOptions: {
         onLoad: 'check-sso', // Action to take on load
+        //onLoad: 'login-required', // Action to take on load
         //enableLogging: true, // Enables logging
         pkceMethod: 'S256', // Proof Key for Code Exchange (PKCE) method to use
         // IMPORTANT: implicit flow is no longer recommended, but using standard flow leads to a 401 at the keycloak server

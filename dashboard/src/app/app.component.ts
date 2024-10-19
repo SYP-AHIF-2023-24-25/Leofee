@@ -11,8 +11,14 @@ export class AppComponent {
   title = 'dashboard';
   private readonly keycloakService: KeycloakService = inject(KeycloakService);
   private router: Router = inject(Router);
-  public logOutNavBar() {
-    this.keycloakService.logout();
-    this.router.navigate(['/login']);
+  public async logOutNavBar() {
+    if(!this.keycloakService.isLoggedIn()){
+      return;
+    }
+    await this.keycloakService.logout().then(() => {
+      console.log('User is not white listed');
+      this.keycloakService.clearToken();
+    });
+    //this.router.navigate(['/userInWhiteList']);
   }
 }

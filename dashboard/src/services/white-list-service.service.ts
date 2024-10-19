@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { last, lastValueFrom, Observable } from 'rxjs';
 import { WhiteListUser } from 'src/app/model/white-list-user';
 import { environment } from 'src/environments/environment.prod';
 
@@ -48,12 +48,20 @@ export class WhiteListServiceService {
     return addedUser;
   }
 
-  checkIfUserIsWhiteListed(userId: any): Observable<boolean> {
+  checkIfUserIsWhiteListed(userId: any): Promise<boolean> {
+    console.log('checkIfUserIsWhiteListed()');
+    let returnValue: boolean = false;
     let headers: HttpHeaders = new HttpHeaders();
-    let newUrl = this.baseURL + '/' + userId;
+    let newUrl = this.baseURL + '/exists/' + userId;
+    console.log(newUrl);
     let isWhiteListed: Observable<boolean> = this.http.get<boolean>(
       newUrl, 
       {headers});
-    return isWhiteListed;
+    lastValueFrom(isWhiteListed).then((value) => {
+      returnValue = value;
+      console.log('returnValue: ' + returnValue);
+    })
+    
+    return lastValueFrom(isWhiteListed);
   }
 }

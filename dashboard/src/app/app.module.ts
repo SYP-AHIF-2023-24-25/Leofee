@@ -30,6 +30,7 @@ import { AuthGuard } from 'src/core/util/auth-guard';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
 import { UserManagementComponent } from './user-managment/user-managment.component';
+import { UserInWhitelistComponent } from './user-in-whitelist/user-in-whitelist.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { UserManagementComponent } from './user-managment/user-managment.compone
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
     ImportDialog,
-    UserManagementComponent
+    UserManagementComponent,
+    UserInWhitelistComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [

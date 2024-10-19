@@ -54,7 +54,7 @@ export class UserManagementComponent {
 
   }
 
-  async deleteUse(userId: string) {
+  async deleteUser(userId: string) {
     await this.whiteListService.deleteWhiteListUser(userId);
   }
 

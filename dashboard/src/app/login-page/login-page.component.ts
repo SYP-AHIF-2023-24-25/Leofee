@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { createLeoUser, LeoUser } from 'src/core/util/leo-token';
@@ -11,43 +11,60 @@ import { WhiteListServiceService } from 'src/services/white-list-service.service
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
+
+  @Input()
+  logOutNavBar!: () => void;
+
   isLoggedIn = false;
-  private username: string = '';
-  private fullName: string = '';
 
-
-
-  constructor(private keycloakService: KeycloakService, private router: Router, 
+  constructor(private keycloakServiceLocal: KeycloakService, private router: Router,
     private whiteListService: WhiteListServiceService) {
-    this.isLoggedIn = this.keycloakService.isLoggedIn();
-    this.keycloakService.getToken().then(token => {
+    this.isLoggedIn = this.keycloakServiceLocal.isLoggedIn();
+    this.keycloakServiceLocal.getToken().then(token => {
       console.log(token);
     });
-  }
+    this.login();
 
-  async ngOnInit(): Promise<void> {
-    const leoUser: LeoUser = await createLeoUser(this.keycloakService);
   }
+  // async ngOnInit() {
+  //   this.login();
+  // }
 
   async login(): Promise<void> {
-    if (this.isLoggedIn) {
-      return
-    }
-    const leoUser: LeoUser = await createLeoUser(this.keycloakService);
-
-    await this.keycloakService.login()
-    this.router.navigate(['/studentsOverview']);
+    console.log('Login');
+    // if (this.isLoggedIn) {
+    //    return
+    //  }
+    // const leoUser: LeoUser = await createLeoUser(this.keycloakServiceLocal);
+    // if (!(leoUser.username === null)) {
+    //   if (await this.checkIfUserIsWhiteListed(leoUser.username)) {
+    //     console.log('User is white listed');
+    //     await this.keycloakServiceLocal.login()
+    //     this.router.navigate(['/studentsOverview']);
+    //   }
+    // }
+    // console.log("User is not white listed");
   }
 
   async logout(): Promise<void> {
-    if (!this.isLoggedIn) {
-      return;
+    // console.log('Logout');
+    // // if (!this.isLoggedIn) {
+    // //   return;
+    // // }
+    // await this.keycloakServiceLocal.logout();
+    // this.router.navigate(['/']);
+    if (this.logOutNavBar){
+      this.logOutNavBar();
     }
-    await this.keycloakService.logout();
   }
 
-  // private async checkIfUserIsWhiteListed(username: any): Promise<boolean> {
-  //   this.whiteListService.checkIfUserIsWhiteListed(username);
-    
+  // async checkIfUserIsWhiteListed(usernameLeoUser: string): Promise<boolean> {
+  //   let isUserWhiteListed = false;
+  //   this.whiteListService.checkIfUserIsWhiteListed(usernameLeoUser).subscribe({
+  //     next: isWhiteListed => console.log(usernameLeoUser),
+  //     error: err => console.error('Observer got an error: ' + err),
+  //     complete: () => isUserWhiteListed = true
+  //   });
+  //   return isUserWhiteListed;
   // }
 }
