@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Student, StudentBalance } from '../model/student';	
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { BonManagementForStudentComponent } from '../bon-management-for-student/bon-management-for-student.component';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
+import { SharedService } from 'src/services/shared.service';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-guthaben-verwaltung',
@@ -21,9 +24,12 @@ export class GuthabenVerwaltungComponent {
 
   constructor(public restService: RestService,
     public dialog: MatDialog,
-    private router: Router
-  ) {
-  }
+    private router: Router,
+    private sharedService: SharedService,
+    private whiteListService: WhiteListServiceService) {
+      const localKeycloakService: KeycloakService = inject(KeycloakService);
+      sharedService.accessAuthShared(localKeycloakService, whiteListService);
+    }
 
 
   ShowDetails(id: string){

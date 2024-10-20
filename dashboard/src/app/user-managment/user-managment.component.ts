@@ -1,11 +1,13 @@
 import { FormsModule, NgModel } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { WhiteListUser } from '../model/white-list-user';
 import { RestService } from 'src/services/rest.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
+import { SharedService } from 'src/services/shared.service';
 
 @Component({
   selector: 'app-user-managment',
@@ -19,7 +21,9 @@ export class UserManagementComponent {
 
   _whiteListUsers: WhiteListUser[] = [];
 
-  constructor(public whiteListService: WhiteListServiceService) {
+  constructor(public whiteListService: WhiteListServiceService, private sharedService: SharedService) {
+    const localKeycloakService: KeycloakService = inject(KeycloakService);
+    sharedService.accessAuthShared(localKeycloakService, whiteListService);
   }
 
   async ngOnInit() {
