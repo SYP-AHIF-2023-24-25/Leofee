@@ -11,7 +11,7 @@ using Base.Tools.CsvImport;
 using Core.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
-using Import;
+using Core;
 
 Console.WriteLine("Recreate Database");
 

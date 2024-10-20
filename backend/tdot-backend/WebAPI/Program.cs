@@ -35,13 +35,13 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());*/
-         options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAllOrigins",
+   builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";//muss nacher noch geï¿½ndert werden
-//Log.Information($"Api db connectionString: {connectionString}");
+//connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";//muss nacher noch geï¿½ndert werden
+Console.WriteLine($"Api db connectionString: {connectionString}");
 
 builder.Services
     .AddDbContext<ApplicationDbContext>(options =>
