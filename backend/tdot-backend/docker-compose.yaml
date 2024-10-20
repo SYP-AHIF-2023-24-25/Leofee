@@ -8,7 +8,7 @@ services:
     volumes:
       - leofee-test-mssql-data:/var/opt/mysql
     ports:
-      - 3311:3306
+      - 3306:3306
     networks:
       - leofee-test-network
 
@@ -19,7 +19,7 @@ services:
       - 8083:8080
     networks:
       - leofee-test-network
-    depends_on:
+    depends_on: 
       - leofee-test-db
 
   leofee-test-web:
@@ -31,13 +31,23 @@ services:
       - leofee-test-network
 
   leofee-test-backend:
-    image: birgitschroeder/leofee-backend
+    image: samuel010203/leofee-backend
     build:
       context: .
       dockerfile: Dockerfile
     container_name: leofee-test-backend
     ports:
       - 8088:8080
+    networks:
+      - leofee-test-network
+    depends_on:
+      - leofee-test-db
+
+  leofee-test-dashboard:
+    image: samuel010203/dashboard
+    container_name: leofee-test-dashboard
+    ports:
+      - 8089:8080
     networks:
       - leofee-test-network
     depends_on:

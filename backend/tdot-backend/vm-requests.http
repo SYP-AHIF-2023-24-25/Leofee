@@ -9,4 +9,7 @@ PATCH {{baseURL}}/Ping
 ### get bons
 GET {{baseURL}}/bon
 
+###
+GET {{baseURL}}/WhiteListUser
+
 

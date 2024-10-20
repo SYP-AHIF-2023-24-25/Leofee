@@ -24,8 +24,10 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
 Console.WriteLine("Read data from file ...");
 var students = await ImportController.ReadStudentsAsync();
 var bons = await ImportController.ReadBonsAsync();
+var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
 Console.WriteLine($"- {students.Count} bookings read");
 Console.WriteLine($"- {bons.Count} bons read");
+Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
 
 Console.WriteLine("Saving to database ...");
 
@@ -33,6 +35,7 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
 {
     await uow.StudentRepository.AddRangeAsync(students);
     await uow.BonRepository.AddRangeAsync(bons);
+    await uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
     await uow.SaveChangesAsync();
 }
 
@@ -40,8 +43,10 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
 {
     var countStudents = await uow.StudentRepository.CountAsync();
     var countBons = await uow.BonRepository.CountAsync();
+    var countWhiteListUsers = await uow.WhiteListUserRepository.CountAsync();
     Console.WriteLine($"- {countStudents} rooms in database");
     Console.WriteLine($"- {countStudents} customers in database");
+    Console.WriteLine($"- {countWhiteListUsers} WhiteListUsers in database");
 }
 
 Console.WriteLine("done");

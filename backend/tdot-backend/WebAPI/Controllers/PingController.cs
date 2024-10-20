@@ -33,8 +33,10 @@ namespace WebAPI.Controllers
             await _uow.MigrateDatabaseAsync();
             var bons = await ImportController.ReadBonsAsync();
             var students = await ImportController.ReadStudentsAsync();
+            var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
             await _uow.BonRepository.AddRangeAsync(bons);
             await _uow.StudentRepository.AddRangeAsync(students);
+            await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
             await _uow.SaveChangesAsync();
             return Ok("Database recreated, bons and students imported");
         }
