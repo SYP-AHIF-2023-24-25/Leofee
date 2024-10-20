@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,12 @@ import { BonManagementForStudentComponent } from './bon-management-for-student/b
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
 import { AppRoutingModule } from './app.routes';
+import { CommonModule } from '@angular/common';
+import { AuthGuard } from 'src/core/util/auth-guard';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { initializeKeycloak } from './app.config';
+import { UserManagementComponent } from './user-managment/user-managment.component';
+import { UserInWhitelistComponent } from './user-in-whitelist/user-in-whitelist.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +42,9 @@ import { AppRoutingModule } from './app.routes';
     AddStudentDialog,
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
-    ImportDialog
+    ImportDialog,
+    UserManagementComponent,
+    UserInWhitelistComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
@@ -44,6 +52,7 @@ import { AppRoutingModule } from './app.routes';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -58,9 +67,16 @@ import { AppRoutingModule } from './app.routes';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FormsModule
+    KeycloakAngularModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

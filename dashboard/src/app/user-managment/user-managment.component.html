@@ -1,0 +1,38 @@
+
+<h1>whiteListUser-Management</h1>
+<div class="table-container">
+    <div>
+        <form>
+            <label>UserId</label>
+            <input type="text" [(ngModel)]="userIdInput" name="userIdInput" required>
+            <br/>
+            <label>FirstName</label>
+            <input type="text" [(ngModel)]="firstNameInput" name="firstNameInput" required>
+            <br/>
+            <label>LastName</label>
+            <input type="text" [(ngModel)]="lastNameInput" name="lastNameInput" required>
+            <br>
+            <br>
+            <button (click)="addUser()">Add</button>
+        </form>
+    </div>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>UserId</th>
+          <th>FirstName</th>
+          <th>LastName</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let whiteListUser of _whiteListUsers; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{whiteListUser.userId}}</td>
+            <td>{{whiteListUser.firstName}}</td>
+            <td>{{whiteListUser.lastName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

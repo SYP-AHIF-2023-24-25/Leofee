@@ -13,6 +13,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Student>?  Students  { get; set; }
     public DbSet<Bon>?     Bons     { get; set; }
+    public DbSet<WhiteListUser>? WhiteListUsers { get; set; }
     
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
