@@ -1,0 +1,11 @@
+.bg-light-green {
+    background-color: #90ee90 !important; /* Helleres Grün */
+  }
+  
+  .text-light-green {
+    color: #90ee90 !important; /* Helleres Grün */
+  }
+  
+  .mt-7 {
+    margin-top: 7rem !important; /* Erhöhen Sie den oberen Rand */
+  }
