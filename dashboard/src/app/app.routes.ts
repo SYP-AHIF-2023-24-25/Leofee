@@ -6,6 +6,7 @@ import { BonManagementForStudentComponent } from './bon-management-for-student/b
 import { NgModule } from '@angular/core';
 import { AuthGuard } from 'src/core/util/auth-guard';
 import { UserManagementComponent } from './user-managment/user-managment.component';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
 
 export const routes: Routes = [
   
@@ -13,7 +14,8 @@ export const routes: Routes = [
     {path: 'studentsOverview', component: StudentOverviewComponent, canActivate: [AuthGuard]},
     {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent, canActivate: [AuthGuard]},
     {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent, canActivate: [AuthGuard]},
-    {path: 'userManagement', component: UserManagementComponent, canActivate: [AuthGuard]}
+    {path: 'userManagement', component: UserManagementComponent, canActivate: [AuthGuard]},
+    {path: 'student-detail/:id', component: StudentDetailComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

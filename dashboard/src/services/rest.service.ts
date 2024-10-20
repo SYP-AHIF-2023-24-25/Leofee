@@ -101,6 +101,14 @@ export class RestService {
           {headers});
 
     }
+    getStudentWithID(id: String): Observable<Student> {
+      const url = `${this.baseURL}api/Student/${id}?studentId=${id}`;
+      const headers: HttpHeaders = new HttpHeaders({
+        'accept': 'text/plain'
+      });
+
+      return this.http.get<Student>(url, { headers });
+    }
     
 
 }
