@@ -22,7 +22,6 @@ import { AddStudentDialog } from './student-overview/student-overview.component'
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component'; // EditBalanceDialog hinzugefügt
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
-import { StudentDetailComponent } from './student-detail/student-detail.component';
 import { AppRoutingModule } from './app.routes';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
@@ -37,8 +36,8 @@ import { UserManagementComponent } from './user-managment/user-managment.compone
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
     ImportDialog,
-    UserManagementComponent,
-    StudentDetailComponent
+    UserManagementComponent
+    
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
