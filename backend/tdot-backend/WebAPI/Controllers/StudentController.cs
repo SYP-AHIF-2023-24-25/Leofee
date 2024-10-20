@@ -8,7 +8,7 @@ using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+//using Serilog;
 
 [Route("api/[controller]")]
 public class StudentController : Controller
@@ -23,7 +23,7 @@ public class StudentController : Controller
     [HttpGet]
     public async Task<IList<StudentDto>> GetAllStudents()
     {
-        Log.Information("GetAllStudents called");
+        //Log.Information("GetAllStudents called");
         return await _uow.StudentRepository.GetAllAsync();
     }
     //public record CustomerBookingDto(string? FirstName, string LastName, DateTime From, DateTime? To, string RoomNumber);
@@ -81,9 +81,10 @@ public class StudentController : Controller
             var result = bons
             .Sum(b => b.Value);
             return result;
-        } catch (Exception ex)
+        } catch (Exception )
         {
-            Log.Error(ex.Message);
+            //Log.Error(ex.Message);
+
             return -1;
         }
         
@@ -112,12 +113,12 @@ public class StudentController : Controller
         }
         catch (ValidationException e)
         {            
-            Log.Error(e, "Error while adding a new student");
+            //Log.Error(e, "Error while adding a new student");
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
         {
-            Log.Error(dbException, "Error while adding a new student");
+            //Log.Error(dbException, "Error while adding a new student");
             return BadRequest($"data base error: {dbException.InnerException!.Message}");
         }
         return CreatedAtRoute(new { id = newStudent.StudentId }, newStudent);

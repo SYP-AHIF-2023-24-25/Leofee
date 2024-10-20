@@ -6,7 +6,7 @@ services:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
-      - leofee-test-mssql-data:/var/opt/mysql
+#      - leofee-test-mssql-data:/var/opt/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
@@ -28,6 +28,16 @@ services:
       - 8087:80
     networks:
       - leofee-test-network
+
+#  leofee-test-backend:
+#    image: samuel010203/leofee-backend
+#    container_name: leofee-test-backend
+#    ports:
+#      - 8088:8080
+#    networks:
+#      - leofee-test-network
+#    depends_on:
+#      - leofee-test-db
 
 volumes:
   leofee-test-mssql-data:

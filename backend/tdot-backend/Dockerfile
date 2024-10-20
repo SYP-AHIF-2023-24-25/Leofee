@@ -33,7 +33,9 @@ RUN dotnet build "./WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 5015
 EXPOSE 8081
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 WORKDIR /app
 COPY --from=build /app/build .

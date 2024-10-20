@@ -8,7 +8,7 @@ using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+//using Serilog;
 
 [Route("api/[controller]")]
 public class BonController : Controller
@@ -23,7 +23,7 @@ public class BonController : Controller
     [HttpGet]
     public async Task<IList<BonDto>> GetAllBons()
     {
-        Log.Information("GetAllBons called ");
+        //Log.Information("GetAllBons called ");
         return await _uow.BonRepository.GetAllAsync();
     }
 
@@ -68,12 +68,12 @@ public class BonController : Controller
         }
         catch (ValidationException e)
         {            
-            Log.Error(e, "Error while adding a new bon");
+            //Log.Error(e, "Error while adding a new bon");
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
         {
-            Log.Error(dbException, "Error while adding a new bon");
+            //Log.Error(dbException, "Error while adding a new bon");
             return BadRequest($"data base error: {dbException.InnerException!.Message}");
         }
         return CreatedAtRoute(new { id = newBon.Id }, newBon);
@@ -87,7 +87,7 @@ public class BonController : Controller
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bon)
     {
-        Log.Information("Update Bon called with id: {id}, Bon: {@bon}", id, bon);
+        //Log.Information("Update Bon called with id: {id}, Bon: {@bon}", id, bon);
         
         if (id != bon.Id)
         {
@@ -115,7 +115,7 @@ public class BonController : Controller
         }
         catch (Exception e)
         {
-            Log.Error(e, "Error while updating a bon");
+            //Log.Error(e, "Error while updating a bon");
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         return Ok();
