@@ -49,27 +49,27 @@
     </div>
   
     <!-- Student Table -->
-    <table *ngIf="filteredStudents.length > 0" class="table table-bordered mt-3" id="studentTable">
-      <thead>
-        <tr>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Class</th>
-          <th>Balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let entry of filteredStudents">
-          <td>{{entry.student.firstName}}</td>
-          <td>{{entry.student.lastName}}</td>
-          <td>{{entry.student.studentClass}}</td>
-          <td>{{entry.balance}}€</td>
-          <td>
-            <button class="btn btn-primary" (click)="viewDetails(entry.student.firstName, entry.student.lastName)">Details</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+      <table *ngIf="filteredStudents.length > 0" class="table table-bordered mt-3" id="studentTable">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Class</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredStudents">
+            <td>{{entry.student.firstName}}</td>
+            <td>{{entry.student.lastName}}</td>
+            <td>{{entry.student.studentClass}}</td>
+            <td>
+              <button class="btn btn-primary" (click)="viewDetails(entry.student.firstName, entry.student.lastName)">Details</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 </div>
   
   

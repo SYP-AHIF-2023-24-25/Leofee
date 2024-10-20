@@ -13,6 +13,7 @@ import { lastValueFrom } from 'rxjs';
 export class StudentDetailComponent {
   student: Student|undefined;
   balance: number|undefined;
+  usedValue: number|undefined = 0;
   constructor(private route: ActivatedRoute, private router: Router,public restService: RestService) {}
 
   async ngOnInit() {
@@ -20,6 +21,7 @@ export class StudentDetailComponent {
     if (studentIdString) {
       this.student = await this.getStudentById(studentIdString);
       this.balance = await this.getStudentBalance(studentIdString);
+      this.usedValue = await this.getStudentUsedValue(studentIdString);
     }
   } 
   async getStudentById(id: string): Promise<Student> {
@@ -33,6 +35,14 @@ export class StudentDetailComponent {
   async getStudentBalance(id: string): Promise<number> {
     try {
       return await lastValueFrom(this.restService.getStudentBalance(id));
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+      throw error;
+    }
+  }
+  async getStudentUsedValue(id: string): Promise<number> {
+    try {
+      return await lastValueFrom(this.restService.getStudentUsedValue(id));
     } catch (error) {
       console.error('Error fetching student data:', error);
       throw error;

@@ -37,6 +37,14 @@
             <p>{{balance}}€</p>
           </div>
         </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <p><strong>Used Value:</strong></p>
+          </div>
+          <div class="col-md-8">
+            <p>{{usedValue}}€</p>
+          </div>
+        </div>
       </div>
       <ng-template #loading>
         <div class="text-center">
@@ -49,7 +57,7 @@
     </div>
   </div>
   <div class="text-center mt-4"> 
-    <button class="btn btn-primary btn-lg mx-2">Edit</button>
+    <button routerLink="/studentsOverview" class="btn btn-primary btn-lg mx-2">Back</button>
     <button (click)="deleteStudentFromList()"class="btn btn-danger btn-lg mx-2">Delete</button>
   </div>
 </div>

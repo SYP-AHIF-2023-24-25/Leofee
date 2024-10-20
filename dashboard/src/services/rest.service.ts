@@ -39,6 +39,15 @@ export class RestService {
           this.baseURL+ "api/Student/"+ id+"/balance",
             {headers});
     }
+    getStudentUsedValue(id: String): Observable<number> {
+      const url = `${this.baseURL}api/Student/${id}/usedValue?studentId=${id}`;
+      const headers: HttpHeaders = new HttpHeaders({
+        'accept': 'text/plain'
+      });    
+      return this.http.get<any>(
+        url,
+          {headers});
+  }
 
 
     getBonsForStudent(id: String): Observable<Bons[]>  {
