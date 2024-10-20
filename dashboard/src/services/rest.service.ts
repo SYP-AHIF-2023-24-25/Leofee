@@ -50,6 +50,13 @@ export class RestService {
 
     }
 
+    getStudentUsedValue(id: String): Observable<number> {
+      let headers: HttpHeaders = new HttpHeaders();       
+      return this.http.get<number>(
+        this.baseURL+ "api/Student/"+ id+"/usedValue",
+          {headers});
+    }
+
     addStudent(student: Student): Observable<any> {
       const url =  this.baseURL + `api/Student`;
       const headers: HttpHeaders = new HttpHeaders();
@@ -70,6 +77,20 @@ export class RestService {
       console.log(payload)
       return this.http.post<any>(url, payload, { headers });
 
+    }
+
+    updateBonForStudent(id: number,from: Date, to:Date,  amount: number, usedValue: number): Observable<any> {
+      const url =  this.baseURL+ `api/Bon/${id}`;
+      const headers: HttpHeaders = new HttpHeaders();
+      const payload = {
+        studentId: "",
+        from: from,
+        to: to,
+        value: amount,
+        usedValue: usedValue,
+        id: id
+      };
+      return this.http.put<any>(url, payload, { headers });
     }
 
 }
