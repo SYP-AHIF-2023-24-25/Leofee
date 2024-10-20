@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,30 +14,31 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 
-//import { AppRoutingModule } from './app-routing.module';
+
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentOverviewComponent } from './student-overview/student-overview.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { SignupPageComponent } from './signup-page/signup-page.component';
 import { GuthabenVerwaltungComponent } from './guthaben-verwaltung/guthaben-verwaltung.component';
 import { AddStudentDialog } from './student-overview/student-overview.component';
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component'; // EditBalanceDialog hinzugefügt
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
-import { AppRoutingModule } from './app.routes';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { initializeKeycloak } from './app.config';
-import { UserManagementComponent } from './user-managment/user-managment.component';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentOverviewComponent,
+    LoginPageComponent,
+    SignupPageComponent,
     GuthabenVerwaltungComponent,
     AddStudentDialog,
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
     ImportDialog,
-    UserManagementComponent
-    
+    StudentDetailComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
@@ -45,7 +46,6 @@ import { UserManagementComponent } from './user-managment/user-managment.compone
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -60,16 +60,9 @@ import { UserManagementComponent } from './user-managment/user-managment.compone
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    KeycloakAngularModule
+    FormsModule
   ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
