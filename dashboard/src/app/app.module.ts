@@ -25,6 +25,7 @@ import { AddStudentDialog } from './student-overview/student-overview.component'
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component'; // EditBalanceDialog hinzugefügt
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ImportDialog } from './student-overview/student-overview.component';
     AddStudentDialog,
     BonManagementForStudentComponent,
     AddBonForStudentDialog,
-    ImportDialog
+    ImportDialog,
+    StudentDetailComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [

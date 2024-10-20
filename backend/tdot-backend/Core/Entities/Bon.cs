@@ -11,7 +11,7 @@ using Base.Core.Entities;
 public class Bon : EntityObject
 {
     [Key]
-    public int Id { get; set; } // muss man noch auf private set umändern oder anders schützen
+    public int Id { get; set; } 
 
     [ForeignKey(nameof(Student))]
     public string StudentId { get; set; } = string.Empty;

@@ -1,0 +1,55 @@
+<div class="container mt-7"> <!-- Erhöhen Sie den oberen Rand -->
+  <div class="card">
+    <div class="card-header bg-light-green text-white"> 
+      <h1 class="h3 mb-0">Schülerdetails</h1>
+    </div>
+    <div class="card-body">
+      <div *ngIf="student; else loading">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <p><strong>Vorname:</strong></p>
+          </div>
+          <div class="col-md-8">
+            <p>{{student.firstName}}</p>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <p><strong>Nachname:</strong></p>
+          </div>
+          <div class="col-md-8">
+            <p>{{student.lastName}}</p>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <p><strong>Klasse:</strong></p>
+          </div>
+          <div class="col-md-8">
+            <p>{{student.studentClass}}</p>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <p><strong>Balance:</strong></p>
+          </div>
+          <div class="col-md-8">
+            <p>{{balance}}€</p>
+          </div>
+        </div>
+      </div>
+      <ng-template #loading>
+        <div class="text-center">
+          <div class="spinner-border text-light-green" role="status"> 
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p>Schülerdetails werden geladen...</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="text-center mt-4"> 
+    <button class="btn btn-primary btn-lg mx-2">Edit</button>
+    <button (click)="deleteStudentFromList()"class="btn btn-danger btn-lg mx-2">Delete</button>
+  </div>
+</div>
