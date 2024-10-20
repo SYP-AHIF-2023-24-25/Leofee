@@ -1,35 +1,87 @@
-<p>guthaben-verwaltung works!</p>
+<br>
+<br>
+<br>
+
+<h1 class="headline">Gutscheinverwaltung</h1>
+
+<form [formGroup]="voucherForm" (ngSubmit)="onSubmit()">
+  <div class="container mt-5">
+    <div class="row text-center">
+
+      <div class="col">
+        <br>
+        <mat-form-field appearance="fill">
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="fromPicker" formControlName="from" required>
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+          <mat-error *ngIf="voucherForm.get('from')?.invalid">Valid From date is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <br>
+        <mat-form-field appearance="fill">        
+          <mat-label>To</mat-label>
+          <input matInput [matDatepicker]="toPicker" formControlName="to" required>
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+          <mat-error *ngIf="voucherForm.get('to')?.invalid">Valid To date is required</mat-error>
+        </mat-form-field>
+      </div>      
+
+      <!-- Höhe input -->
+      <div class="col">
+        <label for="hoeheInput" class="form-label">Höhe</label>
+        <input type="number" class="form-control" id="hoeheInput" [value]="hoeheValue" formControlName="hoehe" placeholder="0">
+        <div *ngIf="voucherForm.get('hoehe')?.hasError('min')">
+          <small class="text-danger">Die Höhe muss größer als 0 sein.</small>
+        </div>
+      </div>
+
+      <!-- Max input -->
+      <div class="col">
+        <label for="maxInput" class="form-label">Max</label>
+        <input type="number" class="form-control" id="maxInput"  [value]="maxValue" formControlName="max" placeholder="0">
+        <div *ngIf="voucherForm.get('hoehe')?.hasError('min')">
+          <small class="text-danger">Die Höhe muss größer als 0 sein.</small>
+        </div>
+      </div>
+
+      <!-- Ist input -->
+      <div class="col">
+        <label for="istInput" class="form-label">Ist</label>
+        <input type="number" class="form-control" id="istInput" formControlName="ist" placeholder="0">
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="voucherForm.invalid">Bon festlegen</button>
+      </div>
+    </div>
+  </div>
+</form>
 
 <br>
 <br>
 <br>
 
-<div class="container mt-4">
-    <table *ngIf="_students.length > 2" class="table table-bordered mt-3" id="studentTable" >
-        <thead>
-          <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>IF Number</th>
-            <th>Class</th>
-            <th>Balance</th>  
-            <th>Bons</th> 
-          </tr>
-        </thead>
-        <tbody>
-          <tr  *ngFor="let entry of _studentsWithBalance">
-            <td>{{entry.student.firstName}}</td>
-            <td>{{entry.student.lastName}}</td>
-            <td>{{entry.student.studentId}}</td>
-            <td>{{entry.student.studentClass}}</td>
-            <td>{{entry.balance}}€</td>
-            <td>
-              <button class="btn btn-primary" (click)="ShowDetails(entry.student.studentId)">Show Bons</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div class="container">
+  <h2>Statistiken</h2>
 
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+      Statistik auswählen
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item">Statistik 1</a></li>
+      <li><a class="dropdown-item">Statistik 2</a></li>
+      <li><a class="dropdown-item">Statistik 3</a></li>
+    </ul>
+  </div>
+
+  <div class="chart-container mt-5">
+    <canvas id="MyChart" width="400" height="200"></canvas>
+  </div>
 </div>
-
-

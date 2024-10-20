@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿
+
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Core.Entities;
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using Base.Core.Entities;
