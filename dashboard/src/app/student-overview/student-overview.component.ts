@@ -1,13 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Student, StudentBalance } from '../model/student';
 
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
-import { WhiteListServiceService } from 'src/services/white-list-service.service';
-import { KeycloakService } from 'keycloak-angular';
-import { SharedService } from 'src/services/shared.service';
 
 
 @Component({
@@ -20,20 +18,18 @@ export class StudentOverviewComponent {
   _students: Student[] = [];
   _studentsWithBalance: StudentBalance[] = [];
   _selectedFile: File | null = null;
-  
+  filteredStudents: any[] = [];
 
 
   constructor(public restService: RestService,
-    public dialog: MatDialog, private whiteListService: WhiteListServiceService, 
-    private sharedService: SharedService) {
-      const localKeycloakService: KeycloakService = inject(KeycloakService);
-      sharedService.accessAuthShared(localKeycloakService, whiteListService);
-    }
+    public dialog: MatDialog,
+    private router: Router
+  ) {
+  }
 
  async ngOnInit() {
- 
     this._students = await lastValueFrom(this.restService.getStudents());
-
+    this.filteredStudents = this._studentsWithBalance;
   
    
 
@@ -64,7 +60,12 @@ export class StudentOverviewComponent {
    
   }
   
-
+  viewDetails(studentFirstname: String,studentLastname: String){ 
+    const index = this._students.findIndex(
+      student => student.firstName === studentFirstname && student.lastName === studentLastname
+    );
+    this.router.navigate(['/student-detail', this._students[index].studentId]);
+  }
 
  
   importStudents(): void {
@@ -84,8 +85,6 @@ export class StudentOverviewComponent {
 
     
   }
-
-
   async deleteStudentFromList(lastName:string, firstName:string){
     
     const index = this._students.findIndex(
@@ -108,7 +107,17 @@ export class StudentOverviewComponent {
     }
     
   }
-
+  filterStudents(event: any) {
+    const query = event.target.value.toLowerCase();
+    if (query) {
+      this.filteredStudents = this._studentsWithBalance.filter(student => 
+        student.student.firstName.toLowerCase().includes(query) || 
+        student.student.lastName.toLowerCase().includes(query)
+      );
+    } else {
+      this.filteredStudents = this._studentsWithBalance;
+    }
+  }
   deleteAllStudents(){
     this._students.forEach(async student => {
       await lastValueFrom(this.restService.deleteStudent(student.studentId));

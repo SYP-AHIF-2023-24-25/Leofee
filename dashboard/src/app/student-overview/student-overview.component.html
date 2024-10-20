@@ -3,56 +3,77 @@
   <br>
   <br>
   <br>
-
-  <h1 class="d-flex ">Import/Export Students</h1>
-  <div class="d-flex justify-content-between mb-3">
-    <button class="btn btn-primary" (click)="importStudents()">Import Students</button>
-    <button class="btn btn-primary" (click)="exportToCSV()">Export CSV</button>
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between">
+        <div id="addStudents" class="d-flex flex-column align-items-center">
+          <h1 class="d-flex">Import/Export Students</h1>
+          <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" (click)="importStudents()">Import Students</button>
+            <button class="btn btn-primary" (click)="exportToCSV()">Export CSV</button>
+          </div>
+        </div>
+        <div id="manageStudents" class="d-flex flex-column align-items-center">
+          <h1>Manage Students</h1>
+          <div class="d-flex justify-content-between w-100">
+            <button class="btn btn-primary" (click)="AddStudent()">Add Student</button>   
+            <button class="btn btn-danger" (click)="deleteAllStudents()">Delete All Students</button> 
+          </div>
+        </div>        
+    </div>
   </div>
-
-  <br>
-  <br>
-
-  <h1 class="d-flex ">Manage Students</h1>
-  <div class="d-flex justify-content-between">
-    <button class="btn btn-primary" (click)="AddStudent()">Add Student</button>   
-    <button class="btn btn-danger" (click)="deleteAllStudents()">Delete All Students</button> 
-  </div>
-
-  <br>
-  <br>
-
-  <mat-form-field appearance="fill" class="mb-3">
-    <mat-label>Sortieren</mat-label>
-    <mat-select (selectionChange)="onFilterChange($event)">
-      <!-- Add your filter options here -->
-      <mat-option value="lastname">Nachname</mat-option>
-      <mat-option value="class">Klasse</mat-option>      
-    </mat-select>
-  </mat-form-field>
   
-  <table *ngIf="_students.length > 0" class="table table-bordered mt-3" id="studentTable">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Class</th>
-        <th>Balance</th>           
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let entry of _studentsWithBalance">
-        <td>{{entry.student.firstName}}</td>
-        <td>{{entry.student.lastName}}</td>
-        <td>{{entry.student.studentClass}}</td>
-        <td>{{entry.balance}}€</td>
-        <td>
-          <button class="btn btn-danger" (click)="deleteStudentFromList(entry.student.lastName, entry.student.firstName)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
+
+  <br>
+  <br>
+
+  <div class="container-fluid mt-4">
+    <div class="row w-100">      
+      <div class="col-md-12 d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-start">
+          <mat-form-field appearance="fill" class="mb-3">
+            <mat-label>Sortieren</mat-label>
+            <mat-select (selectionChange)="onFilterChange($event)">
+              <mat-option value="lastname">Nachname</mat-option>
+              <mat-option value="class">Klasse</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="text-center">
+          <input type="text" class="form-control" placeholder="Schülername eingeben" (input)="filterStudents($event)">
+        </div>
+        <div class="col-md-4
+        +
+        "></div> <!-- Leeres div, um den Platz rechts auszufüllen -->
+      </div>
+    </div>
+  
+    <!-- Student Table -->
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+      <table *ngIf="filteredStudents.length > 0" class="table table-bordered mt-3" id="studentTable">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Class</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredStudents">
+            <td>{{entry.student.firstName}}</td>
+            <td>{{entry.student.lastName}}</td>
+            <td>{{entry.student.studentClass}}</td>
+            <td>
+              <button class="btn btn-primary" (click)="viewDetails(entry.student.firstName, entry.student.lastName)">Details</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+  
+  
+  
  
 
 </div>
