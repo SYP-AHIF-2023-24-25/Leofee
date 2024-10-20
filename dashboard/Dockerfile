@@ -1,18 +1,12 @@
-FROM node:16-alpine AS build
-
-RUN apk update && apk add make && apk add build-base
-
+FROM node:19 AS build
 WORKDIR /usr/src/app
-
-COPY package*.json .
-RUN npm ci
-
+COPY ./package*.json .
+RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
-# Stage 2
+# Stage 2: Serve the built app with nginx
 FROM nginx:1.17.1-alpine
-EXPOSE 80
 COPY --from=build /usr/src/app/dist/dashboard /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 

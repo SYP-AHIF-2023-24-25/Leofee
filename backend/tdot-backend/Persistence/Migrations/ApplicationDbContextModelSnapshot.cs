@@ -75,24 +75,6 @@ namespace Persistence.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Core.Entities.WhiteListUser", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("WhiteListUsers");
-                });
-
             modelBuilder.Entity("Core.Entities.Transaction", b =>
                 {
                     b.Property<int>("Id")
@@ -113,6 +95,24 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Core.Entities.WhiteListUser", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("WhiteListUsers");
                 });
 
             modelBuilder.Entity("Core.Entities.Bon", b =>

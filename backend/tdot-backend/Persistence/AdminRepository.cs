@@ -17,6 +17,5 @@ namespace Persistence
         {
             _dbContext = dbContext;
         }
-
     }
 }
