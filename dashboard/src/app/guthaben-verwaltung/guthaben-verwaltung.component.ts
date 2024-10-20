@@ -213,7 +213,8 @@ export class GuthabenVerwaltungComponent implements OnInit {
           ));
           console.log(`Neuer Bon für Student ${student.studentId} wurde erstellt.`);
         }
-      }
+      } 
+      alert(`Bons in der höhe von ${this.voucherForm.value.hoehe}€ wurden erfolgreich erstellt`);   
     } else {
       console.log('Form invalid');
     }
