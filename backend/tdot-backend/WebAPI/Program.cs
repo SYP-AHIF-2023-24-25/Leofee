@@ -2,39 +2,28 @@ using Core.Contracts;
 
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Serilog;
+//using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
+/*Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
+    .CreateLogger();*/
 
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(Log.Logger);
+//builder.Logging.ClearProviders();
+//builder.Logging.AddSerilog(Log.Logger);
 
 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-Log.Information($"====================================== bla");
-Log.Information($"Api has been started in {env} mode");
+//Log.Information($"====================================== bla");
+//Log.Information($"Api has been started in {env} mode");
 
 // Add services to the container.
-Log.Information("Configure Services for DI ...");
+//Log.Information("Configure Services for DI ...");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //ZUm Testen:
-
-
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";//muss nacher noch geï¿½ndert werden
-Log.Information($"Api db connectionString: {connectionString}");
-
-builder.Services
-    .AddDbContext<ApplicationDbContext>(options =>
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)))
-    .AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddCors(options =>
 {
@@ -43,36 +32,48 @@ builder.Services.AddCors(options =>
         //.WithOrigins("http://localhost:4200")
         //.WithOrigins("http://49.12.203.83:8090")
         //.WithOrigins("http://leofee.samuelatzi.com")
-        //.WithOrigins("http://leohoot.sophiehaider.com")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());*/
-         options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAllOrigins",
+   builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//connectionString = "server=127.0.0.1;Port=3306;Database=db;user=root;password=password;";//muss nacher noch geï¿½ndert werden
+Console.WriteLine($"Api db connectionString: {connectionString}");
+
+builder.Services
+    .AddDbContext<ApplicationDbContext>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)))
+    .AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 var app = builder.Build();
 app.UseRouting();
 app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
-Log.Information("Service configuration complete, preparing request pipeline ...");
-
+//Log.Information("Service configuration complete, preparing request pipeline ...");
+//var basePath = "";
 // NOTE: Swagger is now both enabled in Development and in Production mode!!
-//if (app.Environment.IsDevelopment())
-//{
-app.UseSwagger();
-app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+/*else{
+    basePath = "/leofee-backend";
+    app.UsePathBase(basePath + "/");
+}*/
 
 //app.MapControllers();
 
 //app.UseHttpsRedirection();
 app.MapControllers();
 app.UseAuthorization();
+app.UseHttpsRedirection();
 
-
-
-Log.Information("Starting up api service ...");
+//Log.Information("Starting up api service ...");
 
 app.Run();

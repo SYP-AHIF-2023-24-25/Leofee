@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
-using Microsoft.IdentityModel.Tokens;
 
-namespace Import;
+namespace Core;
 
 public class ImportController
 {

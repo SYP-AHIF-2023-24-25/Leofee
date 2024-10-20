@@ -11,7 +11,7 @@ using Base.Tools.CsvImport;
 using Core.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
-using Import;
+using Core;
 
 Console.WriteLine("Recreate Database");
 
@@ -56,6 +56,7 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     Console.WriteLine($"- {countStudents} rooms in database");
      Console.WriteLine($"- {countWhiteListUsers} WhiteListUsers in database");
     Console.WriteLine($"- {countStudents} customers in database");
+    Console.WriteLine($"- {countWhiteListUsers} WhiteListUsers in database");
 }
 
 Console.WriteLine("done");

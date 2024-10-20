@@ -3,7 +3,7 @@ using Core.DataTransferObjects;
 using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+//using Serilog;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
@@ -70,12 +70,12 @@ namespace WebAPI.Controllers
 			}
 			catch (ValidationException e)
 			{
-				Log.Error(e, "Error while adding a new whiteListUser");
+				//Log.Error(e, "Error while adding a new whiteListUser");
 				return BadRequest($"data base error: {e.InnerException!.Message}");
 			}
 			catch (DbUpdateException dbException)
 			{
-				Log.Error(dbException, "Error while adding a new whiteListUser");
+				//Log.Error(dbException, "Error while adding a new whiteListUser");
 				return BadRequest($"data base error: {dbException.InnerException!.Message}");
 			}
 			return CreatedAtRoute(new { id = newWhiteListUser.UserId }, newWhiteListUser);

@@ -1,0 +1,15 @@
+@baseURL=https://vm64.htl-leonding.ac.at/leofee-backend/api
+
+###
+GET {{baseURL}}/Ping
+
+### recreate database
+PATCH {{baseURL}}/Ping
+
+### get bons
+GET {{baseURL}}/bon
+
+###
+GET {{baseURL}}/WhiteListUser
+
+
