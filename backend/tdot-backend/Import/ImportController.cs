@@ -67,5 +67,24 @@ public class ImportController
 
         return students;
 
+    } 
+  
+
+    public async static Task<IList<WhiteListUser>> ReadWhiteListUserAsync()
+    {
+
+        var lines = await File.ReadAllLinesAsync("ImportData/WhiteListUsers.txt");
+        var whtieListUsers = lines
+            .Skip(1)
+            .Select(line => line.Split(';'))
+            .Select(column => new WhiteListUser
+            {
+                UserId = column[0],
+                FirstName = column[1],
+                LastName = column[2]
+            })
+            .ToList();
+
+        return whtieListUsers;
     }
 }

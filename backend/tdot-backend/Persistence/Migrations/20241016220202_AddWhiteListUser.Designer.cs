@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241016220202_AddWhiteListUser")]
+    partial class AddWhiteListUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,28 +94,6 @@ namespace Persistence.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("WhiteListUsers");
-                });
-
-            modelBuilder.Entity("Core.Entities.Transaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("AmountOfBon")
-                        .HasColumnType("double");
-
-                    b.Property<DateTime>("TransactionTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Core.Entities.Bon", b =>
