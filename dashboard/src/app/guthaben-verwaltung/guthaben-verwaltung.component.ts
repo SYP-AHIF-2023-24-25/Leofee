@@ -9,7 +9,9 @@ import { BonManagementForStudentComponent } from '../bon-management-for-student/
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
 import { Bons } from '../model/Bons';
-
+import { SharedService } from 'src/services/shared.service';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-guthaben-verwaltung',
@@ -25,8 +27,9 @@ export class GuthabenVerwaltungComponent implements OnInit{
 
   constructor(public restService: RestService,
     private fb: FormBuilder,
-    private router: Router
-  ) {
+    private router: Router,
+    private sharedService: SharedService,
+    private whiteListService: WhiteListServiceService)  {
     this.voucherForm = this.fb.group({
       from: ['', Validators.required],
       to: ['', Validators.required],

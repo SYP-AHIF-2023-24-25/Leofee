@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Student, StudentBalance } from '../model/student';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { KeycloakService } from 'keycloak-angular';
+import { SharedService } from 'src/services/shared.service';
 
 
 @Component({
@@ -21,9 +24,11 @@ export class StudentOverviewComponent {
 
 
   constructor(public restService: RestService,
-    public dialog: MatDialog
-  ) {
-  }
+    public dialog: MatDialog, private whiteListService: WhiteListServiceService, 
+    private sharedService: SharedService) {
+      const localKeycloakService: KeycloakService = inject(KeycloakService);
+      sharedService.accessAuthShared(localKeycloakService, whiteListService);
+    }
 
  async ngOnInit() {
  
