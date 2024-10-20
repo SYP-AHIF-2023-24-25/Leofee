@@ -15,6 +15,7 @@ import { SharedService } from 'src/services/shared.service';
   styleUrl: './user-managment.component.css'
 })
 export class UserManagementComponent {
+  deleteUserId: string = '';
   userIdInput: string = '';
   firstNameInput: string = '';
   lastNameInput: string = '';
@@ -28,12 +29,6 @@ export class UserManagementComponent {
 
   async ngOnInit() {
     this._whiteListUsers = await lastValueFrom(this.whiteListService.getAllWhiteListUsers());
-    // let oberserableValues = await this.whiteListService.getAllWhiteListUsers();
-    // let test = oberserableValues.subscribe({
-    //   next: whiteListUsers => this._whiteListUsers = whiteListUsers,
-    //   error: err => console.error('Observer got an error: ' + err),
-    //   complete: () => console.log('Observer got a complete notification') 
-    // }) ;
 
     for (let i = 0; i < this._whiteListUsers.length; i++) {
       console.log(this._whiteListUsers[i]);
@@ -58,15 +53,15 @@ export class UserManagementComponent {
 
   }
 
-  async deleteUser(userId: string) {
-    await this.whiteListService.deleteWhiteListUser(userId);
+  async deleteUser() {
+    await this.whiteListService.deleteWhiteListUser(this.deleteUserId).subscribe({
+      next: msg => console.log(msg),
+      error: err => console.error('Observer got an error: ' + err),
+      complete: () => this.ngOnInit()
+    })
   }
 
   private checkIfUserIsValid(newUser: WhiteListUser): boolean {
-    // if (new.substring(0, 1).toLocaleLowerCase() == "if") {
-    //   return true;
-    // }
-    // return false;
 
     if (!(newUser.userId === '' && newUser.firstName === '' && newUser.lastName === '')) {
       console.log("User is valid");

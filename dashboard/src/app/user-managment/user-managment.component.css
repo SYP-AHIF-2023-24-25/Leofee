@@ -6,6 +6,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+    margin-top: 20px;
   }
   
   /* Basic styling for the table */
@@ -28,6 +29,7 @@
   .custom-table td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
+    width: 100px;
   }
   
   /* Alternate row coloring for readability */
@@ -44,6 +46,7 @@
     background-color: #f2f2f2;
   }
   
+  
   /* Responsive table for smaller screens */
   @media (max-width: 600px) {
     .custom-table {
@@ -55,4 +58,28 @@
       padding: 8px;
     }
   }
-  
+
+  .buttons{
+    margin-top: 70px;
+    padding: 50px;
+  }   
+
+.input{
+    color: black;
+  }
+
+.button{
+    margin-top: 20px;
+    margin-left: 20px;
+    align-items: right;
+  }
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.form-section {
+  width: 48%; /* Du kannst diesen Wert anpassen, um die Breite zu steuern */
+}
