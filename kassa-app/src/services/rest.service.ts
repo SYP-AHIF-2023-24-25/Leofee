@@ -77,8 +77,11 @@ export class RestService {
       buffetId : order.buffet.id,
       date : order.time,
       soldUnits : order.orderItems,
-      orderNumber: '1'
+      orderNumber: '1',
+      bon: order.bonBooking,  
     }
+    console.log(toSend);
+
     let headers: HttpHeaders = new HttpHeaders();
     //headers = this.addAuthorizationHeader(headers);
     return await this.http.post(
