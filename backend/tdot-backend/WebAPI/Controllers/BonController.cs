@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
