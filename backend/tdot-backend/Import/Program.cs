@@ -25,6 +25,7 @@ Console.WriteLine("Read data from file ...");
 var students = await ImportController.ReadStudentsAsync();
 var bons = await ImportController.ReadBonsAsync();
 var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
+var transactions = await ImportController.ReadTransactionAsync();
 Console.WriteLine($"- {students.Count} bookings read");
 Console.WriteLine($"- {bons.Count} bons read");
 Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
@@ -36,6 +37,7 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     await uow.StudentRepository.AddRangeAsync(students);
     await uow.BonRepository.AddRangeAsync(bons);
     await uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
+    await uow.TransactionRepository.AddRangeAsync(transactions);
     await uow.SaveChangesAsync();
 }
 

@@ -75,6 +75,28 @@ namespace Persistence.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("Core.Entities.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("AmountOfBon")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("TransactionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("Core.Entities.WhiteListUser", b =>
                 {
                     b.Property<string>("UserId")

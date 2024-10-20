@@ -35,6 +35,22 @@ namespace Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TransactionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Value = table.Column<double>(type: "double", nullable: false),
+                    AmountOfBon = table.Column<double>(type: "double", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "WhiteListUsers",
                 columns: table => new
                 {
@@ -87,6 +103,9 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Bons");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "WhiteListUsers");

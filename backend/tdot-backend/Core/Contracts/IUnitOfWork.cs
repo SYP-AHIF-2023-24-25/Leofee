@@ -9,4 +9,6 @@ public interface IUnitOfWork : IBaseUnitOfWork
     IBonRepository BonRepository { get; }
 
     IWhiteListUserRepository WhiteListUserRepository { get; }
+
+    ITransactionRepository TransactionRepository {get;}
 }
