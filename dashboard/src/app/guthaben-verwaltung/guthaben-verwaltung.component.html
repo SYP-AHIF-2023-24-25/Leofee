@@ -44,6 +44,9 @@
       <div class="col">
         <label for="maxInput" class="form-label">Max</label>
         <input type="number" class="form-control" id="maxInput"  [value]="maxValue" formControlName="max" placeholder="0">
+        <div *ngIf="voucherForm.get('hoehe')?.hasError('min')">
+          <small class="text-danger">Die Höhe muss größer als 0 sein.</small>
+        </div>
       </div>
 
       <!-- Ist input -->
@@ -55,7 +58,7 @@
 
     <div class="row mt-4">
       <div class="col text-center">
-        <button type="submit" class="btn btn-primary">Bon festlegen</button>
+        <button type="submit" class="btn btn-primary" [disabled]="voucherForm.invalid">Bon festlegen</button>
       </div>
     </div>
   </div>
