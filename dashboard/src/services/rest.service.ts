@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Student } from '../app/model/student';
 import { Bons } from 'src/app/model/Bons';
 import { environment } from 'src/environments/environment.prod';
+import { Transaction } from 'src/app/model/Transaction';
 
 
 @Injectable({
@@ -92,5 +93,14 @@ export class RestService {
       };
       return this.http.put<any>(url, payload, { headers });
     }
+    getAllTransactions(): Observable<Transaction[]>  {
+      let headers: HttpHeaders = new HttpHeaders();
+    
+      return this.http.get<Transaction[]>(
+        this.baseURL+ "api/Transaction" ,
+          {headers});
+
+    }
+    
 
 }
