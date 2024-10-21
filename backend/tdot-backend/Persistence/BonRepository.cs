@@ -17,49 +17,67 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
         _dbContext = dbContext;
     }    
     public async Task<IList<BonDto>> GetAllAsync()
-    {
-        var bonDtos = await _dbContext.Bons!
-            .Select(c => new BonDto(c.Id, c.StudentId, c.StartDate, c.EndDate, c.UsedValue, c.Value))
-            .ToListAsync();
-        return bonDtos;
-       
-    }
+{
+    var bonDtos = await _dbContext.Bons!
+        .Include(b => b.BonTransactions)
+        .Select(c => new BonDto(
+            c.Id, 
+            c.BonTransactions.FirstOrDefault()!.StudentId.ToString(), 
+            c.StartDate, 
+            c.EndDate, 
+            c.BonTransactions.Sum(t => t.BonValue), 
+            c.AmountPerStudent))
+        .ToListAsync();
+    return bonDtos;
+}
 
     public async Task<BonDto?> GetBonWithIdAsync(int Id)
-    {         
+    {
         var bon = await _dbContext.Bons!
+            .Include(b => b.BonTransactions)
             .Where(c => c.Id == Id)
             .SingleOrDefaultAsync();
         if (bon == null)
         {
             return null;
         }
-        return new BonDto(bon.Id,bon.StudentId,bon.StartDate,bon.EndDate,bon.UsedValue,bon.Value);
-    }    
+        return new BonDto(
+            bon.Id,
+            bon.BonTransactions.FirstOrDefault()!.StudentId.ToString(),
+            bon.StartDate,
+            bon.EndDate,
+            bon.BonTransactions.Sum(t => t.BonValue),
+            bon.AmountPerStudent);
+    }  
     public async Task<IList<BonDto>> GetBonsForStudentAsync(string studentId)
-    {       
-
+    {
         var bons = await _dbContext.Bons!
-            .Where(c => c.StudentId == studentId)
+            .Include(b => b.BonTransactions)
+            .Where(b => b.BonTransactions.Any(t => t.StudentId.ToString() == studentId))
             .ToListAsync();
 
         return bons
-            .Select(b => new BonDto(b.Id, b.StudentId, b.StartDate, b.EndDate, b.UsedValue, b.Value))
-            .OrderBy(b => b.From)
+            .Select(b => new BonDto(
+                b.Id, 
+                studentId, 
+                b.StartDate, 
+                b.EndDate, 
+                b.BonTransactions.Sum(t => t.BonValue), 
+                b.AmountPerStudent))
+            .OrderBy(b => b.StartDate)
             .ToList();
     }
     public async Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto)
     {
-
         var bon = await _dbContext.Bons!
+            .Include(b => b.BonTransactions)
             .SingleOrDefaultAsync(c => c.Id == bonId);
-        if(bon is not null)
+        if (bon is not null)
         {
-            bon.StartDate = updateBonDto.From;
-            bon.EndDate = updateBonDto.To;
-            bon.UsedValue = updateBonDto.UsedValue;
-            bon.Value = updateBonDto.Value;
-            await _dbContext.SaveChangesAsync();            
+            bon.StartDate = updateBonDto.StartDate;
+            bon.EndDate = updateBonDto.EndDate;
+            bon.AmountPerStudent = (decimal)updateBonDto.Value;
+            await _dbContext.SaveChangesAsync();
         }
         return updateBonDto;
     }
