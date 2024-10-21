@@ -58,7 +58,7 @@ public class StudentController : Controller
         {
             return NotFound();
         }
-        return new StudentDto(studentEntity.StudentId,studentEntity.FirstName,studentEntity.LastName,studentEntity.StudentClass);
+        return new StudentDto(studentEntity.EdufsUsername,studentEntity.FirstName,studentEntity.LastName,studentEntity.StudentClass);
     }
     [HttpDelete("{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
@@ -70,7 +70,7 @@ public class StudentController : Controller
         }
         _uow.StudentRepository.Remove(result);
         await _uow.SaveChangesAsync();
-        return Ok(new StudentDto(result.StudentId,result.FirstName,result.LastName,result.StudentClass));        
+        return Ok(new StudentDto(result.EdufsUsername,result.FirstName,result.LastName,result.StudentClass));        
     }
     [HttpGet("{studentId}/balance")]
     public async Task<double> GetBalanceForStudentById(string studentId)
@@ -101,7 +101,7 @@ public class StudentController : Controller
         }
         var newStudent = new Student
         {
-            StudentId = student.StudentId,
+            EdufsUsername = student.StudentId,
             FirstName = student.FirstName,
             LastName = student.LastName,
             StudentClass = student.StudentClass
@@ -121,7 +121,7 @@ public class StudentController : Controller
             //Log.Error(dbException, "Error while adding a new student");
             return BadRequest($"data base error: {dbException.InnerException!.Message}");
         }
-        return CreatedAtRoute(new { id = newStudent.StudentId }, newStudent);
+        return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
     }
     [HttpPost("/pay")]
     public async Task<IActionResult> Pay(double amount,string studentId)

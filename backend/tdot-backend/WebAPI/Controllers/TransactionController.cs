@@ -35,10 +35,10 @@ public class TransactionController : Controller
             return BadRequest(ModelState);
         }
 
-        var newTransaction = new Transaction
+        var newTransaction = new StudentBonTransaction
         {
             TransactionTime = transaction.TransactionTime,
-            Value = transaction.Value,
+            BonValue = transaction.Value,
             AmountOfBon = transaction.AmountOfBon
         };
 
