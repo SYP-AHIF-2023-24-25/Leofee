@@ -12,4 +12,7 @@ GET {{baseURL}}/bon
 ###
 GET {{baseURL}}/WhiteListUser
 
+###
+GET {{baseURL}}/Transaction
+
 
