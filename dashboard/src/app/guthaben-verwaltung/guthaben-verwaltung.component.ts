@@ -64,6 +64,11 @@ export class GuthabenVerwaltungComponent implements OnInit {
 
       this.checkBonExpiry();
     }
+     // Überwache Änderungen des "from"-Wertes
+    this.voucherForm.get('from')?.valueChanges.subscribe(() => {
+      this.checkBonExpiry();
+      this.voucherForm.updateValueAndValidity(); // Datum-Validierung erneut prüfen
+    });
 
     this.createChart();
   }
