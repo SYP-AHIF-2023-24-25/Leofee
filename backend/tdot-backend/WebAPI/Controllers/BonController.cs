@@ -36,7 +36,7 @@ public class BonController : Controller
         {
             return NotFound();
         }
-        return new BonDto(bonEntity.Id,bonEntity.StudentId,bonEntity.From,bonEntity.To,bonEntity.UsedValue,bonEntity.Value);
+        return new BonDto(bonEntity.Id,bonEntity.StudentId,bonEntity.StartDate,bonEntity.EndDate,bonEntity.UsedValue,bonEntity.Value);
     }
     
     
@@ -50,11 +50,9 @@ public class BonController : Controller
         }
         var newBon = new Bon
         {
-            StudentId = bon.StudentId,
-            EndDate = bon.To,
-            StartDate = bon.From,
-            UsedValue = 0,
-            Value = bon.Value
+            AmountPerStudent = bon.Value,
+            EndDate = bon.EndDate,
+            StartDate = bon.StartDate
         };
         try
         {

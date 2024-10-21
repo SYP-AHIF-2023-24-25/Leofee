@@ -31,7 +31,7 @@ var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
 Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
 
 
-var transactions = await ImportController.ReadTransactionAsync();
+var transactions = await ImportController.ReadTransactionsAsync();
 Console.WriteLine($"- {transactions.Count} transaction read");
 
 Console.WriteLine("Saving to database ...");
@@ -41,7 +41,7 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     await uow.StudentRepository.AddRangeAsync(students);
     await uow.BonRepository.AddRangeAsync(bons);
     await uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
-    await uow.TransactionRepository.AddRangeAsync(transactions);
+    await uow.StudentBonTransactionRepository.AddRangeAsync(transactions);
     await uow.SaveChangesAsync();
 }
 
@@ -50,7 +50,7 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     var countStudents = await uow.StudentRepository.CountAsync();
      var countWhiteListUsers = await uow.WhiteListUserRepository.CountAsync();
     var countBons = await uow.BonRepository.CountAsync();
-     var countTransaction = await uow.TransactionRepository.CountAsync();
+     var countTransaction = await uow.StudentBonTransactionRepository.CountAsync();
      
     Console.WriteLine($"- {countTransaction} Transaction in database");
     Console.WriteLine($"- {countStudents} rooms in database");

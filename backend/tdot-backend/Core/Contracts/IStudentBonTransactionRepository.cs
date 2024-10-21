@@ -9,7 +9,7 @@ using Base.Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
 
-public interface ITransactionRepository: IGenericRepository<StudentBonTransaction>
+public interface IStudentBonTransaction: IGenericRepository<StudentBonTransaction>
 {   
     Task<IList<TransactionDto>> GetAllTransactionsAsync();  
 

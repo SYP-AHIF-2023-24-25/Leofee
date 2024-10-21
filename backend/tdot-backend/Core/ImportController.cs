@@ -13,16 +13,15 @@ public class ImportController
     public async static Task<IList<Bon>> ReadBonsAsync()
     {
         var lines = await File.ReadAllLinesAsync("ImportData/Bons.txt");
-        //StudentId;Value;From;To
+        //AmountPerStudent;StartDate;EndDate
         var bons = lines
             .Skip(1)
             .Select(line => line.Split(';'))
-            .Select(cols => new Bon{
-                StudentId = cols[0],
-                Value = Double.Parse(cols[1]),
-                StartDate = DateTime.Parse(cols[2]),
-                EndDate = DateTime.Parse(cols[3])
-
+            .Select(cols => new Bon
+            {
+                AmountPerStudent = decimal.Parse(cols[0]),
+                StartDate = DateTime.Parse(cols[1]),
+                EndDate = DateTime.Parse(cols[2])
             }).ToList();
         
         return bons;
@@ -31,59 +30,55 @@ public class ImportController
     public async static Task<IList<Student>> ReadStudentsAsync()
     {
         var lines = await File.ReadAllLinesAsync("ImportData/Students.txt");
-        //StudentId;Firstname;Lastname;StudentClass
+        //EdufsUsername;FirstName;LastName;StudentClass;Department
         var students = lines
             .Skip(1)
             .Select(line => line.Split(';'))
             .Select(cols => new Student
             {
-                StudentId = cols[0],
+                EdufsUsername = cols[0],
                 FirstName = cols[1],
                 LastName = cols[2],
-                StudentClass = cols[3]
-
+                StudentClass = cols[3],
+                Department = cols[4]
             }).ToList();
 
         return students;
-
     }
 
-    public async static Task<IList<Transaction>> ReadTransactionAsync()
+    public async static Task<IList<StudentBonTransaction>> ReadTransactionsAsync()
     {
         var lines = await File.ReadAllLinesAsync("ImportData/Transaction.txt");
-       
-        var students = lines
+        //StudentId;BonId;TransactionTime;BonValue;TotalTransactionAmount
+        var transactions = lines
             .Skip(1)
             .Select(line => line.Split(';'))
-            .Select(cols => new Transaction
+            .Select(cols => new StudentBonTransaction
             {
-                Id = int.Parse(cols[0]),
-                TransactionTime = DateTime.Parse(cols[1]),
-                Value = double.Parse(cols[2]),
-                AmountOfBon = double.Parse(cols[3])
-
+                StudentId = int.Parse(cols[0]),
+                BonId = int.Parse(cols[1]),
+                TransactionTime = DateTime.Parse(cols[2]),
+                BonValue = decimal.Parse(cols[3]),
+                TotalTransactionAmount = decimal.Parse(cols[4])
             }).ToList();
 
-        return students;
-
-    } 
-  
+        return transactions;
+    }
 
     public async static Task<IList<WhiteListUser>> ReadWhiteListUserAsync()
     {
-
         var lines = await File.ReadAllLinesAsync("ImportData/WhiteListUsers.txt");
-        var whtieListUsers = lines
+        //UserId;FirstName;LastName
+        var whiteListUsers = lines
             .Skip(1)
             .Select(line => line.Split(';'))
-            .Select(column => new WhiteListUser
+            .Select(cols => new WhiteListUser
             {
-                UserId = column[0],
-                FirstName = column[1],
-                LastName = column[2]
-            })
-            .ToList();
+                UserId = cols[0],
+                FirstName = cols[1],
+                LastName = cols[2]
+            }).ToList();
 
-        return whtieListUsers;
+        return whiteListUsers;
     }
 }

@@ -13,14 +13,13 @@ public class UnitOfWork : BaseUnitOfWork, IUnitOfWork
         StudentRepository = new StudentRepository(dBContext);
         BonRepository = new BonRepository(dBContext);
         WhiteListUserRepository = new WhiteListUserRepository(dBContext);
-        TransactionRepository = new TransactionRepository(dBContext);
-
+        StudentBonTransactionRepository = new StudentBonTransactionRepository(dBContext);
     }    
     public IStudentRepository StudentRepository { get; }
     public IBonRepository BonRepository { get; }
     public IWhiteListUserRepository WhiteListUserRepository { get; }
 
-    public ITransactionRepository TransactionRepository {get;}
+    public IStudentBonTransaction StudentBonTransactionRepository {get;}
 
     // Validations sonst noch
 }

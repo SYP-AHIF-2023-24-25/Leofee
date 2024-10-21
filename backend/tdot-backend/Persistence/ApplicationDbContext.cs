@@ -15,7 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Bon>?     Bons     { get; set; }
     public DbSet<WhiteListUser>? WhiteListUsers { get; set; }
 
-    public DbSet<Transaction>? Transactions {get;set;}
+    public DbSet<StudentBonTransaction>? StudentBonTransactions {get;set;}
     
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
@@ -43,7 +43,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Bon>()
            .HasOne<Student>()
            .WithMany()
-           .HasForeignKey(b => b.StudentId)
+           .HasForeignKey(b => b.Id)
            .OnDelete(DeleteBehavior.Cascade);
     }
 }
