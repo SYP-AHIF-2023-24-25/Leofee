@@ -16,3 +16,9 @@ GET {{baseURL}}/WhiteListUser
 GET {{baseURL}}/Transaction
 
 
+###
+POST https://vm64.htl-leonding.ac.at/leofee-backend/pay?amount=1&studentId=IF200177
+
+
+###
+GET {{baseURL}}/Bon

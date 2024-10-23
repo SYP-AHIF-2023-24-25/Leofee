@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore;
 //using Serilog;
 
 [Route("api/[controller]")]
-public class BonController : Controller
+public class BonsController : Controller
 {
     private readonly IUnitOfWork _uow;
     
-    public BonController(IUnitOfWork uow)
+    public BonsController(IUnitOfWork uow)
     {
         _uow = uow;
     }

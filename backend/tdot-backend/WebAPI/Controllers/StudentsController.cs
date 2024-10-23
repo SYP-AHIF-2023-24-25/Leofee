@@ -10,11 +10,11 @@ using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-public class StudentController : Controller
+public class StudentsController : Controller
 {
     private readonly IUnitOfWork _uow;
     
-    public StudentController(IUnitOfWork uow)
+    public StudentsController(IUnitOfWork uow)
     {
         _uow = uow;
     }
@@ -127,7 +127,8 @@ public class StudentController : Controller
         return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
     }
 
-    [HttpPost("/pay")]
+    [HttpPost("/student/pay")]
+    
     public async Task<IActionResult> Pay(double amount, string studentId)
     {        
         var result = await _uow.StudentRepository.PayAsync(studentId, amount);

@@ -8,11 +8,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransactionController : ControllerBase
+    public class TransactionsController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
 
-        public TransactionController(IUnitOfWork uow)
+        public TransactionsController(IUnitOfWork uow)
         {
             _uow = uow;
         }
