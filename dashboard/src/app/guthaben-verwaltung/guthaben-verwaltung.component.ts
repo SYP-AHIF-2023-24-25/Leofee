@@ -134,6 +134,9 @@ export class GuthabenVerwaltungComponent implements OnInit {
                 top: 10,
                 bottom: 30
               }
+            },
+            ticks: {
+              display: false 
             }
           },
           y: {

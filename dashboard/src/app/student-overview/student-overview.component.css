@@ -9,7 +9,7 @@
     color: black;
 }
 
-button{
+.menu{
     margin-top: 20px;
     margin-left: 20px;
     align-items: right;
@@ -29,4 +29,38 @@ button{
   
 #studentTable {
     padding-top: 50 px;
+}
+/* CSS for student-overview.component.css */
+
+/* CSS for student-overview.component.css */
+
+.table tbody tr.student-row {
+    height: 34px; 
+  }
+  
+  .table tbody tr.student-row td {
+    padding-top: 5px; 
+    padding-bottom: 5px; 
+    height: 34px; 
+  }
+  
+  .table tbody tr.student-row td button.btn-sm {
+    padding: 2px 5px;
+    font-size: 12px; 
+  }
+  .table tbody td {
+    text-align: center; 
+  }
+  .table thead th {
+    text-align: center; 
+  }
+  
+  
+.details-button{
+    height: 30px;
+    width: 80px;
+    font-size: 18px;
+}
+.container-fluid{
+    padding-top: 30px;
 }
