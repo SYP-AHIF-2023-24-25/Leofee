@@ -12,9 +12,11 @@ public class StudentBonTransaction : EntityObject
 {
 
     public int StudentId { get; set; }
+    [ForeignKey(nameof(StudentId))]
     public Student? Student { get; set; }
 
     public int BonId { get; set; }
+    [ForeignKey(nameof(BonId))]
     public Bon? Bon { get; set; }
 
     public DateTime TransactionTime { get; set; } 
