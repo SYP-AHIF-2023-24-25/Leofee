@@ -34,11 +34,11 @@ namespace WebAPI.Controllers
             var bons = await ImportController.ReadBonsAsync();
             var students = await ImportController.ReadStudentsAsync();
             var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
-            var transactions = await ImportController.ReadTransactionAsync();
+            var transactions = await ImportController.ReadTransactionsAsync();
             await _uow.BonRepository.AddRangeAsync(bons);
             await _uow.StudentRepository.AddRangeAsync(students);
             await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
-            await _uow.TransactionRepository.AddRangeAsync(transactions);
+            await _uow.StudentBonTransactionRepository.AddRangeAsync(transactions);
             await _uow.SaveChangesAsync();
             return Ok("Database recreated, transactions, whitelist, bons and students imported");
         }

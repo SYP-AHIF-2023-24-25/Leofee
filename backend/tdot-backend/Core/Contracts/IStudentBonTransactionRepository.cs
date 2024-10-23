@@ -11,7 +11,7 @@ using Core.Entities;
 
 public interface IStudentBonTransaction: IGenericRepository<StudentBonTransaction>
 {   
-    Task<IList<TransactionDto>> GetAllTransactionsAsync();  
+    Task<IList<StudentBonTransactionDto>> GetAllTransactionsAsync();  
 
-    Task<TransactionCreationDto> AddTransactionAsync(TransactionCreationDto transactionDto);
+    Task<StudentBonTransactionCreationDto> AddTransactionAsync(StudentBonTransactionCreationDto transactionDto);
 }

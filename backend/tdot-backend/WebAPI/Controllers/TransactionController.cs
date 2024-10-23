@@ -24,7 +24,7 @@ public class TransactionController : Controller
     public async Task<IList<TransactionDto>> GetAllTransactions()
     {
         
-        return await _uow.TransactionRepository.GetAllTransactionsAsync();
+        return await _uow.StudentBonTransactionRepository.GetAllTransactionsAsync();
     }
 
     [HttpPost]
@@ -35,7 +35,7 @@ public class TransactionController : Controller
             return BadRequest(ModelState);
         }
 
-        var newTransaction = new Transaction
+        var newTransaction = new StudentBonTransaction
         {
             TransactionTime = transaction.TransactionTime,
             Value = transaction.Value,
@@ -44,7 +44,7 @@ public class TransactionController : Controller
 
         try
         {
-            await _uow.TransactionRepository.AddTransactionAsync(transaction);
+            await _uow.StudentBonTransactionRepository.AddTransactionAsync(transaction);
             //await _uow.SaveChangesAsync();
             return CreatedAtAction(nameof(GetAllTransactions), new { id = newTransaction.Id }, transaction);
         }

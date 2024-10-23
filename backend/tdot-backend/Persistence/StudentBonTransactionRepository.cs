@@ -17,14 +17,14 @@ public class StudentBonTransactionRepository: GenericRepository<StudentBonTransa
         _dbContext = dbContext;
     }   
 
-    public async Task<IList<TransactionDto>> GetAllTransactionsAsync()
+    public async Task<IList<StudentBonTransactionDto>> GetAllTransactionsAsync()
     {           
         return await _dbContext.StudentBonTransactions!
-            .Select(c => new TransactionDto(c.Id, c.TransactionTime, (double)c.BonValue, (double)c.TotalTransactionAmount))
+            .Select(c => new StudentBonTransactionDto(c.Id, c.TransactionTime, (double)c.BonValue, (double)c.TotalTransactionAmount))
             .ToListAsync();
     }
 
-      public async Task<TransactionCreationDto> AddTransactionAsync(TransactionCreationDto transactionDto)
+      public async Task<StudentBonTransactionCreationDto> AddTransactionAsync(StudentBonTransactionCreationDto transactionDto)
         {
             var transaction = new StudentBonTransaction
             {

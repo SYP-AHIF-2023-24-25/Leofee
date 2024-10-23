@@ -25,24 +25,23 @@ public class BonController : Controller
     public async Task<IList<BonDto>> GetAllBons()
     {
         //Log.Information("GetAllBons called ");
-        return await _uow.BonRepository.GetAllAsync();
+        var bons = await _uow.BonRepository.GetAllAsync();
+        return bons;
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<BonDto?>> GetBonById(int id)
     { 
-        var bonEntity = await _uow.BonRepository.GetBonWithIdAsync(id);
-        if (bonEntity == null)
+        var bon = await _uow.BonRepository.GetBonWithIdAsync(id);
+        if (bon == null)
         {
             return NotFound();
         }
-        return new BonDto(bonEntity.Id,bonEntity.StudentId,bonEntity.StartDate,bonEntity.EndDate,bonEntity.UsedValue,bonEntity.Value);
+        return Ok(bon);
     }
-    
-    
 
     [HttpPost]
-    public async Task<IActionResult> CreateBon([FromBody] BonCreateDto bon)
+    public async Task<IActionResult> CreateBon([FromBody] BonCreateDto bonDto)
     {
         if (!ModelState.IsValid)
         {
@@ -50,9 +49,9 @@ public class BonController : Controller
         }
         var newBon = new Bon
         {
-            AmountPerStudent = bon.Value,
-            EndDate = bon.EndDate,
-            StartDate = bon.StartDate
+            AmountPerStudent = bonDto.AmountPerStudent,
+            StartDate = bonDto.StartDate,
+            EndDate = bonDto.EndDate
         };
         try
         {
@@ -72,8 +71,6 @@ public class BonController : Controller
         return CreatedAtRoute(new { id = newBon.Id }, newBon);
     }
 
-    
-
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bonDto)
     {
@@ -90,7 +87,7 @@ public class BonController : Controller
         
         try
         {
-            await _uow.BonRepository.UpdateBonsWithIdAsync(id,bonDto);
+            await _uow.BonRepository.UpdateBonsWithIdAsync(id, bonDto);
         }
         catch (Exception e)
         {

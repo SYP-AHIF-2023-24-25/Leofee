@@ -76,7 +76,7 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
         {
             bon.StartDate = updateBonDto.StartDate;
             bon.EndDate = updateBonDto.EndDate;
-            bon.AmountPerStudent = (decimal)updateBonDto.Value;
+            bon.AmountPerStudent = (decimal)updateBonDto.TotalBonValue;
             await _dbContext.SaveChangesAsync();
         }
         return updateBonDto;

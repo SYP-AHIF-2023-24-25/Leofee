@@ -26,7 +26,6 @@ public class StudentController : Controller
         //Log.Information("GetAllStudents called");
         return await _uow.StudentRepository.GetAllAsync();
     }
-    //public record CustomerBookingDto(string? FirstName, string LastName, DateTime From, DateTime? To, string RoomNumber);
 
     [HttpGet("{studentId}/bons")]
     public async Task<ActionResult<IList<BonDto>>> GetBonsForStudent(string studentId)
@@ -41,11 +40,11 @@ public class StudentController : Controller
         var bonDtos = bonEntities
             .Select(b => new BonDto(
                 b.Id,
-                b.StudentId,
-                b.From,
-                b.To,
-                b.UsedValue,
-                b.Value))
+                studentId,
+                b.StartDate,
+                b.EndDate,
+                b.TotalBonValue,
+                b.AmountPerStudent))
             .ToList();
         return Ok(bonDtos);
     }
@@ -58,8 +57,9 @@ public class StudentController : Controller
         {
             return NotFound();
         }
-        return new StudentDto(studentEntity.StudentId,studentEntity.FirstName,studentEntity.LastName,studentEntity.StudentClass);
+        return new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass);
     }
+
     [HttpDelete("{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
     {
@@ -70,27 +70,24 @@ public class StudentController : Controller
         }
         _uow.StudentRepository.Remove(result);
         await _uow.SaveChangesAsync();
-        return Ok(new StudentDto(result.StudentId,result.FirstName,result.LastName,result.StudentClass));        
+        return Ok(new StudentDto(result.EdufsUsername, result.FirstName, result.LastName, result.StudentClass));        
     }
+
     [HttpGet("{studentId}/balance")]
     public async Task<double> GetBalanceForStudentById(string studentId)
     {
         try
         {
             var bons = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
-            var result = bons
-            .Sum(b => b.Value);
-            return result;
-        } catch (Exception )
+            var result = bons.Sum(b => b.AmountPerStudent);
+            return (double)result;
+        } 
+        catch (Exception)
         {
             //Log.Error(ex.Message);
-
             return -1;
         }
-        
     }
-
-
 
     [HttpPost]
     public async Task<IActionResult> CreateStudent([FromBody] StudentDto student)
@@ -101,7 +98,7 @@ public class StudentController : Controller
         }
         var newStudent = new Student
         {
-            StudentId = student.StudentId,
+            EdufsUsername = student.StudentId,
             FirstName = student.FirstName,
             LastName = student.LastName,
             StudentClass = student.StudentClass
@@ -121,18 +118,19 @@ public class StudentController : Controller
             //Log.Error(dbException, "Error while adding a new student");
             return BadRequest($"data base error: {dbException.InnerException!.Message}");
         }
-        return CreatedAtRoute(new { id = newStudent.StudentId }, newStudent);
+        return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
     }
+
     [HttpPost("/pay")]
-    public async Task<IActionResult> Pay(double amount,string studentId)
+    public async Task<IActionResult> Pay(double amount, string studentId)
     {        
-        var result = await _uow.StudentRepository.PayAsync(studentId,amount);
+        var result = await _uow.StudentRepository.PayAsync(studentId, amount);
         await _uow.SaveChangesAsync();
         return Ok(result);      
-        
     }
+
     [HttpGet("{studentId}/usedValue")]
-    public async Task<ActionResult<StudentDto?>> GetUsedValueForStudent(string studentId)
+    public async Task<ActionResult<decimal>> GetUsedValueForStudent(string studentId)
     {
         var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
         if (studentEntity == null)
@@ -140,10 +138,7 @@ public class StudentController : Controller
             return NotFound();
         }
         var bonsForStudent = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
-        var usedValue = bonsForStudent
-                            .Sum(b => b.UsedValue);
+        var usedValue = bonsForStudent.Sum(b => b.TotalBonValue);
         return Ok(usedValue);
     }
-
-
 }
