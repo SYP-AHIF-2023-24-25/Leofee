@@ -12,7 +12,8 @@ using Core.Entities;
 public interface IStudentRepository: IGenericRepository<Student>
 {
     Task<IList<StudentDto>> GetAllAsync();
-    Task<Student?> GetStudentWithIdAsync(string studentId);
+    Task<Student?> GetStudentWithEdufsUserAsync(string studentId);
+    Task<Student?> GetStudentWithIdAsync(int studentId);
     Task<bool> StudentExistsAsync(string studentId);
     Task<bool> PayAsync(string studentId, double amountToDeduct);
 }

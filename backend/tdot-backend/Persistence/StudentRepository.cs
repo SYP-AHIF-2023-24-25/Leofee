@@ -22,7 +22,7 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
             .ToListAsync();
     }
 
-    public async Task<Student?> GetStudentWithIdAsync(string studentId)
+    public async Task<Student?> GetStudentWithEdufsUserAsync(string studentId)
     {
         var student = await _dbContext.Students!
             .Where(c => c.EdufsUsername == studentId)
@@ -36,6 +36,15 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
         }
 
         return student;
+    }
+
+    public async Task<Student?> GetStudentWithIdAsync(int studentId)
+    {
+        return await _dbContext.Students!
+            .Where(c => c.Id == studentId)
+            .Include(s => s.StudentTransactions)
+            .ThenInclude(t => t.Bon)
+            .SingleOrDefaultAsync();
     }
 
     public async Task<bool> StudentExistsAsync(string studentId)

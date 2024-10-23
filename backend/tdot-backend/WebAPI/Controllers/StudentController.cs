@@ -8,7 +8,6 @@ using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-//using Serilog;
 
 [Route("api/[controller]")]
 public class StudentController : Controller
@@ -23,7 +22,6 @@ public class StudentController : Controller
     [HttpGet]
     public async Task<IList<StudentDto>> GetAllStudents()
     {
-        //Log.Information("GetAllStudents called");
         return await _uow.StudentRepository.GetAllAsync();
     }
 
@@ -49,10 +47,21 @@ public class StudentController : Controller
         return Ok(bonDtos);
     }
 
-    [HttpGet("{studentId}")]
-    public async Task<ActionResult<StudentDto?>> GetStudentById(string studentId)
+    [HttpGet("id/{studentId}")]
+    public async Task<ActionResult<StudentDto?>> GetStudentByEdufsUserId(string studentId)
     { 
-        var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
+        var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+        if (studentEntity == null)
+        {
+            return NotFound();
+        }
+        return new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass);
+    }
+
+    [HttpGet("{Id}")]
+    public async Task<ActionResult<StudentDto?>> GetStudentById(int id)
+    { 
+        var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(id);
         if (studentEntity == null)
         {
             return NotFound();
@@ -63,7 +72,7 @@ public class StudentController : Controller
     [HttpDelete("{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
     {
-        var result = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
+        var result = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
         if (result == null)
         {
             return NotFound("Es gibt keinen Student mit dieser ID");
@@ -84,7 +93,6 @@ public class StudentController : Controller
         } 
         catch (Exception)
         {
-            //Log.Error(ex.Message);
             return -1;
         }
     }
@@ -110,12 +118,10 @@ public class StudentController : Controller
         }
         catch (ValidationException e)
         {            
-            //Log.Error(e, "Error while adding a new student");
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
         {
-            //Log.Error(dbException, "Error while adding a new student");
             return BadRequest($"data base error: {dbException.InnerException!.Message}");
         }
         return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
@@ -132,7 +138,7 @@ public class StudentController : Controller
     [HttpGet("{studentId}/usedValue")]
     public async Task<ActionResult<decimal>> GetUsedValueForStudent(string studentId)
     {
-        var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(studentId);
+        var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
         if (studentEntity == null)
         {
             return NotFound();

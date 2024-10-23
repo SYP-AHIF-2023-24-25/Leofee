@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] // Fügt nützliche Features wie die automatische Validierung von Modellen hinzu
+    [ApiController]
     public class TransactionController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
             var studentExists = await _uow.StudentRepository.GetStudentWithIdAsync(transactionDto.StudentId);
             var bonExists = await _uow.BonRepository.GetBonWithIdAsync(transactionDto.BonId);
 
-            if (!studentExists || !bonExists)
+            if (studentExists == null || bonExists == null)
             {
                 return NotFound("Entweder der Student oder der Bon wurde nicht gefunden.");
             }
@@ -52,7 +52,6 @@ namespace WebAPI.Controllers
             }
             catch (Exception)
             {
-                // Logge den Fehler hier (ex.Message)
                 return StatusCode(500, "Es gab ein Problem beim Hinzufügen der Transaktion.");
             }
         }

@@ -20,6 +20,4 @@ public class UnitOfWork : BaseUnitOfWork, IUnitOfWork
     public IWhiteListUserRepository WhiteListUserRepository { get; }
 
     public IStudentBonTransaction StudentBonTransactionRepository {get;}
-
-    // Validations sonst noch
 }
