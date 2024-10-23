@@ -1,44 +1,49 @@
-namespace Persistence;
-
 using Base.Persistence;
-
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
-
 using Microsoft.EntityFrameworkCore;
 
-public class StudentBonTransactionRepository: GenericRepository<StudentBonTransaction>, IStudentBonTransaction
+namespace Persistence;
+
+public class StudentBonTransactionRepository : GenericRepository<StudentBonTransaction>, IStudentBonTransaction
 {
     private readonly ApplicationDbContext _dbContext;
 
-      public StudentBonTransactionRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public StudentBonTransactionRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
         _dbContext = dbContext;
-    }   
+    }
 
+    // Get all transactions
     public async Task<IList<StudentBonTransactionDto>> GetAllTransactionsAsync()
     {           
         return await _dbContext.StudentBonTransactions!
-            .Select(c => new StudentBonTransactionDto(c.Id, c.TransactionTime, (double)c.BonValue, (double)c.TotalTransactionAmount))
+            .Select(c => new StudentBonTransactionDto(
+                c.Id,
+                c.TransactionTime,
+                c.BonValue,
+                c.TotalTransactionAmount))
             .ToListAsync();
     }
 
-      public async Task<StudentBonTransactionCreationDto> AddTransactionAsync(StudentBonTransactionCreationDto transactionDto)
+    // Add a new transaction
+    public async Task<StudentBonTransactionCreationDto> AddTransactionAsync(StudentBonTransactionCreationDto transactionDto)
+    {
+        // Create a new transaction entity based on the DTO
+        var transaction = new StudentBonTransaction
         {
-            var transaction = new StudentBonTransaction
-            {
-                TransactionTime = transactionDto.TransactionTime,
-                BonValue = (decimal)transactionDto.Value,
-                TotalTransactionAmount = (decimal)transactionDto.AmountOfBon
-            };
+            StudentId = transactionDto.StudentId,   // Include StudentId
+            BonId = transactionDto.BonId,           // Include BonId
+            TransactionTime = transactionDto.TransactionTime,
+            BonValue = transactionDto.BonValue,     // Use decimal
+            TotalTransactionAmount = transactionDto.TotalTransactionAmount // Use decimal
+        };
 
-            _dbContext.StudentBonTransactions!.Add(transaction);
-            await _dbContext.SaveChangesAsync();
+        // Add and save the new transaction
+        _dbContext.StudentBonTransactions!.Add(transaction);
+        await _dbContext.SaveChangesAsync();
 
-            return transactionDto;
-        }
-
-
-
+        return transactionDto;
+    }
 }

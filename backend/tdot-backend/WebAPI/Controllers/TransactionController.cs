@@ -1,58 +1,60 @@
 using Microsoft.AspNetCore.Mvc;
-
-namespace WebAPI.Controllers;
-
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
-using Microsoft.EntityFrameworkCore;
-//using Serilog;
+using System.Threading.Tasks;
 
-[Route("api/[controller]")]
-public class TransactionController : Controller
+namespace WebAPI.Controllers
 {
-    private readonly IUnitOfWork _uow;
-    
-    public TransactionController(IUnitOfWork uow)
+    [Route("api/[controller]")]
+    [ApiController] // Fügt nützliche Features wie die automatische Validierung von Modellen hinzu
+    public class TransactionController : ControllerBase
     {
-        _uow = uow;
-    }
+        private readonly IUnitOfWork _uow;
 
-    [HttpGet]
-    public async Task<IList<TransactionDto>> GetAllTransactions()
-    {
-        
-        return await _uow.StudentBonTransactionRepository.GetAllTransactionsAsync();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddTransaction([FromBody] TransactionCreationDto transaction)
-    {
-         if (!ModelState.IsValid)
+        public TransactionController(IUnitOfWork uow)
         {
-            return BadRequest(ModelState);
+            _uow = uow;
         }
 
-        var newTransaction = new StudentBonTransaction
+        // Get all transactions
+        [HttpGet]
+        public async Task<IActionResult> GetAllTransactions()
         {
-            TransactionTime = transaction.TransactionTime,
-            Value = transaction.Value,
-            AmountOfBon = transaction.AmountOfBon
-        };
-
-        try
-        {
-            await _uow.StudentBonTransactionRepository.AddTransactionAsync(transaction);
-            //await _uow.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAllTransactions), new { id = newTransaction.Id }, transaction);
+            var transactions = await _uow.StudentBonTransactionRepository.GetAllTransactionsAsync();
+            return Ok(transactions);
         }
-        catch (Exception )
+
+        // Add a new transaction
+        [HttpPost]
+        public async Task<IActionResult> AddTransaction([FromBody] StudentBonTransactionCreationDto transactionDto)
         {
-            // Log the exception (e) here as needed
-            
-            return StatusCode(500, "Internal server error");
+            // Modellvalidierung
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Überprüfen, ob Student und Bon existieren
+            var studentExists = await _uow.StudentRepository.GetStudentWithIdAsync(transactionDto.StudentId);
+            var bonExists = await _uow.BonRepository.GetBonWithIdAsync(transactionDto.BonId);
+
+            if (!studentExists || !bonExists)
+            {
+                return NotFound("Entweder der Student oder der Bon wurde nicht gefunden.");
+            }
+
+            // Transaktion erstellen
+            try
+            {
+                await _uow.StudentBonTransactionRepository.AddTransactionAsync(transactionDto);
+                return CreatedAtAction(nameof(GetAllTransactions), new { id = transactionDto.StudentId }, transactionDto);
+            }
+            catch (Exception)
+            {
+                // Logge den Fehler hier (ex.Message)
+                return StatusCode(500, "Es gab ein Problem beim Hinzufügen der Transaktion.");
+            }
         }
     }
 }

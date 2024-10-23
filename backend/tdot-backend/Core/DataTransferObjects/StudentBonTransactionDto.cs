@@ -1,8 +1,7 @@
 using System;
-using System.Globalization;
 
 namespace Core.DataTransferObjects;
 
-public record StudentBonTransactionDto(int Id, DateTime TransactionTime, double Value, double AmountOfBon );
+public record StudentBonTransactionDto(int Id, DateTime TransactionTime, decimal BonValue, decimal TotalTransactionAmount);
 
-public record StudentBonTransactionCreationDto(DateTime TransactionTime, double Value, double AmountOfBon );
+public record StudentBonTransactionCreationDto(int StudentId, int BonId, DateTime TransactionTime, decimal BonValue, decimal TotalTransactionAmount);
