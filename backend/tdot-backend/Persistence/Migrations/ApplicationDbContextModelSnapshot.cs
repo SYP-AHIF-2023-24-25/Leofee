@@ -25,6 +25,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Entities.Bon", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("AmountPerStudent")

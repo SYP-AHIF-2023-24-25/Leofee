@@ -113,19 +113,25 @@ public class ImportController
                 AmountPerStudent = decimal.Parse(cols[0]),
                 StartDate = DateTime.Parse(cols[1]),
                 EndDate = DateTime.Parse(cols[2])
+
             }).ToList();
-        
+
         //EdufsUsername;FirstName;LastName;StudentClass;Department
+        var counter = 0; 
         var students = linesStudents
             .Skip(1)
             .Select(line => line.Split(';'))
             .Select(cols => new Student
             {
+                
                 EdufsUsername = cols[0],
                 FirstName = cols[1],
                 LastName = cols[2],
                 StudentClass = cols[3],
-                Department = cols[4]
+                Department = cols[4],
+                Id = counter++
+
+
             }).ToList();
 
         //StudentId;BonId;TransactionTime;BonValue;TotalTransactionAmount
@@ -134,8 +140,8 @@ public class ImportController
             .Select(line => line.Split(';'))
             .Select(cols => new StudentBonTransaction
             {
-                //Student = students.FirstOrDefault(t => t.Id == int.Parse(cols[0])),
-                //Bon = bons.FirstOrDefault(t => t.Id == int.Parse(cols[1])),
+                Student = students.FirstOrDefault(t => t.Id == int.Parse(cols[0])),
+                Bon = bons.FirstOrDefault(t => t.Id == int.Parse(cols[1])),
                 TransactionTime = DateTime.Parse(cols[2]),
                 BonValue = decimal.Parse(cols[3]),
                 TotalTransactionAmount = decimal.Parse(cols[4])

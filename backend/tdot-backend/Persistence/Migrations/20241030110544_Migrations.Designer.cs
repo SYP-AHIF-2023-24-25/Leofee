@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241023165424_Migrations")]
+    [Migration("20241030110544_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -28,6 +28,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Entities.Bon", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("AmountPerStudent")
