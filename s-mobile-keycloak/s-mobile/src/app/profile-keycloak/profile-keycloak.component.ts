@@ -80,6 +80,7 @@ export class ProfileKeycloakComponent {
       /*this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
         this.amountOfMoney = balance;
       });*/
+      console.log(studentId)
 
 
     this.userCredit = await this.studentService.getBalanceForStudent(studentId);

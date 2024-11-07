@@ -11,6 +11,6 @@ public class EntityObject : IEntityObject
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     
-    [Timestamp]
-    public byte[]? RowVersion { get; set; }
+    /*[Timestamp]
+    public byte[] RowVersion { get; set; }*/
 }

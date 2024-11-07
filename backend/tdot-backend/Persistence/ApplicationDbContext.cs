@@ -40,10 +40,36 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Bon>()
-           .HasOne<Student>()
-           .WithMany()
-           .HasForeignKey(b => b.Id)
-           .OnDelete(DeleteBehavior.Cascade);
+        /* modelBuilder.Entity<Student>()
+        .HasKey(e => e.Id); // Primärschlüssel festlegen
+
+         modelBuilder.Entity<Student>()
+             .Property(e => e.Id)
+             .ValueGeneratedOnAdd(); // Auto-Inkrement konfigurieren
+
+          modelBuilder.Entity<Bon>()
+            .HasOne<Student>()
+            .WithMany()
+            .HasForeignKey(b => b.Id)
+            .OnDelete(DeleteBehavior.Cascade);*/
+
+
+
+        /*base.OnModelCreating(modelBuilder);
+
+        // Definiere die Beziehungen hier
+        modelBuilder.Entity<StudentBonTransaction>()
+            .HasOne(sbt => sbt.Student)
+            .WithMany(s => s.StudentTransactions)
+            .HasForeignKey(sbt => sbt.StudentId)
+            .OnDelete(DeleteBehavior.Cascade); // Optionale Löschverhalten
+
+        modelBuilder.Entity<StudentBonTransaction>()
+            .HasOne(sbt => sbt.Bon)
+            .WithMany(b => b.BonTransactions)
+            .HasForeignKey(sbt => sbt.BonId)
+            .OnDelete(DeleteBehavior.Cascade); // Optionale Löschverhalten*/
+
+
     }
 }

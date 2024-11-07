@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241030110544_Migrations")]
+    [Migration("20241105193945_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -30,6 +30,8 @@ namespace Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AmountPerStudent")
                         .HasColumnType("decimal(65,30)");
@@ -133,15 +135,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WhiteListUsers");
-                });
-
-            modelBuilder.Entity("Core.Entities.Bon", b =>
-                {
-                    b.HasOne("Core.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.StudentBonTransaction", b =>

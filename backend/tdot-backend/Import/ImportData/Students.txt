@@ -1,5 +1,5 @@
 EdufsUsername;FirstName;LastName;StudentClass;Department
-if200107;Marcus;Rabeder;4AHIF;Informatik
-if200143;Vincents;Eichinger;4AHIF;Informatik
-if200145;Michael;Werner;4AHIF;Informatik
-if200177;Samuel;Atzlesberger;4AHIF;Informatik
+if200107;Marcus;Rabeder;4AHIF;Informatik;0
+if200143;Vincents;Eichinger;4AHIF;Informatik;1
+if200145;Michael;Werner;4AHIF;Informatik;2
+if200177;Samuel;Atzlesberger;4AHIF;Informatik;3

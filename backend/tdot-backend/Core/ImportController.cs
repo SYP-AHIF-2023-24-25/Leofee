@@ -112,26 +112,26 @@ public class ImportController
             {
                 AmountPerStudent = decimal.Parse(cols[0]),
                 StartDate = DateTime.Parse(cols[1]),
-                EndDate = DateTime.Parse(cols[2])
+                EndDate = DateTime.Parse(cols[2]),
+                // Id = int.Parse(cols[3])
 
             }).ToList();
 
         //EdufsUsername;FirstName;LastName;StudentClass;Department
-        var counter = 0; 
+        // var counter = 0; 
         var students = linesStudents
             .Skip(1)
             .Select(line => line.Split(';'))
             .Select(cols => new Student
             {
-                
+
                 EdufsUsername = cols[0],
                 FirstName = cols[1],
                 LastName = cols[2],
                 StudentClass = cols[3],
                 Department = cols[4],
-                Id = counter++
-
-
+              //  Id = int.Parse(cols[5])
+                // Id = counter++
             }).ToList();
 
         //StudentId;BonId;TransactionTime;BonValue;TotalTransactionAmount
@@ -140,8 +140,10 @@ public class ImportController
             .Select(line => line.Split(';'))
             .Select(cols => new StudentBonTransaction
             {
-                Student = students.FirstOrDefault(t => t.Id == int.Parse(cols[0])),
-                Bon = bons.FirstOrDefault(t => t.Id == int.Parse(cols[1])),
+                //Student = students.FirstOrDefault(t => t.Id == int.Parse(cols[0])),
+                StudentId = int.Parse(cols[0]),
+                // Bon = bons.FirstOrDefault(t => t.Id == int.Parse(cols[1])),
+                BonId = int.Parse(cols[1]),
                 TransactionTime = DateTime.Parse(cols[2]),
                 BonValue = decimal.Parse(cols[3]),
                 TotalTransactionAmount = decimal.Parse(cols[4])
@@ -152,7 +154,7 @@ public class ImportController
             transaction.Student = students.SingleOrDefault(s => s.Id == transaction.StudentId);
             transaction.Bon = bons.SingleOrDefault(b => b.Id == transaction.BonId);
         }*/
-        transactions.Select(student => {
+       /* transactions.Select(student => {
             student.Student = students.FirstOrDefault(s => s.Id == student.StudentId);
             //student.Bon = bons.FirstOrDefault(b => b.Id == student.BonId);
             return student;
@@ -162,7 +164,7 @@ public class ImportController
             oneBon.Bon = bons.FirstOrDefault(s => s.Id == oneBon.BonId);
             //student.Bon = bons.FirstOrDefault(b => b.Id == student.BonId);
             return oneBon;
-        });
+        });*/
 
         return new ImportData{
             Bons = bons,
