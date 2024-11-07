@@ -22,13 +22,13 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     await uow.MigrateDatabaseAsync();
    
 }
-/*
+
 Console.WriteLine("Read data from file ...");
 var students = await ImportController.ReadStudentsAsync();
 Console.WriteLine($"- {students.Count} Students read");
 
 var bons = await ImportController.ReadBonsAsync();
-Console.WriteLine($"- {bons.Count} bons read");*/
+Console.WriteLine($"- {bons.Count} bons read");
 
 var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
 Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
@@ -37,7 +37,7 @@ Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
 //var transactions = await ImportController.ReadTransactionsAsync();
 //Console.WriteLine($"- {transactions.Count} transaction read");
 
-var data = await ImportController.ReadAllTogetherAsync();
+var bontransaction = await ImportController.ReadAllTogetherAsync(students.ToList(), bons.ToList());
 
 Console.WriteLine("Saving to database ...");
 
@@ -45,21 +45,24 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
 {
    
 
+    /*
+    await uow.StudentRepository.AddRangeAsync(students);
+    await uow.SaveChangesAsync(); 
 
-    await uow.StudentRepository.AddRangeAsync(data.Students);
-    await uow.SaveChangesAsync(); // Speichere sofort, um die Fremdschlüsselbeziehung sicherzustellen
 
-    // Dann Bons einfügen
-    await uow.BonRepository.AddRangeAsync(data.Bons);
-    await uow.SaveChangesAsync();
+    await uow.BonRepository.AddRangeAsync(bons);
+    await uow.SaveChangesAsync();*/
 
-    // Danach WhiteListUsers einfügen
+
     await uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
     await uow.SaveChangesAsync();
 
+  
+    
 
-    // Zuletzt StudentBonTransactions einfügen
-    await uow.StudentBonTransactionRepository.AddRangeAsync(data.StudentBonTransactions);
+
+
+    await uow.StudentBonTransactionRepository.AddRangeAsync(bontransaction);
     await uow.SaveChangesAsync();
 }
 /*

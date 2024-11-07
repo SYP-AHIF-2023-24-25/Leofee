@@ -24,7 +24,7 @@ export class RestService {
   }
 
   getStudentById(id: string): Observable<Student> {
-    return this.http.get<Student>(this.baseUrlLeofeeBackend+ "api/Student/" + id);
+    return this.http.get<Student>(this.baseUrlLeofeeBackend+ "api/Students/id/" + id);
   }
 
   async saveBookings(buffet: IBuffet, bonBooking: BonBooking) {    

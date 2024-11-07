@@ -100,6 +100,7 @@ export class KassaComponent implements OnInit {
 
     let student: Student;
     try {
+      console.log(studentID);
       student = await lastValueFrom(this.restService.getStudentById(studentID));
     } catch (error) {
       

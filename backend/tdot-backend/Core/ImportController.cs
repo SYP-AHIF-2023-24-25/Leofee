@@ -23,9 +23,10 @@ public class ImportController
             {
                 AmountPerStudent = decimal.Parse(cols[0]),
                 StartDate = DateTime.Parse(cols[1]),
-                EndDate = DateTime.Parse(cols[2])
+                EndDate = DateTime.Parse(cols[2]),
+
             }).ToList();
-        
+
         return bons;
     }
 
@@ -42,7 +43,7 @@ public class ImportController
                 FirstName = cols[1],
                 LastName = cols[2],
                 StudentClass = cols[3],
-                Department = cols[4]
+                Department = cols[4],
             }).ToList();
 
         return students;
@@ -98,22 +99,21 @@ public class ImportController
     }
 
 
-    public async static Task<ImportData> ReadAllTogetherAsync()
+    public async static Task<IList<StudentBonTransaction>> ReadAllTogetherAsync(List<Student> students, List<Bon> bons)
     {
-        var linesBons = await File.ReadAllLinesAsync("ImportData/Bons.txt");
-        var linesStudents = await File.ReadAllLinesAsync("ImportData/Students.txt");
+        //var linesBons = await File.ReadAllLinesAsync("ImportData/Bons.txt");
+        //var linesStudents = await File.ReadAllLinesAsync("ImportData/Students.txt");
         var linesTransactions = await File.ReadAllLinesAsync("ImportData/Transaction.txt");
 
         //AmountPerStudent;StartDate;EndDate
-        var bons = linesBons
+       /* var bons = linesBons
             .Skip(1)
             .Select((line) => line.Split(';'))
             .Select(cols => new Bon
             {
                 AmountPerStudent = decimal.Parse(cols[0]),
                 StartDate = DateTime.Parse(cols[1]),
-                EndDate = DateTime.Parse(cols[2]),
-                // Id = int.Parse(cols[3])
+                EndDate = DateTime.Parse(cols[2]),             
 
             }).ToList();
 
@@ -124,52 +124,27 @@ public class ImportController
             .Select(line => line.Split(';'))
             .Select(cols => new Student
             {
-
                 EdufsUsername = cols[0],
                 FirstName = cols[1],
                 LastName = cols[2],
                 StudentClass = cols[3],
-                Department = cols[4],
-              //  Id = int.Parse(cols[5])
-                // Id = counter++
-            }).ToList();
+                Department = cols[4],              
+            }).ToList();*/
 
         //StudentId;BonId;TransactionTime;BonValue;TotalTransactionAmount
         var transactions = linesTransactions
             .Skip(1)
             .Select(line => line.Split(';'))
             .Select(cols => new StudentBonTransaction
-            {
-                //Student = students.FirstOrDefault(t => t.Id == int.Parse(cols[0])),
-                StudentId = int.Parse(cols[0]),
-                // Bon = bons.FirstOrDefault(t => t.Id == int.Parse(cols[1])),
-                BonId = int.Parse(cols[1]),
+            {                
+                Student =  students.FirstOrDefault(s => s.EdufsUsername == cols[0])!,                
+                Bon = bons.FirstOrDefault(s => s.Id == int.Parse(cols[1]))!,
                 TransactionTime = DateTime.Parse(cols[2]),
                 BonValue = decimal.Parse(cols[3]),
                 TotalTransactionAmount = decimal.Parse(cols[4])
             }).ToList();
-        
-        /*foreach (var transaction in transactions)
-        {
-            transaction.Student = students.SingleOrDefault(s => s.Id == transaction.StudentId);
-            transaction.Bon = bons.SingleOrDefault(b => b.Id == transaction.BonId);
-        }*/
-       /* transactions.Select(student => {
-            student.Student = students.FirstOrDefault(s => s.Id == student.StudentId);
-            //student.Bon = bons.FirstOrDefault(b => b.Id == student.BonId);
-            return student;
-        });
 
-        transactions.Select(oneBon => {
-            oneBon.Bon = bons.FirstOrDefault(s => s.Id == oneBon.BonId);
-            //student.Bon = bons.FirstOrDefault(b => b.Id == student.BonId);
-            return oneBon;
-        });*/
 
-        return new ImportData{
-            Bons = bons,
-            Students = students,
-            StudentBonTransactions = transactions
-        };
+        return transactions;
     }
 }
