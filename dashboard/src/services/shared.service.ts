@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { WhiteListServiceService } from './white-list-service.service';
 import { createLeoUser, LeoUser } from 'src/core/util/leo-token';
+import { WhiteListUser } from 'src/app/model/white-list-user';
 
 @Injectable({
   providedIn: 'root'

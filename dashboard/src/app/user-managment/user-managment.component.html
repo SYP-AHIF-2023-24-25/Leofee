@@ -1,52 +1,3 @@
-<!-- 
-<h1>whiteListUser-Management</h1>
-<div class="table-container">
-    <div>
-        <form>
-            <h3>Add User</h3>
-            <label>UserId</label>
-            <input class="form-control" type="text" [(ngModel)]="userIdInput" name="userIdInput" required title="User ID" placeholder="Enter User ID">
-            <br/>
-            <label>FirstName</label>
-            <input class="form-control" type="text" [(ngModel)]="firstNameInput" name="firstNameInput" required title="First Name" placeholder="Enter First Name">
-            <br/>
-            <label>LastName</label>
-            <input class="form-control" type="text" [(ngModel)]="lastNameInput" name="lastNameInput" required title="Last Name" placeholder="Enter Last Name">
-            <br>
-            <br>
-            <button class="btn btn-primary" (click)="addUser()">add user</button>
-        </form>
-        <br>
-        <br>
-        <form>
-          <h3>Delete User</h3>
-          <Label>UserId</Label>
-          <input class="form-control" type="text" [(ngModel)]="deleteUserId" name="deleteUserId" required title="User ID" placeholder="Enter User ID">
-          <br>
-          <br>
-          <button class="btn btn-primary" (click)="deleteUser()">delete user</button>
-        </form>
-    </div>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>UserId</th>
-          <th>FirstName</th>
-          <th>LastName</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let whiteListUser of _whiteListUsers; let i = index">
-            <td>{{i + 1}}</td>
-            <td>{{whiteListUser.userId}}</td>
-            <td>{{whiteListUser.firstName}}</td>
-            <td>{{whiteListUser.lastName}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-   -->
 
 
 <h1>whiteListUser-Management</h1>
@@ -87,6 +38,7 @@
           <th>UserId</th>
           <th>FirstName</th>
           <th>LastName</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -95,6 +47,9 @@
             <td>{{whiteListUser.userId}}</td>
             <td>{{whiteListUser.firstName}}</td>
             <td>{{whiteListUser.lastName}}</td>
+            <td>
+              <button ((click)="deleteUser()")></button>
+            </td>
         </tr>
       </tbody>
     </table>

@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Input User</h1>
+<div mat-dialog-content>#
+    <form [formGroup]="form">
+        <mat-form-field class="full-width">
+            <mat-label>UserId</mat-label>
+            <input matInput formControlName="userId" required>
+            <mat-error *ngIf="form.controls['userId'].hasError('required')">
+                User-Id cannot be empty!
+            </mat-error>
+            <mat-error *ngIf="form.controls['userId'].hasError('minLength')">
+                User-Id needs a length of 2 characters at least!
+            </mat-error>
+            <mat-error *ngIf="form.controls['userId'].hasError('maxLength')">
+                User-Id needs to be less than 50 characters
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>UserId</mat-label>
+            <input matInput formControlName="firstName" required>
+            <mat-error *ngIf="form.controls['firstName'].hasError('required')">
+                First-name cannot be empty!
+            </mat-error>
+            <mat-error *ngIf="form.controls['userId'].hasError('minLength')">
+                First-name needs a length of 2 characters at least!
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>UserId</mat-label>
+            <input matInput formControlName="firstName" required>
+            <mat-error *ngIf="form.controls['firstName'].hasError('required')">
+                Last-name cannot be empty!
+            </mat-error>
+            <mat-error *ngIf="form.controls['userId'].hasError('minLength')">
+                Last-name needs a length of 2 characters at least!
+            </mat-error>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Abbrechen</button>
+    <button mat-button (click)="addUserInDialog()" [disabled]="form.invalid">Speichern</button>
+  </div>

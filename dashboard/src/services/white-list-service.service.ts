@@ -48,7 +48,7 @@ export class WhiteListServiceService {
     return addedUser;
   }
 
-  checkIfUserIsWhiteListed(userId: any): Promise<boolean> {
+  public checkIfUserIsWhiteListed(userId: any): Promise<boolean> {
     console.log('checkIfUserIsWhiteListed()');
     let returnValue: boolean = false;
     let headers: HttpHeaders = new HttpHeaders();
@@ -63,5 +63,15 @@ export class WhiteListServiceService {
     })
     
     return lastValueFrom(isWhiteListed);
+  }
+
+  public checkIfUserIsValid(newUser: WhiteListUser): boolean {
+
+    if (!(newUser.userId === '' && newUser.firstName === '' && newUser.lastName === '')) {
+      console.log("User is valid");
+      return true;
+    }
+    console.log("User is not valid");
+    return false;
   }
 }
