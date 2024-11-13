@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { last, lastValueFrom } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { SharedService } from 'src/services/shared.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogRef } from '@angular/cdk/dialog';
 
 
@@ -36,26 +36,40 @@ export class UserManagementComponent {
       console.log(this._whiteListUsers[i]);
     }
   }
+
   public addUser() {
     const dialogRef = this.addUserDialog.open(AddUserDialog, {
       width: "300px",
-      height: "230px"
+      height: "430px"
     });
-    
     dialogRef.afterClosed().subscribe({
       next: msg => console.log(msg),
       error: err => console.log('Error: ' + err),
       complete: () => this.ngOnInit()
     });
   }
-  async deleteUser() {
-    await this.whiteListService.deleteWhiteListUser(this.deleteUserId).subscribe({
+
+  async callDeleteUser(whiteListUser: any) {
+    // create dialog
+    const dialogRef = this.addUserDialog.open(ConfirmationWindow, {
+      width: "200px",
+      height: "200px",
+      data: {title: 'Willst du diesen Benutzer wirklich löschen?'}
+    });
+    await dialogRef.afterClosed().subscribe(result => {
+      if(result == true){
+        this.deleteUserFromWhiteList(whiteListUser);
+      }
+    });
+  }
+
+  private async deleteUserFromWhiteList(whiteListUser: any){
+    await this.whiteListService.deleteWhiteListUser(whiteListUser.userId).subscribe({
       next: msg => console.log(msg),
       error: err => console.error('Observer got an error: ' + err),
       complete: () => this.ngOnInit()
     });
   }
-
 }
 
 @Component({
@@ -70,7 +84,7 @@ export class AddUserDialog {
     private matDialog: MatDialogRef<AddUserDialog>,
     private whiteListService: WhiteListServiceService,
     private sharedService: SharedService
-  ){
+  ) {
     this.form = this.fb.group({
       userId: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       firstName: ['', [Validators.minLength(2)]],
@@ -92,26 +106,31 @@ export class AddUserDialog {
         error: err => console.error('Observer got an error: ' + err),
         complete: () => this.matDialog.close(newUser)
       });
-      location.reload();
     }
   }
 
   public closeDialog(){
-    const confirmationDialog: MatDialog = Inject(MatDialog);
-    const dialogRef = confirmationDialog.open(ConfirmationWindow, {
-      width : "500px",
-      height: "200px"
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.leaveScreen(result);
-    });
+    // let result: boolean = this.callConfirmationDialog('Willst du das Benutzer-hinzufügen Fenster wirklich verlassen?');
+    // if(result) {
+    //   this.matDialog.close();
+    // }
+    this.matDialog.close();
   }
 
-  private leaveScreen(userResult: boolean) {
-    if(userResult){
-      this.matDialog.close();
-    }
-  }
+  // private callConfirmationDialog(title: string): boolean {
+  //   const confirmationDialog: MatDialog = Inject(MatDialog);
+  //   const dialogRef = confirmationDialog.open(ConfirmationWindow, {
+  //     width : "500px",
+  //     height: "200px",
+  //     data: {title: 'Willst diesen Benutzer wirklich hinzufügen?'}
+  //   });
+  //   let userResult: boolean = false;
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     userResult = result;
+  //     console.log(result);
+  //   });
+  //   return userResult;
+  // }
 }
 
 @Component({
@@ -119,7 +138,9 @@ export class AddUserDialog {
   templateUrl: './ConfirmationWindow.html'
 })
 export class ConfirmationWindow {
-  constructor(private privateDialogRef: MatDialogRef<ConfirmationWindow>){
+  constructor(
+    private privateDialogRef: MatDialogRef<ConfirmationWindow>,
+    @Inject(MAT_DIALOG_DATA) public data: { title: string }){
   }
 
   public decline(){
