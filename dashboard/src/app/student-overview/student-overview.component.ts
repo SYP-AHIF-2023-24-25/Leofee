@@ -80,10 +80,6 @@ export class StudentOverviewComponent {
     dialogRef.afterClosed().subscribe(result => {     
        location.reload();
     });
-
-     
-
-    
   }
   async deleteStudentFromList(lastName:string, firstName:string){
     
@@ -310,8 +306,6 @@ export class ImportDialog{
         }
       };
       reader.readAsText(this._selectedFile);  
-      
-     
     }
 
 
@@ -324,7 +318,6 @@ export class ImportDialog{
   }
 
   close(): void {
-    
     this.dialogRef.close(); 
       
   }
