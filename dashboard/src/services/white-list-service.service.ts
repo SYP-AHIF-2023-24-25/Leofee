@@ -13,7 +13,6 @@ export class WhiteListServiceService {
     this.baseURL = environment.httpUrlLeofeeBackend + 'api/WhiteListUser';
   }
   
-  
   getAllWhiteListUsers(): Observable<WhiteListUser[]> {
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.get<WhiteListUser[]>(

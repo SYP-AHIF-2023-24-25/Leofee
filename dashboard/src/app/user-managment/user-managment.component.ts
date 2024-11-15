@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, FormsModule, NgModel, Validators } from '@angular/forms';
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { WhiteListUser } from '../model/white-list-user';
 import { RestService } from 'src/services/rest.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
@@ -17,7 +17,7 @@ import { DialogRef } from '@angular/cdk/dialog';
   templateUrl: './user-managment.component.html',
   styleUrl: './user-managment.component.css'
 })
-export class UserManagementComponent {
+export class UserManagementComponent implements OnInit{
   deleteUserId: string = '';
   userIdInput: string = '';
   firstNameInput: string = '';
@@ -25,12 +25,16 @@ export class UserManagementComponent {
 
   _whiteListUsers: WhiteListUser[] = [];
 
-  constructor(public whiteListService: WhiteListServiceService, private sharedService: SharedService,
+  constructor(
+    public whiteListService: WhiteListServiceService,
+    private sharedService: SharedService, 
+    private keyCloakService: KeycloakService,
     private addUserDialog: MatDialog) {
-    const localKeycloakService: KeycloakService = inject(KeycloakService);
-    sharedService.accessAuthShared(localKeycloakService, whiteListService);
+
+    sharedService.accessAuthShared(keyCloakService, whiteListService);
   }
   public async ngOnInit() {
+    this.sharedService.accessAuthShared(this.keyCloakService, this.whiteListService);
     this._whiteListUsers = await lastValueFrom(this.whiteListService.getAllWhiteListUsers());
     for (let i = 0; i < this._whiteListUsers.length; i++) {
       console.log(this._whiteListUsers[i]);
@@ -64,6 +68,7 @@ export class UserManagementComponent {
   }
 
   private async deleteUserFromWhiteList(whiteListUser: any){
+    this.ngOnInit();
     await this.whiteListService.deleteWhiteListUser(whiteListUser.userId).subscribe({
       next: msg => console.log(msg),
       error: err => console.error('Observer got an error: ' + err),
@@ -101,6 +106,7 @@ export class AddUserDialog {
       lastName: this.form.value.lastName
     }
     if(this.form.valid){
+      this.accessChecker()
       await this.whiteListService.addWhiteListUser(newUser).subscribe({
         next: msg => console.log(msg),
         error: err => console.error('Observer got an error: ' + err),
@@ -108,7 +114,10 @@ export class AddUserDialog {
       });
     }
   }
-
+  private accessChecker(){
+    const keycloakService: KeycloakService = inject(KeycloakService);
+    this.sharedService.accessAuthShared(keycloakService, this.whiteListService);
+  }
   public closeDialog(){
     // let result: boolean = this.callConfirmationDialog('Willst du das Benutzer-hinzufügen Fenster wirklich verlassen?');
     // if(result) {

@@ -6,6 +6,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
+import { SharedService } from 'src/services/shared.service';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { KeycloakService } from 'keycloak-angular';
 
 
 @Component({
@@ -23,11 +26,17 @@ export class StudentOverviewComponent {
 
   constructor(public restService: RestService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private sharedService: SharedService,
+    private whiteListService: WhiteListServiceService,
+    private keyCloakService: KeycloakService
   ) {
+    sharedService.accessAuthShared(keyCloakService, whiteListService);
   }
 
  async ngOnInit() {
+    this.sharedService.accessAuthShared(this.keyCloakService, this.whiteListService);
+
     this._students = await lastValueFrom(this.restService.getStudents());
     this.filteredStudents = this._studentsWithBalance;
   
@@ -70,8 +79,6 @@ export class StudentOverviewComponent {
  
   importStudents(): void {
 
-
- 
     const dialogRef = this.dialog.open(ImportDialog, {
       width: '450px',
       height: '240px'
