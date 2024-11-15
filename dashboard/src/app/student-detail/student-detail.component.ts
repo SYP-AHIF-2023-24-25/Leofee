@@ -5,6 +5,9 @@ import { RestService } from 'src/services/rest.service';
 import { Student } from '../model/student';
 import { lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SharedService } from 'src/services/shared.service';
+import { KeycloakService } from 'keycloak-angular';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
 
 @Component({
   selector: 'app-student-detail',
@@ -15,7 +18,13 @@ export class StudentDetailComponent {
   student: Student|undefined;
   balance: number|undefined;
   usedValue: number|undefined = 0;
-  constructor(private route: ActivatedRoute, private router: Router,public restService: RestService) {}
+  constructor(private route: ActivatedRoute, private router: Router,public restService: RestService,
+    sharedService: SharedService,
+    keyCloakService: KeycloakService,
+    whiteListService: WhiteListServiceService
+  ) {
+    sharedService.accessAuthShared(keyCloakService, whiteListService);
+  }
 
   async ngOnInit() {
     const studentIdString = this.route.snapshot.paramMap.get('id');
