@@ -51,7 +51,8 @@ public class BonsController : Controller
         {
             AmountPerStudent = bonDto.AmountPerStudent,
             StartDate = bonDto.StartDate,
-            EndDate = bonDto.EndDate
+            EndDate = bonDto.EndDate,
+            BonTransactions = []
         };
         try
         {

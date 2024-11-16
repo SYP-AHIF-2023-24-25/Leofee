@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 public class StudentsController : Controller
 {
     private readonly IUnitOfWork _uow;
-    
+
     public StudentsController(IUnitOfWork uow)
     {
         _uow = uow;
@@ -27,29 +27,31 @@ public class StudentsController : Controller
 
     [HttpGet("{studentId}/bons")]
     public async Task<ActionResult<IList<BonDto>>> GetBonsForStudent(string studentId)
-    {        
+    {
+        /*
         var studentExists = await _uow.StudentRepository.StudentExistsAsync(studentId);
         if (!studentExists)
         {
             return NotFound($"There exists no student with id {studentId}!");
         }
-        var bonEntities = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
+        var bonEntities = await _uow.BonRepository.GetCurrentBon();
 
         var bonDtos = bonEntities
             .Select(b => new BonDto(
                 b.Id,
-                studentId,
+               
                 b.StartDate,
                 b.EndDate,
-                b.TotalBonValue,
+                b.transactions,
                 b.AmountPerStudent))
-            .ToList();
-        return Ok(bonDtos);
+            .ToList();*/
+            await  _uow.BonRepository.GetCurrentBon();
+        return Ok();
     }
 
     [HttpGet("id/{studentId}")]
     public async Task<ActionResult<StudentDto?>> GetStudentByEdufsUserId(string studentId)
-    { 
+    {
         var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
         if (studentEntity == null)
         {
@@ -60,7 +62,7 @@ public class StudentsController : Controller
 
     [HttpGet("{Id}")]
     public async Task<ActionResult<StudentDto?>> GetStudentById(int id)
-    { 
+    {
         var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(id);
         if (studentEntity == null)
         {
@@ -79,22 +81,45 @@ public class StudentsController : Controller
         }
         _uow.StudentRepository.Remove(result);
         await _uow.SaveChangesAsync();
-        return Ok(new StudentDto(result.EdufsUsername, result.FirstName, result.LastName, result.StudentClass));        
+        return Ok(new StudentDto(result.EdufsUsername, result.FirstName, result.LastName, result.StudentClass));
     }
 
     [HttpGet("{studentId}/balance")]
-    public async Task<double> GetBalanceForStudentById(string studentId)
-    {
+    public async Task<ActionResult<decimal>> GetBalanceForStudentById(string studentId)
+    {/*
         try
         {
             var bons = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
             var result = bons.Sum(b => b.AmountPerStudent);
             return (double)result;
-        } 
+        }
         catch (Exception)
         {
             return -1;
+        }*/
+
+        var currentBon = await _uow.BonRepository.GetCurrentBon();
+
+        //aktuellen Bon holen 
+        if (currentBon is not null)
+        {
+            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (currentStudent is not null)
+            {
+                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
+                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
+                
+                var balance =  currentBon.AmountPerStudent - allTransactionsAmountForBonForStudent ;  
+                if(balance < 0)
+                {
+                    balance = 0; 
+                }
+
+                return Ok(balance);
+
+            }
         }
+        return NotFound();
     }
 
     [HttpPost]
@@ -117,7 +142,7 @@ public class StudentsController : Controller
             await _uow.SaveChangesAsync();
         }
         catch (ValidationException e)
-        {            
+        {
             return BadRequest($"data base error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
@@ -128,24 +153,55 @@ public class StudentsController : Controller
     }
 
     [HttpPost("/student/pay")]
-    
+
     public async Task<IActionResult> Pay(double amount, string studentId)
-    {        
-        var result = await _uow.StudentRepository.PayAsync(studentId, amount);
-        await _uow.SaveChangesAsync();
-        return Ok(result);      
+    {
+        var currentBon = await _uow.BonRepository.GetCurrentBon();
+        var result = false;
+        //aktuellen Bon holen 
+        if (currentBon is not null)
+        {
+            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (currentStudent is not null)
+            {
+                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
+                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
+
+                if ((allTransactionsAmountForBonForStudent + (decimal)amount) <= currentBon.AmountPerStudent)
+                {
+                    StudentBonTransaction transaction = new StudentBonTransaction();
+                    transaction.BonId = currentBon.Id;
+                    transaction.StudentId = currentStudent.Id;
+                    transaction.TotalTransactionAmount = (decimal)amount;
+                    transaction.BonValue = currentBon.AmountPerStudent;
+                    transaction.TransactionTime = DateTime.Now;
+
+                    await _uow.StudentBonTransactionRepository.AddAsync(transaction);
+                    await _uow.SaveChangesAsync();
+                    result = true;
+                }
+            }
+        }
+        return Ok(result);
     }
 
     [HttpGet("{studentId}/usedValue")]
     public async Task<ActionResult<decimal>> GetUsedValueForStudent(string studentId)
-    {
-        var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-        if (studentEntity == null)
+    {        
+        var currentBon = await _uow.BonRepository.GetCurrentBon();
+
+        //aktuellen Bon holen 
+        if (currentBon is not null)
         {
-            return NotFound();
+            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (currentStudent is not null)
+            {
+                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
+                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
+                return Ok(allTransactionsAmountForBonForStudent);
+
+            }
         }
-        var bonsForStudent = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
-        var usedValue = bonsForStudent.Sum(b => b.TotalBonValue);
-        return Ok(usedValue);
+        return NotFound();
     }
 }

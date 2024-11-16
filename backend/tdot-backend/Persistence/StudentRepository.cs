@@ -75,7 +75,10 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
                 .OrderBy(t => t.Bon!.EndDate)
                 .ToList();
 
+            //var fullValue = validBons.Sum(t => t.Bon!.AmountPerStudent - t.BonValue);
             var fullValue = validBons.Sum(t => t.Bon!.AmountPerStudent - t.BonValue);
+
+
             if ((decimal)amountToDeduct > fullValue)
             {
                 return false;

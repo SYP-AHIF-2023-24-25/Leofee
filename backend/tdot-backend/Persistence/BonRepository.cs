@@ -21,11 +21,10 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
     var bonDtos = await _dbContext.Bons!
         .Include(b => b.BonTransactions)
         .Select(c => new BonDto(
-            c.Id, 
-            c.BonTransactions.FirstOrDefault()!.StudentId.ToString(), 
+            c.Id,            
             c.StartDate, 
             c.EndDate, 
-            c.BonTransactions.Sum(t => t.BonValue), 
+            c.BonTransactions,
             c.AmountPerStudent))
         .ToListAsync();
     return bonDtos;
@@ -42,13 +41,13 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
             return null;
         }
         return new BonDto(
-            bon.Id,
-            bon.BonTransactions.FirstOrDefault()!.StudentId.ToString(),
+            bon.Id,            
             bon.StartDate,
             bon.EndDate,
-            bon.BonTransactions.Sum(t => t.BonValue),
+            bon.BonTransactions,           
             bon.AmountPerStudent);
     }  
+    /*
     public async Task<IList<BonDto>> GetBonsForStudentAsync(string studentId)
     {
         var bons = await _dbContext.Bons!
@@ -58,15 +57,14 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
 
         return bons
             .Select(b => new BonDto(
-                b.Id, 
-                studentId, 
+                b.Id,                
+                b.EndDate,                   
                 b.StartDate, 
-                b.EndDate, 
-                b.BonTransactions.Sum(t => t.BonValue), 
+                b.BonTransactions,                          
                 b.AmountPerStudent))
             .OrderBy(b => b.StartDate)
             .ToList();
-    }
+    }*/
     public async Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto)
     {
         var bon = await _dbContext.Bons!
@@ -76,9 +74,18 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
         {
             bon.StartDate = updateBonDto.StartDate;
             bon.EndDate = updateBonDto.EndDate;
-            bon.AmountPerStudent = (decimal)updateBonDto.TotalBonValue;
+            bon.AmountPerStudent = (decimal)updateBonDto.AmountPerStudent;
             await _dbContext.SaveChangesAsync();
         }
         return updateBonDto;
+    }
+
+    public async Task<Bon?> GetCurrentBon()
+    {
+        var currentBon = await _dbContext.Bons!.FirstOrDefaultAsync(bon => bon.EndDate >= DateTime.Now && bon.StartDate <= DateTime.Now);
+
+        return currentBon;
+       
+
     }
 }

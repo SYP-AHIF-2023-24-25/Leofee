@@ -22,7 +22,7 @@ export class RestService {
     getStudents(): Observable<Student[]> {
         let headers: HttpHeaders = new HttpHeaders();
         return this.http.get<Student[]>(
-          this.baseURL + "api/Student",
+          this.baseURL + "api/Students",
             {headers});
     }
 
@@ -30,14 +30,14 @@ export class RestService {
     deleteStudent(id: String): Observable<void> {
         let headers: HttpHeaders = new HttpHeaders();
         return this.http.delete<any>(
-          this.baseURL +"api/Student/" + id,
+          this.baseURL +"api/Students/" + id,
             {headers});
     }
 
     getStudentBalance(id: String): Observable<number> {
         let headers: HttpHeaders = new HttpHeaders();       
         return this.http.get<any>(
-          this.baseURL+ "api/Student/"+ id+"/balance",
+          this.baseURL+ "api/Students/"+ id+"/balance",
             {headers});
     }
 
@@ -46,7 +46,7 @@ export class RestService {
       let headers: HttpHeaders = new HttpHeaders();
     
       return this.http.get<Bons[]>(
-        this.baseURL+ "api/Student/"+ id + "/bons" ,
+        this.baseURL+ "api/Students/"+ id + "/bons" ,
           {headers});
 
     }
@@ -54,12 +54,15 @@ export class RestService {
     getStudentUsedValue(id: String): Observable<number> {
       let headers: HttpHeaders = new HttpHeaders();       
       return this.http.get<number>(
-        this.baseURL+ "api/Student/"+ id+"/usedValue",
+        this.baseURL+ "api/Students/"+ id+"/usedValue",
           {headers});
     }
 
+    //http://localhost:5015/api/Student
+    //http://localhost:5015/api/Students/id/if200145
+    //http://localhost:5015/api/Students/id/if200145
     addStudent(student: Student): Observable<any> {
-      const url =  this.baseURL + `api/Student`;
+      const url =  this.baseURL + `api/Students`;
       const headers: HttpHeaders = new HttpHeaders();
       return this.http.post<any>(url, student, { headers });
     }
@@ -102,7 +105,7 @@ export class RestService {
 
     }
     getStudentWithID(id: String): Observable<Student> {
-      const url = `${this.baseURL}api/Student/${id}?studentId=${id}`;
+      const url = `${this.baseURL}api/Students/id/${id}`;
       const headers: HttpHeaders = new HttpHeaders({
         'accept': 'text/plain'
       });

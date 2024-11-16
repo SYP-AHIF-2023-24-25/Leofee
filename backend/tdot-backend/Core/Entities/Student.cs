@@ -20,8 +20,5 @@ public class Student : EntityObject
 
     public string Department { get; set; } = string.Empty;
 
-    public List<StudentBonTransaction> StudentTransactions { get; set; } = [];
-
-
-    
+    public List<StudentBonTransaction> StudentTransactions { get; set; } = [];    
 }
