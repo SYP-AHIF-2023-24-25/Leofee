@@ -88,7 +88,8 @@ export class AddUserDialog {
     private fb: FormBuilder,
     private matDialog: MatDialogRef<AddUserDialog>,
     private whiteListService: WhiteListServiceService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private keyCloakService: KeycloakService
   ) {
     this.form = this.fb.group({
       userId: ['', [Validators.minLength(2), Validators.maxLength(50)]],
@@ -111,12 +112,12 @@ export class AddUserDialog {
         next: msg => console.log(msg),
         error: err => console.error('Observer got an error: ' + err),
         complete: () => this.matDialog.close(newUser)
-      });
+});
     }
   }
   private accessChecker(){
-    const keycloakService: KeycloakService = inject(KeycloakService);
-    this.sharedService.accessAuthShared(keycloakService, this.whiteListService);
+    console.log("drinnen")
+    this.sharedService.accessAuthShared(this.keyCloakService, this.whiteListService);
   }
   public closeDialog(){
     // let result: boolean = this.callConfirmationDialog('Willst du das Benutzer-hinzufügen Fenster wirklich verlassen?');
