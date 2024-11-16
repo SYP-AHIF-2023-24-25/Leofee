@@ -35,7 +35,7 @@ export class StudentOverviewComponent {
   }
 
  async ngOnInit() {
-    this.sharedService.accessAuthShared(this.keyCloakService, this.whiteListService);
+    //this.sharedService.accessAuthShared(this.keyCloakService, this.whiteListService);
 
     this._students = await lastValueFrom(this.restService.getStudents());
     this.filteredStudents = this._studentsWithBalance;
