@@ -81,10 +81,7 @@ export class ProfileKeycloakComponent {
         this.amountOfMoney = balance;
       });*/
 
-
     this.userCredit = await this.studentService.getBalanceForStudent(studentId);
-    
-
     this.qrCodeData.set(`${studentId}`);
 
   }

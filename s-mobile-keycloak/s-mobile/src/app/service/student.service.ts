@@ -8,7 +8,10 @@ import { RestService } from './rest.service';
 })
 export class StudentService {
 
+  //baseURL wenn local!
+
   private baseUrl = 'http://localhost:5015'; // Change this according to your backend URL
+  private htlLeondingUrl = 'https://vm64.htl-leonding.ac.at/'; 
 
   constructor(private http: HttpClient, 
     private restService: RestService
@@ -16,16 +19,16 @@ export class StudentService {
 
   // Example GET-Request
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/data`);
+    return this.http.get<any>(`${this.htlLeondingUrl}/data`);
   }
 
   // Example POST-Request
   postData(data: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/data`, data);
+    return this.http.post<any>(`${this.htlLeondingUrl}/data`, data);
   }
   // Method to retrieve student data by ID
   getStudentDataById(studentId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/students/${studentId}`);
+    return this.http.get<any>(`${this.htlLeondingUrl}/students/${studentId}`);
   }
 
   // Methode zum Abrufen des Guthabens eines Studenten anhand seiner ID
