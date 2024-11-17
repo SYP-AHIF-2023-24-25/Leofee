@@ -1,32 +1,4 @@
 <div class="container mt-4">
-
-  <br>
-  <br>
-  <br>
-  <div class="container-fluid">
-    <div class="d-flex justify-content-between">
-        <div id="addStudents" class="d-flex flex-column align-items-center">
-          <h1 class="d-flex">Import/Export Students</h1>
-          <div class="d-flex justify-content-between mb-3">
-            <button class="btn btn-primary" (click)="importStudents()">Import Students</button>
-            <button class="btn btn-primary" (click)="exportToCSV()">Export CSV</button>
-          </div>
-        </div>
-        <div id="manageStudents" class="d-flex flex-column align-items-center">
-          <h1>Manage Students</h1>
-          <div class="d-flex justify-content-between w-100">
-            <button class="btn btn-primary" (click)="AddStudent()">Add Student</button>   
-            <button class="btn btn-danger" (click)="deleteAllStudents()">Delete All Students</button> 
-          </div>
-        </div>        
-    </div>
-  </div>
-  
-
-
-  <br>
-  <br>
-
   <div class="container-fluid mt-4">
     <div class="row w-100">      
       <div class="col-md-12 d-flex justify-content-between align-items-center">
@@ -34,46 +6,65 @@
           <mat-form-field appearance="fill" class="mb-3">
             <mat-label>Sortieren</mat-label>
             <mat-select (selectionChange)="onFilterChange($event)">
+              <mat-option value="all">Alle</mat-option>
               <mat-option value="lastname">Nachname</mat-option>
               <mat-option value="class">Klasse</mat-option>
+              <mat-option value="inf">Informatik</mat-option>
+              <mat-option value="medientechnik">Medientechnik</mat-option>
+              <mat-option value="medizien">Medizientechnik</mat-option>
+              <mat-option value="elektro">Elektrotechnik</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="text-center">
           <input type="text" class="form-control" placeholder="Schülername eingeben" (input)="filterStudents($event)">
         </div>
-        <div class="col-md-4
-        +
-        "></div> <!-- Leeres div, um den Platz rechts auszufüllen -->
+        <div class="col-md-4"></div> 
       </div>
     </div>
-  
-    <!-- Student Table -->
-    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-      <table *ngIf="filteredStudents.length > 0" class="table table-bordered mt-3" id="studentTable">
+    <div *ngIf="isLoading" class="text-center mt-4">
+      <mat-spinner ></mat-spinner>
+    </div>
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+      <table *ngIf="filteredStudents.length > 0" class="table table-bordered table-sm mt-3" id="studentTable">
         <thead>
           <tr>
             <th>Firstname</th>
             <th>Lastname</th>
+            <th>Balance</th>
             <th>Class</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let entry of filteredStudents">
+          <tr *ngFor="let entry of filteredStudents" class="student-row">
             <td>{{entry.student.firstName}}</td>
             <td>{{entry.student.lastName}}</td>
+            <td>{{entry.balance}}</td>
             <td>{{entry.student.studentClass}}</td>
             <td>
-              <button class="btn btn-primary" (click)="viewDetails(entry.student.firstName, entry.student.lastName)">Details</button>
+              <button class="btn btn-primary btn-sm details-button" (click)="viewDetails(entry.student.firstName, entry.student.lastName)">Details</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-</div>
+  </div>
   
-  
-  
- 
-
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between">
+      <div id="addStudents" class="d-flex flex-column align-items-center">        
+        <div class="d-flex justify-content-between mb-3">
+          <button class="btn btn-primary menu" (click)="importStudents()">Import Students</button>
+          <button class="btn btn-primary menu" (click)="exportToCSV()">Export CSV</button>
+        </div>
+      </div>
+      <div>Anzahl der Schüler: {{_students.length}}</div>      
+      <div id="manageStudents" class="d-flex flex-column align-items-center">        
+        <div class="d-flex justify-content-between w-100">
+          <button class="btn btn-primary menu" (click)="AddStudent()">Add Student</button>   
+          <button class="btn btn-danger menu" (click)="deleteAllStudents()">Delete All Students</button> 
+        </div>
+      </div>        
+    </div>
+  </div>
 </div>

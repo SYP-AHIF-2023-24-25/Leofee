@@ -46,8 +46,14 @@ export class ProfileKeycloakComponent {
     this.loadStudentData();
   }
 
+
   public generateQRCode() {    
     this.anotherQrCodeData = `${this.valueTest}`;
+
+  public generateQRCode() {
+    this.anotherQrCodeData = `${this.valueTest}`;
+    console.log("Test: " + this.valueTest)
+
     return this.anotherQrCodeData;
   }
 
@@ -82,10 +88,7 @@ export class ProfileKeycloakComponent {
       });*/
       console.log(studentId)
 
-
     this.userCredit = await this.studentService.getBalanceForStudent(studentId);
-    
-
     this.qrCodeData.set(`${studentId}`);
 
   }

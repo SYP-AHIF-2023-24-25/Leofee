@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RestService } from 'src/services/rest.service';
@@ -7,6 +7,9 @@ import { Bons } from '../model/Bons';
 import { Student } from '../model/student';
 import { Transaction } from '../model/Transaction';
 import Chart from 'chart.js/auto';
+import { SharedService } from 'src/services/shared.service';
+import { KeycloakService } from 'keycloak-angular';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
 
 @Component({
   selector: 'app-guthaben-verwaltung',
@@ -24,8 +27,13 @@ export class GuthabenVerwaltungComponent implements OnInit {
   constructor(
     public restService: RestService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private sharedService: SharedService,
+    private keyCloakService: KeycloakService,
   ) {
+    const whiteListService = Inject(WhiteListServiceService)
+    sharedService.accessAuthShared(keyCloakService, whiteListService)
+
     this.voucherForm = this.fb.group({
       from: ['', Validators.required],
       to: ['', Validators.required],
@@ -136,6 +144,9 @@ export class GuthabenVerwaltungComponent implements OnInit {
                 top: 10,
                 bottom: 30
               }
+            },
+            ticks: {
+              display: false 
             }
           },
           y: {

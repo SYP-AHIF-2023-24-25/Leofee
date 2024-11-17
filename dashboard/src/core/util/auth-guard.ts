@@ -1,8 +1,10 @@
 import { KeycloakAuthGuard, KeycloakService } from "keycloak-angular";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { jwtDecode } from "jwt-decode";
-import { createLeoUser, Role } from "./leo-token";
+import { createLeoUser, LeoUser, Role } from "./leo-token";
+import { SharedService } from "src/services/shared.service";
+import { WhiteListServiceService } from "src/services/white-list-service.service";
 
 @Injectable({
   providedIn: "root"
@@ -35,7 +37,7 @@ export class AuthGuard extends KeycloakAuthGuard {
     }
 
     const leoUser = await createLeoUser(this.keycloakAngular);
-
+    
     // Allow the user to proceed if all the required roles are present.
     return requiredRoles.some((role) => leoUser.hasRole(role));
   }
