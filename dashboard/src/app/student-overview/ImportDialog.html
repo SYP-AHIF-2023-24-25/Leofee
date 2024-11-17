@@ -2,11 +2,11 @@
     <h2 style="margin-bottom: 20px;">Import Students</h2>
     <div style="display: flex; align-items: center; justify-content: center;">
         <input type="file" (change)="onFileSelected($event)" accept=".csv, .txt" style="margin-right: 10px;" />
-    </div>
-    
+    </div>    
     <br>
-
-    
+    <div *ngIf="isImporting" class="text-center mt-4">
+        <mat-spinner></mat-spinner>
+    </div>   
 
     <button class="btn btn-primary mb-3" (click)="importStudent()">Add Students</button>
 
