@@ -81,11 +81,7 @@ public class BonsController : Controller
         {
             return BadRequest($"Invalid Ids in client request");
         }
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
+       
         try
         {
             await _uow.BonRepository.UpdateBonsWithIdAsync(id, bonDto);

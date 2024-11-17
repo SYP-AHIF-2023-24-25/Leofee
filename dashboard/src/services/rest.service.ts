@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment.prod';
 import { Transaction } from 'src/app/model/Transaction';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -84,15 +85,29 @@ export class RestService {
 
     updateBonForStudent(id: number,from: Date, to:Date,  amount: number, usedValue: number): Observable<any> {
       const url =  this.baseURL+ `api/Bons/${id}`;
-      const headers: HttpHeaders = new HttpHeaders();
+     // console.log(id, from.toISOString(), to, amount, usedValue, url);
+     const fromDate = new Date(from);
+      const toDate = new Date(to);
+
+      if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+          throw new Error('Invalid date format');
+      }
+
+
+      const headers: HttpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
       const payload = {
         amountPerStudent: amount,
-        startDate: from,
-        endDate: to,
-        id: id,
+        startDate: fromDate.toISOString(),
+        endDate: toDate.toISOString(),
+        id: id
       };
+      console.log(payload, url);
       return this.http.put<any>(url, payload, { headers });
     }
+
+
     getAllTransactions(): Observable<Transaction[]>  {
       let headers: HttpHeaders = new HttpHeaders();
     

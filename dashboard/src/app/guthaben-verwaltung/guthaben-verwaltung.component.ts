@@ -218,7 +218,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
         if (currentBon != null) {
           const existingBon = currentBon;
           await lastValueFrom(this.restService.updateBonForStudent(
-            existingBon.id,
+            1,
             this.voucherForm.value.from,
             this.voucherForm.value.to,
             this.voucherForm.value.hoehe,

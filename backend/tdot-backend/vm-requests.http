@@ -15,11 +15,25 @@ GET {{baseURL}}/WhiteListUser
 ###
 GET {{baseURL}}/Transactions
 
+###http://localhost:5015/api/Students/if200145/balance
+GET {{baseURL}}/Students/if200145/balance
+
 ###
 GET {{baseURL}}/students/if200145/bons
 
 ###
 PUT {{baseURL}}/Bons/
+
+###
+PUT  {{baseURL}}/Bons/1
+Content-Type: application/json
+
+{
+  "amountPerStudent": 4,
+  "startDate": "2024-11-19T18:48:00.374Z",
+  "endDate": "2024-12-31T18:48:00.374Z",
+  "id": 1
+}
 
 ###
 GET {{baseURL}}/Students/if200145/usedValue
