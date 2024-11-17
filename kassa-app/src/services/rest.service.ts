@@ -24,7 +24,7 @@ export class RestService {
   }
 
   getStudentById(id: string): Observable<Student> {
-    return this.http.get<Student>(this.baseUrlLeofeeBackend+ "api/Student/" + id);
+    return this.http.get<Student>(this.baseUrlLeofeeBackend+ "api/Students/id/" + id);
   }
 
   async saveBookings(buffet: IBuffet, bonBooking: BonBooking) {    
@@ -66,8 +66,9 @@ export class RestService {
 
   getStudentBalance(id: String): Observable<number> {
     let headers: HttpHeaders = new HttpHeaders();
- 
-    return this.http.get<number>(this.baseUrlLeofeeBackend+ "api/Student/"+ id+"/balance",
+    //'http://localhost:5015/api/Students/if200145/balance
+    //http://localhost:5015/api/Student/if200145/balance
+    return this.http.get<number>(this.baseUrlLeofeeBackend+ "api/Students/"+ id+"/balance",
         {headers});
 }
   async sendOrder(order: Order) {

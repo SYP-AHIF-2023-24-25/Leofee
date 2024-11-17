@@ -30,33 +30,35 @@ namespace Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("AmountPerStudent")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<double>("UsedValue")
-                        .HasColumnType("double");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("Bons");
                 });
 
             modelBuilder.Entity("Core.Entities.Student", b =>
                 {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EdufsUsername")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -70,12 +72,12 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("StudentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Core.Entities.Transaction", b =>
+            modelBuilder.Entity("Core.Entities.StudentBonTransaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,24 +85,37 @@ namespace Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AmountOfBon")
-                        .HasColumnType("double");
+                    b.Property<int>("BonId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("BonValue")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalTransactionAmount")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("TransactionTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("double");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Transactions");
+                    b.HasIndex("BonId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentBonTransactions");
                 });
 
             modelBuilder.Entity("Core.Entities.WhiteListUser", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -110,18 +125,42 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
 
                     b.ToTable("WhiteListUsers");
                 });
 
-            modelBuilder.Entity("Core.Entities.Bon", b =>
+            modelBuilder.Entity("Core.Entities.StudentBonTransaction", b =>
                 {
-                    b.HasOne("Core.Entities.Student", null)
-                        .WithMany()
+                    b.HasOne("Core.Entities.Bon", "Bon")
+                        .WithMany("BonTransactions")
+                        .HasForeignKey("BonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Student", "Student")
+                        .WithMany("StudentTransactions")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Bon");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Core.Entities.Bon", b =>
+                {
+                    b.Navigation("BonTransactions");
+                });
+
+            modelBuilder.Entity("Core.Entities.Student", b =>
+                {
+                    b.Navigation("StudentTransactions");
                 });
 #pragma warning restore 612, 618
         }

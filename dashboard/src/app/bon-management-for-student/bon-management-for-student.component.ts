@@ -22,7 +22,7 @@ import { KeycloakService } from 'keycloak-angular';
 export class BonManagementForStudentComponent implements OnInit {
 
   studentId: string = "";
-  bonsForStudent: Bons[] = [];
+  bonsForStudent: Bons | null = null;
  // student: Student;
 
 

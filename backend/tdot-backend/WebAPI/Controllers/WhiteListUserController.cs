@@ -36,13 +36,6 @@ namespace WebAPI.Controllers
 			return await _uow.WhiteListUserRepository.GetWhiteListUserPerIdAsync(userId);
 		}
 
-		//[HttpGet("{firstName} {lastName}")]
-		//public async Task<WhiteListUserDto> GetWhiteListUserPerUsername(string firstName, string lastName)
-		//{
-		//	var userDto = await _uow.WhiteListUserRepository.GetWhiteListUserPerUsernameAsync(firstName, lastName);
-
-		//}
-
 		[HttpPost]
 		public async Task<IActionResult> PostWhiteListUser([FromBody] WhiteListUserDto whiteListUser)
 		{
@@ -70,12 +63,10 @@ namespace WebAPI.Controllers
 			}
 			catch (ValidationException e)
 			{
-				//Log.Error(e, "Error while adding a new whiteListUser");
 				return BadRequest($"data base error: {e.InnerException!.Message}");
 			}
 			catch (DbUpdateException dbException)
 			{
-				//Log.Error(dbException, "Error while adding a new whiteListUser");
 				return BadRequest($"data base error: {dbException.InnerException!.Message}");
 			}
 			return CreatedAtRoute(new { id = newWhiteListUser.UserId }, newWhiteListUser);

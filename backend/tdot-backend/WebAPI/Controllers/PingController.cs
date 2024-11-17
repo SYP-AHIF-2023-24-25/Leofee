@@ -31,15 +31,27 @@ namespace WebAPI.Controllers
         {
             await _uow.DeleteDatabaseAsync();
             await _uow.MigrateDatabaseAsync();
-            var bons = await ImportController.ReadBonsAsync();
+           Console.WriteLine("Read data from file ...");
             var students = await ImportController.ReadStudentsAsync();
+            Console.WriteLine($"- {students.Count} Students read");
+
+            var bons = await ImportController.ReadBonsAsync();
+            Console.WriteLine($"- {bons.Count} bons read");
+
             var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
-            var transactions = await ImportController.ReadTransactionAsync();
-            await _uow.BonRepository.AddRangeAsync(bons);
-            await _uow.StudentRepository.AddRangeAsync(students);
+            Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
+
+
+            var bontransaction = await ImportController.ReadAllTogetherAsync(students.ToList(), bons.ToList());
+
+            Console.WriteLine("Saving to database ...");
+
             await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
-            await _uow.TransactionRepository.AddRangeAsync(transactions);
+           
+
+            await _uow.StudentBonTransactionRepository.AddRangeAsync(bontransaction);
             await _uow.SaveChangesAsync();
+
             return Ok("Database recreated, transactions, whitelist, bons and students imported");
         }
     }
