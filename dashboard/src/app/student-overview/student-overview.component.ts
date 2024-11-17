@@ -145,11 +145,13 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   async deleteAllStudents() {
-    console.log(this._students);
-    this.isLoading = true; 
-    await Promise.all(this._students.map(student => lastValueFrom(this.restService.deleteStudent(student.studentId))));
-    this.isLoading = false;
-    location.reload();
+    const confirmation = confirm('Sind Sie sicher, dass Sie alle Schüler löschen möchten?');
+    if (confirmation) {
+      this.isLoading = true;
+      await Promise.all(this._students.map(student => lastValueFrom(this.restService.deleteStudent(student.studentId))));
+      this.isLoading = false;
+      location.reload();
+    }
   }
 
   async deleteStudentFromList(lastName: string, firstName: string) {
@@ -269,7 +271,7 @@ export class ImportDialog {
   _selectedFile: File | null = null;
   _students: Student[] = [];
   amount: number = 0;
-
+  isImporting: boolean = false;
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ImportDialog>,
@@ -282,6 +284,7 @@ export class ImportDialog {
 
   async importStudent() {
     // Students von der Datenbank holen
+    this.isImporting = true;
     this._students = await lastValueFrom(this.restService.getStudents());
 
     // File auslesen und Students machen
@@ -314,6 +317,8 @@ export class ImportDialog {
             console.warn(`Invalid line format: ${lines[i]}`);
           }
         }
+        this.isImporting = false;
+        this.dialogRef.close();
       };
       reader.readAsText(this._selectedFile);  
     }

@@ -31,11 +31,7 @@ export class StudentDetailComponent implements OnInit{
   }
 
   async ngOnInit() {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAa");
-    const studentIdString = this.data.studentId;
-    console.log(studentIdString);
-    
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAa");
+    const studentIdString = this.data.studentId;    
     if (studentIdString) {
       this.student = await this.getStudentById(studentIdString);      
       this.balance = await this.getStudentBalance(studentIdString);
@@ -76,6 +72,6 @@ export class StudentDetailComponent implements OnInit{
   }
 
   onNoClick(): void {
-    this.dialogRef.close(); // Dialog schließen
+    this.dialogRef.close(); 
   }
 }
