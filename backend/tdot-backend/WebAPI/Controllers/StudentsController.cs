@@ -28,25 +28,8 @@ public class StudentsController : Controller
     [HttpGet("{studentId}/bons")]
     public async Task<ActionResult<IList<BonDto>>> GetBonsForStudent(string studentId)
     {
-        /*
-        var studentExists = await _uow.StudentRepository.StudentExistsAsync(studentId);
-        if (!studentExists)
-        {
-            return NotFound($"There exists no student with id {studentId}!");
-        }
-        var bonEntities = await _uow.BonRepository.GetCurrentBon();
-
-        var bonDtos = bonEntities
-            .Select(b => new BonDto(
-                b.Id,
-               
-                b.StartDate,
-                b.EndDate,
-                b.transactions,
-                b.AmountPerStudent))
-            .ToList();*/
-            await  _uow.BonRepository.GetCurrentBon();
-        return Ok();
+        var currentBon = await  _uow.BonRepository.GetCurrentBon();
+        return Ok(currentBon);
     }
 
     [HttpGet("id/{studentId}")]

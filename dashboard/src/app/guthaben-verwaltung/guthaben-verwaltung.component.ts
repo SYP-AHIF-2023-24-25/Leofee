@@ -49,7 +49,9 @@ export class GuthabenVerwaltungComponent implements OnInit {
     }
 
     const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
-    this._activeBon = bonsForStudent[0];
+    console.log(bonsForStudent)
+    this._activeBon = bonsForStudent;
+    console.log(this._activeBon)
 
     const hoeheBons = this._activeBon.value + this._activeBon.usedValue;
 
@@ -199,8 +201,8 @@ export class GuthabenVerwaltungComponent implements OnInit {
     if (this.voucherForm.valid) {
       for (const student of this._students) {
         const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(student.studentId));
-        if (bonsForStudent.length > 0) {
-          const existingBon = bonsForStudent[0];
+        if (bonsForStudent != null) {
+          const existingBon = bonsForStudent;
           await lastValueFrom(this.restService.updateBonForStudent(
             existingBon.id,
             this.voucherForm.value.from,

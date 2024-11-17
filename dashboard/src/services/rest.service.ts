@@ -42,10 +42,10 @@ export class RestService {
     }
 
 
-    getBonsForStudent(id: String): Observable<Bons[]>  {
+    getBonsForStudent(id: String): Observable<Bons>  {
       let headers: HttpHeaders = new HttpHeaders();
     
-      return this.http.get<Bons[]>(
+      return this.http.get<Bons>(
         this.baseURL+ "api/Students/"+ id + "/bons" ,
           {headers});
 
@@ -69,7 +69,7 @@ export class RestService {
 
     addBonForStudent(id: String,from: Date, to:Date,  amount: number): Observable<any> {
 
-      const url =  this.baseURL+ `api/Bon`;
+      const url =  this.baseURL+ `api/Bons`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
         studentId: id,
@@ -84,7 +84,7 @@ export class RestService {
     }
 
     updateBonForStudent(id: number,from: Date, to:Date,  amount: number, usedValue: number): Observable<any> {
-      const url =  this.baseURL+ `api/Bon/${id}`;
+      const url =  this.baseURL+ `api/Bons/${id}`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
         studentId: "",
@@ -100,7 +100,7 @@ export class RestService {
       let headers: HttpHeaders = new HttpHeaders();
     
       return this.http.get<Transaction[]>(
-        this.baseURL+ "api/Transaction" ,
+        this.baseURL+ "api/Transactions" ,
           {headers});
 
     }

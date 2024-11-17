@@ -7,13 +7,16 @@ GET {{baseURL}}/Ping
 PATCH {{baseURL}}/Ping
 
 ### get bons
-GET {{baseURL}}/bon
+GET {{baseURL}}/bons
 
 ###
 GET {{baseURL}}/WhiteListUser
 
 ###
-GET {{baseURL}}/Transaction
+GET {{baseURL}}/Transactions
+
+###
+GET {{baseURL}}/students/if200145/bons
 
 
 ###
@@ -21,4 +24,4 @@ POST https://vm64.htl-leonding.ac.at/leofee-backend/pay?amount=1&studentId=IF200
 
 
 ###
-GET {{baseURL}}/Bon
+GET {{baseURL}}/Bons

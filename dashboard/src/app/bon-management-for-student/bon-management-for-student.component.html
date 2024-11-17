@@ -6,7 +6,7 @@
     <h1 class=" mat-display-4 mat-text-center">Bons for the student: {{studentId}} </h1>
 
 
-    <table *ngIf="bonsForStudent.length > 0" class="table table-bordered mt-3" id="studentTable" >
+    <table *ngIf="bonsForStudent != null" class="table table-bordered mt-3" id="studentTable" >
         <thead>
           <tr>
             <!--<th>Student</th>-->
@@ -17,24 +17,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr  *ngFor="let bon of bonsForStudent">
+          <tr>
             
             <!--<td>{{ bon.studentId }}</td>-->
-            <td>{{ bon.value }}€</td>
-            <td>{{ bon.usedValue }}€</td>
-            <td>{{ bon.from }}</td>
-            <td>{{ bon.to }}</td>
+            <td>{{ bonsForStudent.value }}€</td>
+            <td>{{ bonsForStudent.usedValue }}€</td>
+            <td>{{ bonsForStudent.from }}</td>
+            <td>{{ bonsForStudent.to }}</td>
             <!--<td>
               <button class="btn btn-primary" (click)="ShowDetails(student.id)">ShowDetails</button>
             </td>-->
           </tr>
         </tbody>
       </table>
-
       <button class="btn btn-primary" (click)="AddBon()">Add Bon</button>
-
-      
-
 </div>
 
 
