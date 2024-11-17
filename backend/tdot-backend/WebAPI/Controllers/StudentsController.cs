@@ -69,18 +69,7 @@ public class StudentsController : Controller
 
     [HttpGet("{studentId}/balance")]
     public async Task<ActionResult<decimal>> GetBalanceForStudentById(string studentId)
-    {/*
-        try
-        {
-            var bons = await _uow.BonRepository.GetBonsForStudentAsync(studentId);
-            var result = bons.Sum(b => b.AmountPerStudent);
-            return (double)result;
-        }
-        catch (Exception)
-        {
-            return -1;
-        }*/
-
+    {
         var currentBon = await _uow.BonRepository.GetCurrentBon();
 
         //aktuellen Bon holen 

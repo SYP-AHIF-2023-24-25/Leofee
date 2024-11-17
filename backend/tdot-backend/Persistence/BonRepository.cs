@@ -82,7 +82,7 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
 
     public async Task<Bon?> GetCurrentBon()
     {
-        var currentBon = await _dbContext.Bons!.FirstOrDefaultAsync(bon => bon.EndDate >= DateTime.Now && bon.StartDate <= DateTime.Now);
+        var currentBon = await _dbContext.Bons!.Include(b => b.BonTransactions).FirstOrDefaultAsync(bon => bon.EndDate >= DateTime.Now && bon.StartDate <= DateTime.Now);
 
         return currentBon;
        

@@ -1,11 +1,11 @@
+import { Transaction } from "./Transaction";
+import { List } from "immutable";
+
 export interface Bons{
-
-    id: number,
-    studentId: string,   
-    from: Date,
-    to: Date,
-    usedValue: number,
+    id: number,   
+    startDate: Date,
+    endDate: Date,
+    amountPerStudent:number,
     value: number,
-   
-
+    bonTransactions: List<Transaction>,
 }

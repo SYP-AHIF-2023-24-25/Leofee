@@ -18,6 +18,12 @@ GET {{baseURL}}/Transactions
 ###
 GET {{baseURL}}/students/if200145/bons
 
+###
+PUT {{baseURL}}/Bons/
+
+###
+GET {{baseURL}}/Students/if200145/usedValue
+
 
 ###
 POST https://vm64.htl-leonding.ac.at/leofee-backend/pay?amount=1&studentId=IF200177

@@ -67,15 +67,14 @@ export class RestService {
       return this.http.post<any>(url, student, { headers });
     }
 
-    addBonForStudent(id: String,from: Date, to:Date,  amount: number): Observable<any> {
+    addBon(from: Date, to:Date,  amount: number): Observable<any> {
 
       const url =  this.baseURL+ `api/Bons`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
-        studentId: id,
-        from: from,
-        to: to,
-        value: amount
+        amountPerStudent: amount,
+        startDate: from,
+        endDate: to,
       };
 
       console.log(payload)
@@ -87,12 +86,10 @@ export class RestService {
       const url =  this.baseURL+ `api/Bons/${id}`;
       const headers: HttpHeaders = new HttpHeaders();
       const payload = {
-        studentId: "",
-        from: from,
-        to: to,
-        value: amount,
-        usedValue: usedValue,
-        id: id
+        amountPerStudent: amount,
+        startDate: from,
+        endDate: to,
+        id: id,
       };
       return this.http.put<any>(url, payload, { headers });
     }

@@ -44,6 +44,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
   }
 
   async ngOnInit() {
+
     // Fetch students and transactions
     this._students = await lastValueFrom(this.restService.getStudents());
     this._transactions = await lastValueFrom(this.restService.getAllTransactions());
@@ -52,7 +53,9 @@ export class GuthabenVerwaltungComponent implements OnInit {
     // Calculate total balance for all students
     let balanceAllStudents = 0;
     for (const student of this._students) {
+      console.log(student.studentId);
       const value = await lastValueFrom(this.restService.getStudentUsedValue(student.studentId));
+
       balanceAllStudents += value;
     }
 
@@ -61,12 +64,12 @@ export class GuthabenVerwaltungComponent implements OnInit {
     this._activeBon = bonsForStudent;
     console.log(this._activeBon)
 
-    const hoeheBons = this._activeBon.value + this._activeBon.usedValue;
+    const hoeheBons = this._activeBon.amountPerStudent ;
 
     if (this._activeBon) {
       this.voucherForm.patchValue({
-        from: this._activeBon.from || "",
-        to: this._activeBon.to || "",
+        from: this._activeBon.startDate || "",
+        to: this._activeBon.endDate || "",
         hoehe: hoeheBons || 0,
         max: hoeheBons * this._students.length || 0,
         ist: balanceAllStudents || 0
@@ -210,10 +213,10 @@ export class GuthabenVerwaltungComponent implements OnInit {
 
   async onSubmit() {
     if (this.voucherForm.valid) {
-      for (const student of this._students) {
-        const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(student.studentId));
-        if (bonsForStudent != null) {
-          const existingBon = bonsForStudent;
+
+        const currentBon = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
+        if (currentBon != null) {
+          const existingBon = currentBon;
           await lastValueFrom(this.restService.updateBonForStudent(
             existingBon.id,
             this.voucherForm.value.from,
@@ -221,18 +224,17 @@ export class GuthabenVerwaltungComponent implements OnInit {
             this.voucherForm.value.hoehe,
             0
           ));
-          console.log(`Bon für Student ${student.studentId} wurde aktualisiert.`);
+          alert(`Bon wurde geupdatet`);   
+        // console.log(`Bon für Student ${student.studentId} wurde aktualisiert.`);
         } else {
-          await lastValueFrom(this.restService.addBonForStudent(
-            student.studentId,
+          await lastValueFrom(this.restService.addBon(          
             this.voucherForm.value.from,
             this.voucherForm.value.to,
             this.voucherForm.value.hoehe
-          ));
-          console.log(`Neuer Bon für Student ${student.studentId} wurde erstellt.`);
+          ));  
+          alert(`Bon in der höhe von ${this.voucherForm.value.hoehe}€ wurden erfolgreich erstellt`);        
         }
-      } 
-      alert(`Bons in der höhe von ${this.voucherForm.value.hoehe}€ wurden erfolgreich erstellt`);   
+           
     } else {
       console.log('Form invalid');
     }
