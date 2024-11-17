@@ -6,6 +6,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Student, StudentBalance } from '../model/student';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
+import { SharedService } from 'src/services/shared.service';
+import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { KeycloakService } from 'keycloak-angular';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
 
 
@@ -25,8 +28,13 @@ export class StudentOverviewComponent implements OnInit {
   constructor(
     public restService: RestService,
     public dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private sharedService: SharedService,
+    private whiteListService: WhiteListServiceService,
+    private keyCloakService: KeycloakService
+  ) {
+    sharedService.accessAuthShared(keyCloakService, whiteListService);
+  }
 
   async ngOnInit() {
     this._students = await lastValueFrom(this.restService.getStudents());
@@ -52,7 +60,6 @@ export class StudentOverviewComponent implements OnInit {
         data: { studentId: student.student.studentId },
         backdropClass: 'custom-dialog-backdrop' // Custom backdrop class
       });
-
       dialogRef.afterClosed().subscribe(() => {
         location.reload();
       });
@@ -308,7 +315,7 @@ export class ImportDialog {
           }
         }
       };
-      reader.readAsText(this._selectedFile);
+      reader.readAsText(this._selectedFile);  
     }
   }
 
@@ -319,6 +326,7 @@ export class ImportDialog {
   }
 
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(); 
+      
   }
 }

@@ -25,7 +25,7 @@ import { ImportDialog } from './student-overview/student-overview.component';
 import { AppRoutingModule } from './app.routes';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
-import { UserManagementComponent } from './user-managment/user-managment.component';
+import { AddUserDialog, ConfirmationWindow, UserManagementComponent } from './user-managment/user-managment.component';
 import { StudentDetailComponent } from './student-detail/student-detail.component';
 import { CommonModule } from '@angular/common';
 @NgModule({
@@ -38,8 +38,9 @@ import { CommonModule } from '@angular/common';
     AddBonForStudentDialog,
     ImportDialog,
     UserManagementComponent,
-    StudentDetailComponent
-    
+    StudentDetailComponent,
+    AddUserDialog,
+    ConfirmationWindow
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
