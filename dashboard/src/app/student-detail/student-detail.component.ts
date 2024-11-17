@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { RestService } from 'src/services/rest.service';
@@ -8,31 +8,41 @@ import { CommonModule } from '@angular/common';
 import { SharedService } from 'src/services/shared.service';
 import { KeycloakService } from 'keycloak-angular';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-student-detail',
   templateUrl: './student-detail.component.html',
   styleUrls: ['./student-detail.component.css']
 })
-export class StudentDetailComponent {
+export class StudentDetailComponent implements OnInit{
   student: Student|undefined;
   balance: number|undefined;
   usedValue: number|undefined = 0;
+  isLoading: boolean = true;
   constructor(private route: ActivatedRoute, private router: Router,public restService: RestService,
     sharedService: SharedService,
     keyCloakService: KeycloakService,
+    public dialogRef: MatDialogRef<StudentDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { studentId: string },
     whiteListService: WhiteListServiceService
   ) {
     sharedService.accessAuthShared(keyCloakService, whiteListService);
   }
 
   async ngOnInit() {
-    const studentIdString = this.route.snapshot.paramMap.get('id');
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAa");
+    const studentIdString = this.data.studentId;
+    console.log(studentIdString);
+    
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAa");
     if (studentIdString) {
-      this.student = await this.getStudentById(studentIdString);
+      this.student = await this.getStudentById(studentIdString);      
       this.balance = await this.getStudentBalance(studentIdString);
+      console.log(this.balance);
       this.usedValue = await this.getStudentUsedValue(studentIdString);
     }
+    this.isLoading = false;
   } 
   async getStudentById(id: string): Promise<Student> {
     try {
@@ -58,10 +68,14 @@ export class StudentDetailComponent {
       throw error;
     }
   }
-  async deleteStudentFromList(){ 
-      if(this.student){
-        await lastValueFrom(this.restService.deleteStudent(this.student.studentId));
-        this.router.navigate(['/studentsOverview']);
-      }
+  async deleteStudentFromList() { 
+    if (this.student) {
+      await lastValueFrom(this.restService.deleteStudent(this.student.studentId));
+      this.dialogRef.close(); // Dialog schließen
     }
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close(); // Dialog schließen
+  }
 }
