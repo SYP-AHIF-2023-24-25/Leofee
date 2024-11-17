@@ -17,4 +17,6 @@ public interface IBonRepository: IGenericRepository<Bon>
     Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto);
 
     Task<Bon?> GetCurrentBon();
+
+    Task<Bon?> GetCurrentBonWithoutTransactions();
 }

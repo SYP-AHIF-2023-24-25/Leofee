@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
@@ -26,10 +27,24 @@ public class StudentsController : Controller
     }
 
     [HttpGet("{studentId}/bons")]
-    public async Task<ActionResult<IList<BonDto>>> GetBonsForStudent(string studentId)
+    public async Task<ActionResult<BonDto>> GetBonsForStudent(string studentId)
     {
-        var currentBon = await  _uow.BonRepository.GetCurrentBon();
-        return Ok(currentBon);
+        var currentBon = await  _uow.BonRepository.GetCurrentBonWithoutTransactions();
+       
+        if(currentBon is not null)
+        {
+            
+
+            return Ok(new BonDto(
+            currentBon.Id,
+            currentBon.StartDate,
+            currentBon.EndDate,
+            currentBon.BonTransactions,
+            currentBon.AmountPerStudent));
+
+        }
+        return NotFound();
+
     }
 
     [HttpGet("id/{studentId}")]
