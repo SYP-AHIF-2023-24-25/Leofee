@@ -13,6 +13,7 @@ using Core.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Core;
 using Microsoft.EntityFrameworkCore;
+using Import;
 
 Console.WriteLine("Recreate Database");
 
@@ -22,13 +23,14 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
     await uow.MigrateDatabaseAsync();
    
 }
+var (studentsDemo,bonDemo,transactions) = DemoDataGenerator.CreateDemoData();
 
 Console.WriteLine("Read data from file ...");
-var students = await ImportController.ReadStudentsAsync();
-Console.WriteLine($"- {students.Count} Students read");
+//var students = await ImportController.ReadStudentsAsync();
+//Console.WriteLine($"- {students.Count} Students read");
 
-var bons = await ImportController.ReadBonsAsync();
-Console.WriteLine($"- {bons.Count} bons read");
+//var bons = await ImportController.ReadBonsAsync();
+//Console.WriteLine($"- {bons.Count} bons read");
 
 var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
 Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
@@ -37,7 +39,7 @@ Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
 //var transactions = await ImportController.ReadTransactionsAsync();
 //Console.WriteLine($"- {transactions.Count} transaction read");
 
-var bontransaction = await ImportController.ReadAllTogetherAsync(students.ToList(), bons.ToList());
+//var bontransaction = await ImportController.ReadAllTogetherAsync(students.ToList(), bons.ToList());
 
 Console.WriteLine("Saving to database ...");
 
@@ -55,14 +57,11 @@ await using (var uow = new UnitOfWork(new ApplicationDbContext()))
 
 
     await uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
-    await uow.SaveChangesAsync();
-
-  
-    
+    await uow.SaveChangesAsync();    
 
 
 
-    await uow.StudentBonTransactionRepository.AddRangeAsync(bontransaction);
+    await uow.StudentBonTransactionRepository.AddRangeAsync(transactions);
     await uow.SaveChangesAsync();
 }
 /*
