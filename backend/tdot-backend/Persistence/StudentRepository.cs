@@ -15,6 +15,8 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
         _dbContext = dbContext;
     }
 
+    #region GetAll, GetStudentWithEdufsUser, GetStudentWithId
+
     public async Task<IList<StudentDto>> GetAllAsync()
     {
         return await _dbContext.Students!
@@ -47,11 +49,27 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
             .SingleOrDefaultAsync();
     }
 
+    #endregion
+
+    #region Delete All Students
+
+    public async Task DeleteAllAsync()
+    {
+       
+        var allStudents = await _dbContext.Set<Student>().ToListAsync();        
+        _dbContext.Set<Student>().RemoveRange(allStudents);
+        _dbContext.SaveChanges();
+    }
+
+    #endregion
+
     public async Task<bool> StudentExistsAsync(string studentId)
     {
         return await _dbContext.Students!
             .AnyAsync(s => s.EdufsUsername == studentId);
     }
+
+    #region pay
 
     public async Task<bool> PayAsync(string studentId, double amountToDeduct)
     {
@@ -111,4 +129,5 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
             throw;
         }
     }
+    #endregion
 }

@@ -16,4 +16,5 @@ public interface IStudentRepository: IGenericRepository<Student>
     Task<Student?> GetStudentWithIdAsync(int studentId);
     Task<bool> StudentExistsAsync(string studentId);
     Task<bool> PayAsync(string studentId, double amountToDeduct);
+    Task DeleteAllAsync();
 }

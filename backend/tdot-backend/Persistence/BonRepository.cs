@@ -47,24 +47,7 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
             bon.BonTransactions,           
             bon.AmountPerStudent);
     }  
-    /*
-    public async Task<IList<BonDto>> GetBonsForStudentAsync(string studentId)
-    {
-        var bons = await _dbContext.Bons!
-            .Include(b => b.BonTransactions)
-            .Where(b => b.BonTransactions.Any(t => t.StudentId.ToString() == studentId))
-            .ToListAsync();
-
-        return bons
-            .Select(b => new BonDto(
-                b.Id,                
-                b.EndDate,                   
-                b.StartDate, 
-                b.BonTransactions,                          
-                b.AmountPerStudent))
-            .OrderBy(b => b.StartDate)
-            .ToList();
-    }*/
+   
     public async Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto)
     {
         var bon = await _dbContext.Bons!
