@@ -10,6 +10,7 @@ using Core.Entities;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
 
+
 [Route("api/[controller]")]
 public class StudentsController : Controller
 {
@@ -227,7 +228,54 @@ public class StudentsController : Controller
         return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
     }
 
-    #endregion 
+    [HttpPost("UploadStudents")]
+    public async Task<ActionResult> UploadStudents(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("Datei ist leer oder fehlt.");
 
 
+        try
+        {
+            using var stream = file.OpenReadStream();
+            using var reader = new StreamReader(stream);
+
+            var lines = await reader.ReadToEndAsync();
+
+            // Studenten mit LINQ erstellen
+            var students = lines
+                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries) 
+                .Skip(1)
+                .Select(line =>
+                {
+                    var cols = line.Split(';');                  
+                    
+
+                    return new Student
+                    {
+                        EdufsUsername = cols[0],
+                        FirstName = cols[1],
+                        LastName = cols[2],
+                        StudentClass = cols[3],
+                    };
+                })
+                .ToList();
+
+            // Speichern der Studenten
+            await _uow.StudentRepository.AddRangeAsync(students);
+            await _uow.SaveChangesAsync();
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest($"data base error: {e.InnerException!.Message}");
+        }
+        catch (DbUpdateException dbException)
+        {
+            return BadRequest($"data base error: {dbException.InnerException!.Message}");
+        }
+
+        return Ok();
+    }
+
+    #endregion
 }
