@@ -60,7 +60,8 @@ export class RestService {
   }
 
   Pay(id: String, amount: number): Observable<any> {
-    let url = this.baseUrlLeofeeBackend + `pay?amount=${amount}&studentId=${id}`; 
+    //y?amount=3.0&studentId=if200145
+    let url = this.baseUrlLeofeeBackend + `student/pay?amount=${amount}&studentId=${id}`; 
     return this.http.post<any>(url,{},);
   }
 

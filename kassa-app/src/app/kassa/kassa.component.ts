@@ -192,6 +192,7 @@ export class KassaComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => { 
+      
      
     });
 
@@ -206,6 +207,7 @@ export class KassaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
      
       if (result === 'no') {
+        this.clear();
         return;
       }
      
@@ -219,6 +221,8 @@ export class KassaComponent implements OnInit {
       }
 
       this.AmountOfBon = 0.0;
+      
+    
      
       this.clear();
     });
@@ -226,6 +230,9 @@ export class KassaComponent implements OnInit {
 
   clear() {
     this.selectedBuffet.products.forEach(p => p.amount = 0);
+    this.bonUsed = false; 
+      this.studentID = '';
+      this.total = 0.0;     
   }
 
 }

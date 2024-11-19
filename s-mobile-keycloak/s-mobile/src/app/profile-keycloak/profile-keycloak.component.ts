@@ -47,9 +47,8 @@ export class ProfileKeycloakComponent {
   }
 
 
-  public generateQRCode() {    
-    this.anotherQrCodeData = `${this.valueTest}`;
-
+ 
+  
   public generateQRCode() {
     this.anotherQrCodeData = `${this.valueTest}`;
     console.log("Test: " + this.valueTest)
