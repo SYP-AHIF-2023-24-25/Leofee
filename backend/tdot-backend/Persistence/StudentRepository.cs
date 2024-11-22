@@ -5,6 +5,9 @@ using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+
+
 
 public class StudentRepository : GenericRepository<Student>, IStudentRepository
 {
@@ -68,6 +71,43 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
         return await _dbContext.Students!
             .AnyAsync(s => s.EdufsUsername == studentId);
     }
+
+    public async Task<bool> UploadStudentsAsync(string lines)
+    {
+        
+        // Studenten aus der Datei verarbeiten
+        var studentLines = lines
+            .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+            .Skip(1); // Kopfzeile überspringen
+
+        var students = new List<Student>();
+
+        foreach (var line in studentLines)
+        {
+            var cols = line.Split(';');
+            var student = new Student
+            {
+                EdufsUsername = cols[0],
+                FirstName = cols[1],
+                LastName = cols[2],
+                StudentClass = cols[3],
+            };
+
+            if (!await StudentExistsAsync(student.EdufsUsername))
+            {
+                students.Add(student);
+            }
+        }
+
+        if (students.Any())
+        {
+            await _dbContext.AddRangeAsync(students);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+
 
     #region pay
 

@@ -96,10 +96,10 @@ public class StudentsController : Controller
     {
         try
         {
-            // Alle Studenten löschen
+            // Alle Studenten lï¿½schen
             await _uow.StudentRepository.DeleteAllAsync();          
 
-            return Ok(true); // Erfolgreiche Löschung
+            return Ok(true); // Erfolgreiche Lï¿½schung
         }
         catch (Exception ex)
         {           
@@ -233,8 +233,6 @@ public class StudentsController : Controller
     {
         if (file == null || file.Length == 0)
             return BadRequest("Datei ist leer oder fehlt.");
-
-
         try
         {
             using var stream = file.OpenReadStream();
@@ -242,28 +240,7 @@ public class StudentsController : Controller
 
             var lines = await reader.ReadToEndAsync();
 
-            // Studenten mit LINQ erstellen
-            var students = lines
-                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries) 
-                .Skip(1)
-                .Select(line =>
-                {
-                    var cols = line.Split(';');                  
-                    
-
-                    return new Student
-                    {
-                        EdufsUsername = cols[0],
-                        FirstName = cols[1],
-                        LastName = cols[2],
-                        StudentClass = cols[3],
-                    };
-                })
-                .ToList();
-
-            // Speichern der Studenten
-            await _uow.StudentRepository.AddRangeAsync(students);
-            await _uow.SaveChangesAsync();
+            await _uow.StudentRepository.UploadStudentsAsync(lines);
         }
         catch (ValidationException e)
         {
