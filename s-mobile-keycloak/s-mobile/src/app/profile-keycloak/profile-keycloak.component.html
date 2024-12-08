@@ -18,9 +18,9 @@
             <div class="navbar-text ml-auto mr-3">
                 {{fullName()}}
             </div>
-            <div class="navbar-text mr-3">
+            <!-- <div class="navbar-text mr-3">
                 {{userCredit}} Credits
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -30,13 +30,13 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td><strong>Username:</strong></td>
+                        <td><strong>If-Number</strong></td>
                         <td>{{userName()}}</td>
                     </tr>
                     <tr>
-                        <td><strong>Role:</strong></td>
+                        <td><strong>Balance</strong></td>
                         <!-- <td>{{leoUserRole() == 1 ? 'Student' : 'Teacher'}}</td> -->
-                        <td>{{leoUserRole()}}</td>
+                        <td>{{getBalance()}}</td>
                     </tr>
                     <tr>
                         <td><strong>Fullname:</strong></td>
@@ -48,12 +48,14 @@
 
         <h3 class="mt-4 d-flex justify-content-center font-weight-bold">QR-Code</h3>
         
-        <div class="text-center mt-3">
+        <div *ngIfElse="userCredit > 0 else noButton"  class="text-center mt-3">
             <button class="btn btn-dark" type="button" (click)="clickOnQrCodeButton()"> Qr-Code</button>
-            <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center">
+            <div class="container mt-3 d-flex justify-content-center">
                 <qrcode [qrdata]="generateQRCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
             </div>
-
+            <ng-template #noButton>
+                <button class="btn btn-dark" type="button" disabled (click)="clickOnQrCodeButton()"> Qr-Code</button>
+            </ng-template>
         </div>
         
     <!-- Logout Button -->
