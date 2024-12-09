@@ -8,7 +8,7 @@ services:
     volumes:
       - leofee-test-mssql-data:/var/opt/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
     networks:
       - leofee-test-network
 

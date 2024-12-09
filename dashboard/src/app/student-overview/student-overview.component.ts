@@ -10,6 +10,7 @@ import { SharedService } from 'src/services/shared.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
 import { KeycloakService } from 'keycloak-angular';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -148,7 +149,7 @@ export class StudentOverviewComponent implements OnInit {
     const confirmation = confirm('Sind Sie sicher, dass Sie alle Schüler löschen möchten?');
     if (confirmation) {
       this.isLoading = true;
-      await Promise.all(this._students.map(student => lastValueFrom(this.restService.deleteStudent(student.studentId))));
+      await lastValueFrom(this.restService.deleteAllStudents());
       this.isLoading = false;
       location.reload();
     }
@@ -275,7 +276,8 @@ export class ImportDialog {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ImportDialog>,
-    private restService: RestService
+    private restService: RestService,
+    private http: HttpClient
   ) {}
 
   onFileSelected(event: any) {
@@ -283,45 +285,19 @@ export class ImportDialog {
   }
 
   async importStudent() {
-    // Students von der Datenbank holen
-    this.isImporting = true;
-    this._students = await lastValueFrom(this.restService.getStudents());
 
-    // File auslesen und Students machen
-    if (this._selectedFile) {
-      const reader = new FileReader();
-
-      reader.onload = async (e: ProgressEvent<FileReader>) => {
-        const fileContent = reader.result as string;
-        let lines = fileContent.split('\n');
-        console.log(lines);
-        for (let i = 1; i < lines.length; i++) {
-          let parts: string[] = lines[i].split(';');
-          if (parts.length === 4) {
-            let student: Student = {
-              studentId: parts[0],
-              firstName: parts[1],
-              lastName: parts[2],
-              studentClass: parts[3],
-            };
-
-            // Ist der Schüler schon vorhanden?
-            if (this._students.find(s => s.studentId === student.studentId)) {
-              console.log('Student bereits vorhanden');
-            } else {
-              // Nein => ab in die Datenbank
-              console.log(student.firstName);
-              await lastValueFrom(this.restService.addStudent(student));              
-            }
-          } else {
-            console.warn(`Invalid line format: ${lines[i]}`);
-          }
-        }
-        this.isImporting = false;
-        this.dialogRef.close();
-      };
-      reader.readAsText(this._selectedFile);  
+    const formData = new FormData();
+    formData.append('file', this._selectedFile as Blob);
+    
+    try {
+      await lastValueFrom(this.restService.uploadStudentsWithFile(formData));      
+      alert('Datei erfolgreich hochgeladen!');
+    } catch (error) {
+      console.error('Fehler beim Hochladen der Datei:', error);
+      alert('Fehler beim Hochladen der Datei!');
     }
+    this.dialogRef.close();
+    
   }
 
   validateAmount() {

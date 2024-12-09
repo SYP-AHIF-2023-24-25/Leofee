@@ -42,6 +42,22 @@ export class RestService {
             {headers});
     }
 
+    uploadStudentsWithFile(formData: FormData ): Observable<any>    
+    {
+      let headers: HttpHeaders = new HttpHeaders();
+      return this.http.post<any>(
+        this.baseURL + "api/Students/UploadStudents", formData,
+          {headers});
+      
+    }
+
+    deleteAllStudents(): Observable<any> {
+      let headers: HttpHeaders = new HttpHeaders();
+      return this.http.delete<any>(
+        this.baseURL + "api/Students/DeleteAll",
+          {headers});
+    }
+
 
     getBonsForStudent(id: String): Observable<Bons>  {
       let headers: HttpHeaders = new HttpHeaders();
@@ -59,9 +75,7 @@ export class RestService {
           {headers});
     }
 
-    //http://localhost:5015/api/Student
-    //http://localhost:5015/api/Students/id/if200145
-    //http://localhost:5015/api/Students/id/if200145
+    
     addStudent(student: Student): Observable<any> {
       const url =  this.baseURL + `api/Students`;
       const headers: HttpHeaders = new HttpHeaders();

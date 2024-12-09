@@ -11,6 +11,9 @@ export class WhiteListServiceService {
   baseURL = 'api/WhiteListUser';
   constructor(private http: HttpClient) { 
     this.baseURL = environment.httpUrlLeofeeBackend + 'api/WhiteListUser';
+    console.log(environment.httpUrlLeofeeBackend);
+    console.log(this.baseURL);
+    console.log(environment.production);
   }
   
   getAllWhiteListUsers(): Observable<WhiteListUser[]> {

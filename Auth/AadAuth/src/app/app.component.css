@@ -1,0 +1,43 @@
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh; /* This will make the content center vertically on the page */
+    text-align: center; /* This will center align the text */
+}
+
+h1 {
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h3 {
+    font-size: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+button {
+    background-color: #f69800;
+    border: none;
+    color: white;
+    padding: 19px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin: 4px 2px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #f69800;
+}
