@@ -10,9 +10,9 @@ using Core.Entities;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
 
-
 [Route("api/[controller]")]
-public class StudentsController : Controller
+[ApiController]
+public class StudentsController : ControllerBase
 {
     private readonly IUnitOfWork _uow;
 
@@ -21,59 +21,111 @@ public class StudentsController : Controller
         _uow = uow;
     }
 
-    #region GetAllStudents, ById, ByEDUFSNummer
+    #region GetAllStudents, ById, ByEDUFSNummer, GetStudentsWithBalance
+
     [HttpGet]
-    public async Task<IList<StudentDto>> GetAllStudents()
+    public async Task<ActionResult<IList<StudentDto>>> GetAllStudents()
     {
-        return await _uow.StudentRepository.GetAllAsync();
+        try
+        {
+            var students = await _uow.StudentRepository.GetAllAsync();
+            return Ok(students);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     [HttpGet("id/{studentId}")]
     public async Task<ActionResult<StudentDto?>> GetStudentByEdufsUserId(string studentId)
     {
-        var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-        if (studentEntity == null)
+        try
         {
-            return NotFound();
+            var studentEntity = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (studentEntity == null)
+            {
+                return NotFound();
+            }
+            return Ok(new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass));
         }
-        return new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
+    [HttpGet("allStudentsWithBalances")]
+    public async Task<ActionResult<IList<StudentBalanceDto>>> GetStudentsWithBalance()
+    {
+        try
+        {
+            var students = await _uow.StudentRepository.GetAllAsync();
+            var studentsWithBalance = new List<StudentBalanceDto>();
 
-    [HttpGet("{Id}")]
+            foreach (var s in students)
+            {
+                var balance = await GetBalance(s.StudentId);
+                var studentBalanceDto = new StudentBalanceDto(
+                    s.StudentId,
+                    s.FirstName,
+                    s.LastName,
+                    s.StudentClass,
+                    Convert.ToDecimal(balance)
+                );
+                studentsWithBalance.Add(studentBalanceDto);
+            }
+
+            return Ok(studentsWithBalance);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
+    }
+
+    [HttpGet("{id}")]
     public async Task<ActionResult<StudentDto?>> GetStudentById(int id)
     {
-        var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(id);
-        if (studentEntity == null)
+        try
         {
-            return NotFound();
+            var studentEntity = await _uow.StudentRepository.GetStudentWithIdAsync(id);
+            if (studentEntity == null)
+            {
+                return NotFound();
+            }
+            return Ok(new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass));
         }
-        return new StudentDto(studentEntity.EdufsUsername, studentEntity.FirstName, studentEntity.LastName, studentEntity.StudentClass);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     #endregion
 
-
-
     [HttpGet("{studentId}/bons")]
     public async Task<ActionResult<BonDto>> GetBonsForStudent(string studentId)
     {
-        var currentBon = await  _uow.BonRepository.GetCurrentBonWithoutTransactions();
-       
-        if(currentBon is not null)
+        try
         {
-            
+            var currentBon = await _uow.BonRepository.GetCurrentBonWithoutTransactions();
 
-            return Ok(new BonDto(
-            currentBon.Id,
-            currentBon.StartDate,
-            currentBon.EndDate,
-            currentBon.BonTransactions,
-            currentBon.AmountPerStudent));
-
+            if (currentBon is not null)
+            {
+                return Ok(new BonDto(
+                    currentBon.Id,
+                    currentBon.StartDate,
+                    currentBon.EndDate,
+                    currentBon.BonTransactions,
+                    currentBon.AmountPerStudent));
+            }
+            return NotFound();
         }
-        return NotFound();
-
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     #region Delete Student, Delete AllStudents
@@ -81,14 +133,21 @@ public class StudentsController : Controller
     [HttpDelete("{studentId}")]
     public async Task<ActionResult<StudentDto?>> DeleteStudentById(string studentId)
     {
-        var result = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-        if (result == null)
+        try
         {
-            return NotFound("Es gibt keinen Student mit dieser ID");
+            var result = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (result == null)
+            {
+                return NotFound("Es gibt keinen Student mit dieser ID");
+            }
+            _uow.StudentRepository.Remove(result);
+            await _uow.SaveChangesAsync();
+            return Ok(new StudentDto(result.EdufsUsername, result.FirstName, result.LastName, result.StudentClass));
         }
-        _uow.StudentRepository.Remove(result);
-        await _uow.SaveChangesAsync();
-        return Ok(new StudentDto(result.EdufsUsername, result.FirstName, result.LastName, result.StudentClass));
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     [HttpDelete("DeleteAll")]
@@ -96,107 +155,123 @@ public class StudentsController : Controller
     {
         try
         {
-            // Alle Studenten l�schen
-            await _uow.StudentRepository.DeleteAllAsync();          
-
-            return Ok(true); // Erfolgreiche L�schung
+            await _uow.StudentRepository.DeleteAllAsync();
+            return Ok(true);
         }
         catch (Exception ex)
-        {           
-            return StatusCode(500, $"Interner Fehler: {ex.Message}");
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Interner Fehler: {ex.Message}");
         }
     }
 
     #endregion
 
-
     #region GetBalance, UsedValue, Pay
 
-    [HttpGet("{studentId}/balance")]
+    [HttpGet("balance/{studentId}")]
     public async Task<ActionResult<decimal>> GetBalanceForStudentById(string studentId)
     {
-        var currentBon = await _uow.BonRepository.GetCurrentBon();
-
-        //aktuellen Bon holen 
-        if (currentBon is not null)
+        try
         {
-            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-            if (currentStudent is not null)
+            var currentBon = await _uow.BonRepository.GetCurrentBon();
+
+            if (currentBon is not null)
             {
-                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
-                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
-                
-                var balance =  currentBon.AmountPerStudent - allTransactionsAmountForBonForStudent ;  
-                if(balance < 0)
+                var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+                if (currentStudent is not null)
                 {
-                    balance = 0; 
+                    var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions
+                        .Where(transaction => transaction.BonId == currentBon.Id)
+                        .Sum(transaction => transaction.TotalTransactionAmount);
+
+                    var balance = currentBon.AmountPerStudent - allTransactionsAmountForBonForStudent;
+                    if (balance < 0)
+                    {
+                        balance = 0;
+                    }
+
+                    return Ok(balance);
                 }
-
-                return Ok(balance);
-
             }
+            return NotFound();
         }
-        return NotFound();
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     [HttpPost("/student/pay")]
-
     public async Task<IActionResult> Pay(double amount, string studentId)
     {
-        var currentBon = await _uow.BonRepository.GetCurrentBon();
-        var result = false;
-        //aktuellen Bon holen 
-        if (currentBon is not null)
+        try
         {
-            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-            if (currentStudent is not null)
+            var currentBon = await _uow.BonRepository.GetCurrentBon();
+            var result = false;
+
+            if (currentBon is not null)
             {
-                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
-                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
-
-                if ((allTransactionsAmountForBonForStudent + (decimal)amount) <= currentBon.AmountPerStudent)
+                var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+                if (currentStudent is not null)
                 {
-                    StudentBonTransaction transaction = new StudentBonTransaction();
-                    transaction.BonId = currentBon.Id;
-                    transaction.StudentId = currentStudent.Id;
-                    transaction.TotalTransactionAmount = (decimal)amount;
-                    transaction.BonValue = currentBon.AmountPerStudent;
-                    transaction.TransactionTime = DateTime.Now;
+                    var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions
+                        .Where(transaction => transaction.BonId == currentBon.Id)
+                        .Sum(transaction => transaction.TotalTransactionAmount);
 
-                    await _uow.StudentBonTransactionRepository.AddAsync(transaction);
-                    await _uow.SaveChangesAsync();
-                    result = true;
+                    if ((allTransactionsAmountForBonForStudent + (decimal)amount) <= currentBon.AmountPerStudent)
+                    {
+                        var transaction = new StudentBonTransaction
+                        {
+                            BonId = currentBon.Id,
+                            StudentId = currentStudent.Id,
+                            TotalTransactionAmount = (decimal)amount,
+                            BonValue = currentBon.AmountPerStudent,
+                            TransactionTime = DateTime.Now
+                        };
+
+                        await _uow.StudentBonTransactionRepository.AddAsync(transaction);
+                        await _uow.SaveChangesAsync();
+                        result = true;
+                    }
                 }
             }
+            return Ok(result);
         }
-        return Ok(result);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     [HttpGet("{studentId}/usedValue")]
     public async Task<ActionResult<decimal>> GetUsedValueForStudent(string studentId)
     {
-        var currentBon = await _uow.BonRepository.GetCurrentBon();
-
-        //aktuellen Bon holen 
-        if (currentBon is not null)
+        try
         {
-            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
-            if (currentStudent is not null)
-            {
-                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions.Where(transaction => transaction.BonId == currentBon.Id)
-                                                                                    .Sum(transaction => transaction.TotalTransactionAmount);
-                return Ok(allTransactionsAmountForBonForStudent);
+            var currentBon = await _uow.BonRepository.GetCurrentBon();
 
+            if (currentBon is not null)
+            {
+                var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+                if (currentStudent is not null)
+                {
+                    var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions
+                        .Where(transaction => transaction.BonId == currentBon.Id)
+                        .Sum(transaction => transaction.TotalTransactionAmount);
+                    return Ok(allTransactionsAmountForBonForStudent);
+                }
             }
+            return NotFound();
         }
-        return NotFound();
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request. Message: {ex.Message}");
+        }
     }
 
     #endregion
 
-
-
-    #region CreateStudent, CreateStudentsByList => TODO!!
+    #region CreateStudent, UploadStudents
 
     [HttpPost]
     public async Task<IActionResult> CreateStudent([FromBody] StudentDto student)
@@ -216,23 +291,25 @@ public class StudentsController : Controller
         {
             await _uow.StudentRepository.AddAsync(newStudent);
             await _uow.SaveChangesAsync();
+            return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
         }
         catch (ValidationException e)
         {
-            return BadRequest($"data base error: {e.InnerException!.Message}");
+            return BadRequest($"Database error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
         {
-            return BadRequest($"data base error: {dbException.InnerException!.Message}");
+            return BadRequest($"Database error: {dbException.InnerException!.Message}");
         }
-        return CreatedAtRoute(new { id = newStudent.EdufsUsername }, newStudent);
     }
 
     [HttpPost("UploadStudents")]
     public async Task<ActionResult> UploadStudents(IFormFile file)
     {
         if (file == null || file.Length == 0)
+        {
             return BadRequest("Datei ist leer oder fehlt.");
+        }
         try
         {
             using var stream = file.OpenReadStream();
@@ -241,18 +318,42 @@ public class StudentsController : Controller
             var lines = await reader.ReadToEndAsync();
 
             await _uow.StudentRepository.UploadStudentsAsync(lines);
+            return Ok();
         }
         catch (ValidationException e)
         {
-            return BadRequest($"data base error: {e.InnerException!.Message}");
+            return BadRequest($"Database error: {e.InnerException!.Message}");
         }
         catch (DbUpdateException dbException)
         {
-            return BadRequest($"data base error: {dbException.InnerException!.Message}");
+            return BadRequest($"Database error: {dbException.InnerException!.Message}");
         }
-
-        return Ok();
     }
 
     #endregion
+
+    private async Task<decimal> GetBalance(string studentId)
+    {
+        var currentBon = await _uow.BonRepository.GetCurrentBon();
+
+        if (currentBon is not null)
+        {
+            var currentStudent = await _uow.StudentRepository.GetStudentWithEdufsUserAsync(studentId);
+            if (currentStudent is not null)
+            {
+                var allTransactionsAmountForBonForStudent = currentStudent.StudentTransactions
+                    .Where(transaction => transaction.BonId == currentBon.Id)
+                    .Sum(transaction => transaction.TotalTransactionAmount);
+
+                var balance = currentBon.AmountPerStudent - allTransactionsAmountForBonForStudent;
+                if (balance < 0)
+                {
+                    balance = 0;
+                }
+
+                return balance;
+            }
+        }
+        return -1;
+    }
 }

@@ -22,11 +22,20 @@ public class BonsController : Controller
     }
 
     [HttpGet]
-    public async Task<IList<BonDto>> GetAllBons()
+    public async Task<ActionResult<IList<BonDto>>> GetAllBons()
     {
-        //Log.Information("GetAllBons called ");
-        var bons = await _uow.BonRepository.GetAllAsync();
-        return bons;
+        try
+        {
+            var bons = await _uow.BonRepository.GetAllAsync();
+            return Ok(bons);
+        }
+        catch (Exception ex)
+        {
+             return BadRequest($"data base error: {ex.InnerException!.Message}");
+            throw;
+        }
+        
+       
     }
 
     [HttpGet("{id}")]
