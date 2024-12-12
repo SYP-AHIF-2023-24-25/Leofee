@@ -31,14 +31,18 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            /*var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+            /*
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .Build();*/
-
-            string connectionString = "server=127.0.0.1;Port=3307;Database=db;user=root;password=password;";
+                .Build();
+            
+            var connectionString = configuration.GetConnectionString(environment == "Development" ? "TestConnection" : "DefaultConnection");
+            
+            */
+            //var connectionString = "Server=127.0.0.1;Port=3307;Database=db;User=root;Password=password;";
+            var connectionString = "Server=127.0.0.1;Port=3308;Database=test_db;User=root;Password=password;";
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 

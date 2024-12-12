@@ -30,7 +30,7 @@ namespace IntegrationTests.WebApiTests.Base
 
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
-                    var dbContext = new ApplicationDbContext();
+                    var dbContext = new ApplicationDbContext();                    
                     dbContext.ConfigureIntegrationTestDb(options, _dbContainer.GetConnectionString());
                 });
 
