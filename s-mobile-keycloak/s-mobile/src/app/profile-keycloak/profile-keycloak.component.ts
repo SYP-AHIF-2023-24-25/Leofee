@@ -45,7 +45,9 @@ export class ProfileKeycloakComponent {
     this.getUsername(user);
     this.loadStudentData();
   }
-  
+
+
+ 
   
   public generateQRCode() {
     this.anotherQrCodeData = `${this.valueTest}`;
