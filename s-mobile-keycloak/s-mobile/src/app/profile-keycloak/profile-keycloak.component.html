@@ -1,42 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
 <body>
-
     <!-- Add Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">S-Mobile</a>
-            <div class="navbar-text ml-auto mr-3">
+            <a class="navbar-brand">
+                <img src="https://www.htl-leonding.at/wp-content/uploads/2022/10/htllogo_2022_black_v2.png">
+            </a>
+            <div class="navbar-brand">
                 {{fullName()}}
             </div>
-            <!-- <div class="navbar-text mr-3">
-                {{userCredit}} Credits
-            </div> -->
         </div>
     </nav>
 
     <div class="container mt-5">
-        <h1>Your Profile</h1>
+        <h1>Buffet-Gutschein</h1>
         <div class="table-responsive">
-            <table class="table">
-                <tbody>
+            <table class="table blue-table">
+                <tbody >
                     <tr>
                         <td><strong>If-Number</strong></td>
                         <td>{{userName()}}</td>
                     </tr>
                     <tr>
-                        <td><strong>Balance</strong></td>
-                        <!-- <td>{{leoUserRole() == 1 ? 'Student' : 'Teacher'}}</td> -->
-                        <td>{{getBalance()}}</td>
+                        <td><strong>Aktueller Kontostand</strong></td>
+                        <td>{{this.userCredit}} €</td>
                     </tr>
                     <tr>
                         <td><strong>Fullname:</strong></td>
@@ -46,30 +32,21 @@
             </table>
         </div>
 
+        <div class="container mt-3 d-flex justify-content-center">
+            <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
+        </div>
+
         <h3 class="mt-4 d-flex justify-content-center font-weight-bold">QR-Code</h3>
         
-        <div *ngIfElse="userCredit > 0 else noButton"  class="text-center mt-3">
-            <button class="btn btn-dark" type="button" (click)="clickOnQrCodeButton()"> Qr-Code</button>
-            <div class="container mt-3 d-flex justify-content-center">
+        <div *ngIf="this.userCredit > 0 else noButton" class="text-center mt-3">
+            <button class="btn btn-dark" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Qr-Code</button>
+            <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center">
                 <qrcode [qrdata]="generateQRCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
             </div>
-            <ng-template #noButton>
-                <button class="btn btn-dark" type="button" disabled (click)="clickOnQrCodeButton()"> Qr-Code</button>
-            </ng-template>
         </div>
+        <ng-template #noButton>
+            <button class="btn btn-dark" type="button" [disabled]="true" (click)="clickOnQrCodeButton()">Qr-Code</button>
+        </ng-template>
         
-    <!-- Logout Button -->
-    <div class="container mt-3 d-flex justify-content-center">
-        <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
     </div>
-
-    </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
-
-</html>

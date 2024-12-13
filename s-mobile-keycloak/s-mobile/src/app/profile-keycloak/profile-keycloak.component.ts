@@ -1,16 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, Inject, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { createLeoUser, LeoUser, Role } from '../../core/util/leo-token';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QRCodeModule } from 'angularx-qrcode';
 import { HttpClient } from '@angular/common/http';
 import { StudentService } from '../service/student.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
-// COMPONENT IS ONLY FOR TESTING PURPOSES
-// SOMETHINGS WILL LATER BE WRITTEN ON THE GIFT-CARD COMPONENT
+
 @Component({
   selector: 'app-profile-keycloak',
   standalone: true,
@@ -22,32 +20,33 @@ import { Observable } from 'rxjs';
   templateUrl: './profile-keycloak.component.html',
   styleUrl: './profile-keycloak.component.css'
 })
-export class ProfileKeycloakComponent {
-  //private readonly keycloakService: KeycloakService = inject(KeycloakService);
-  public readonly userName: WritableSignal<string | null> = signal(null);
+export class ProfileKeycloakComponent implements OnInit {
+  private readonly keyCloakService: KeycloakService = inject(KeycloakService);
+  public readonly userName: WritableSignal<string | null> = signal(null); 
   public readonly fullName: WritableSignal<string | null> = signal(null);
   public leoUserRole: WritableSignal<string | null> = signal(null);
   public strQrCodeData: string = ""
   //public valueTest = "";
   //public amountOfMoney = 0;
-  public schoolClass: string = ""
+
   public generateQrCodeButton: boolean = false;
 
+
   constructor (private client: HttpClient, 
-    private router: Router, 
-    private studentService: StudentService, 
-    private keyCloakService: KeycloakService) {
+    public studentService: StudentService,
+    private router: Router) {
 
   }
   //example variables
-  public userCredit: number = 0;
+  public userCredit: number = 2;
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(){
     const user: LeoUser = await createLeoUser(this.keyCloakService);
     this.getFullName(user);
     this.getRole(user);
     this.getUsername(user);
     this.getBalance();
+    this.getClass();
   }
   
   // private getSchoolClassOfUser(edufsId: String){
@@ -57,6 +56,14 @@ export class ProfileKeycloakComponent {
   public generateQRCode(): string {
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
     return studentId;
+  }
+
+  public async getClass(){
+    const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
+    let schoolClass
+    await this.studentService.getStudentDataById(studentId).subscribe(studentClass => {
+      studentClass = studentClass
+    })
   }
 
   public async getFullName(user: LeoUser): Promise<void> {
@@ -88,7 +95,6 @@ export class ProfileKeycloakComponent {
       /*this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
         this.amountOfMoney = balance;
       });*/
-
     await this.studentService.getStudentBalance(studentId).subscribe(balance => {
       this.userCredit = balance;
     })
