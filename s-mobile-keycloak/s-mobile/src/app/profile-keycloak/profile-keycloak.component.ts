@@ -37,7 +37,7 @@ export class ProfileKeycloakComponent implements OnInit {
   constructor (private client: HttpClient, 
     public studentService: StudentService,
     private router: Router) {
-
+    this.accessAuth()
   }
   //example variables
   public userCredit: number = 0;
@@ -49,6 +49,21 @@ export class ProfileKeycloakComponent implements OnInit {
     this.getUsername(user);
     this.getBalance();
     this.getClass();
+  }
+
+  private async accessAuth(){
+    const user: LeoUser = await createLeoUser(this.keyCloakService);
+    const studentId = user.username ? user.username.toString().replace(/\[Signal: (.*)\]/, "$1") : '';
+    let request = this.studentService.getStudentDataById(studentId);
+    let student: Student = await lastValueFrom(request);
+    let classNumber: number = Number(student.studentClass[0])
+
+    if(classNumber < 3) {
+      console.log("not passed")
+      let result = await this.logout();
+    }
+
+    console.log("student passed")
   }
   
   public generateQrCode(): string {
@@ -63,6 +78,7 @@ export class ProfileKeycloakComponent implements OnInit {
     let student: Student = await lastValueFrom(request);
     console.log(student)
     this.className = student.studentClass;
+
   }
 
   public async getFullName(user: LeoUser): Promise<void> {
@@ -78,8 +94,10 @@ export class ProfileKeycloakComponent implements OnInit {
   }
 
   public async logout(): Promise<void> {
-    await this.keyCloakService.logout();
-    this.router.navigate(['/login']);
+    await this.keyCloakService.logout().then(() => {
+      this.keyCloakService.clearToken();
+    })
+    this.router.navigate(['/']);
   }
 
   public async getBalance() {
