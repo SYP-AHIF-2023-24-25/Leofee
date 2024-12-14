@@ -6,15 +6,25 @@ body {
     background-color: #f4f4f4; /* Light background for contrast */
 }
 
+.button-qrcode {
+    color: rgb(57, 57, 57);
+    font-size: 20px;
+    padding: auto;
+}
+
 /* Navbar Styles */
 nav {
     background-color: #4CAF50; /* Green color for navigation bar */
     padding: 10px 20px; /* Padding for navbar */
 }
 
+td {
+    font-size: 20px;
+}
+
 .navbar-brand {
     font-size: 24px; /* Increased size for better visibility */
-    color: white; /* Changed color for contrast */
+    color: rgb(0, 0, 0); /* Changed color for contrast */
 }
 
 img {
@@ -81,7 +91,10 @@ h1, h2, h3 {
     margin-top: 20px; /* Space above QR code */
     display: flex; /* Flexbox for centering */
     justify-content: center; /* Center contents */
+    border-radius: black;
 }
+
+
 
 /* Responsive Styles */
 @media (max-width: 576px) {
@@ -109,4 +122,6 @@ h1, h2, h3 {
     .container {
         padding: 10px; /* Reduced padding on smaller screens */
     }
+    
+
 }

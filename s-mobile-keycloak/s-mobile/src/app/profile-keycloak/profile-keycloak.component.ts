@@ -7,6 +7,8 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { HttpClient } from '@angular/common/http';
 import { StudentService } from '../service/student.service';
 import { Router } from '@angular/router';
+import { Student } from '../model/student';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -30,7 +32,7 @@ export class ProfileKeycloakComponent implements OnInit {
   //public amountOfMoney = 0;
 
   public generateQrCodeButton: boolean = false;
-
+  public className: string = ""
 
   constructor (private client: HttpClient, 
     public studentService: StudentService,
@@ -38,7 +40,7 @@ export class ProfileKeycloakComponent implements OnInit {
 
   }
   //example variables
-  public userCredit: number = 2;
+  public userCredit: number = 0;
 
   async ngOnInit(){
     const user: LeoUser = await createLeoUser(this.keyCloakService);
@@ -49,21 +51,18 @@ export class ProfileKeycloakComponent implements OnInit {
     this.getClass();
   }
   
-  // private getSchoolClassOfUser(edufsId: String){
-  //   this.studentService.
-  // }
-
-  public generateQRCode(): string {
+  public generateQrCode(): string {
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
+    console.log("Qr-Code: ", studentId)
     return studentId;
   }
 
   public async getClass(){
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
-    let schoolClass
-    await this.studentService.getStudentDataById(studentId).subscribe(studentClass => {
-      studentClass = studentClass
-    })
+    let request = this.studentService.getStudentDataById(studentId);
+    let student: Student = await lastValueFrom(request);
+    console.log(student)
+    this.className = student.studentClass;
   }
 
   public async getFullName(user: LeoUser): Promise<void> {

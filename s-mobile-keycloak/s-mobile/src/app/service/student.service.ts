@@ -17,7 +17,7 @@ export class StudentService {
 
   // Method to retrieve student data by ID
   getStudentDataById(studentId: string): Observable<Student> {
-    return this.http.get<any>(`${this.baseUrl}/students/${studentId}`);
+    return this.http.get<any>(`${this.baseUrl}/api/Students/id/${studentId}`);
   }
 
   // Methode zum Abrufen des Guthabens eines Studenten anhand seiner ID
@@ -26,8 +26,9 @@ export class StudentService {
     return balance! /100;
 }*/
   getStudentBalance(studentId: string): Observable<number>{
-    let url: string = `${this.baseUrl}/api/Students/${studentId}/balance`;
+    let url: string = `${this.baseUrl}/api/Students/balance/${studentId}`;
     return this.http.get<number>(url);
   }
+
 
 }

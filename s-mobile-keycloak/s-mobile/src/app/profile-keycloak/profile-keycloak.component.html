@@ -15,9 +15,9 @@
         <h1>Buffet-Gutschein</h1>
         <div class="table-responsive">
             <table class="table blue-table">
-                <tbody >
-                    <tr>
-                        <td><strong>If-Number</strong></td>
+                <tbody class="tbody blue-table">
+                    <tr class="tr blue-table">
+                        <td class=""><strong>If-Number</strong></td>
                         <td>{{userName()}}</td>
                     </tr>
                     <tr>
@@ -25,8 +25,12 @@
                         <td>{{this.userCredit}} €</td>
                     </tr>
                     <tr>
-                        <td><strong>Fullname:</strong></td>
+                        <td><strong>Name</strong></td>
                         <td>{{fullName()}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Klasse</strong></td>
+                        <td>{{this.className}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -36,17 +40,18 @@
             <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
         </div>
 
-        <h3 class="mt-4 d-flex justify-content-center font-weight-bold">QR-Code</h3>
+        <h1 class="mt-4 d-flex justify-content-center font-weight-bold"><strong>QR-Code</strong></h1>
         
-        <div *ngIf="this.userCredit > 0 else noButton" class="text-center mt-3">
-            <button class="btn btn-dark" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Qr-Code</button>
-            <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center">
-                <qrcode [qrdata]="generateQRCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+        <div class="text-center mt-3">
+            <div *ngIf="this.userCredit > 0 else noButton">
+                <button class="btn btn-dark btn-lg" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Qr-Code</button>
+                <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center border border-dark">
+                    <qrcode class="qrcode" [qrdata]="generateQrCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+                </div>
             </div>
+            <ng-template #noButton>
+                <button class="btn btn-dark btn-lg" type="button" [disabled]="true" (click)="clickOnQrCodeButton()">Qr-Code</button>
+            </ng-template>
         </div>
-        <ng-template #noButton>
-            <button class="btn btn-dark" type="button" [disabled]="true" (click)="clickOnQrCodeButton()">Qr-Code</button>
-        </ng-template>
-        
     </div>
 </body>
