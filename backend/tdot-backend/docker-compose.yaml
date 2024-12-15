@@ -6,9 +6,22 @@ services:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
-      - leofee-test-mssql-data:/var/opt/mysql
+      - leofee-test-mssql-data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
+    networks:
+      - leofee-test-network
+
+  leofee-test-db-integration:
+    image: mysql
+    container_name: leofee-test-db-integration
+    environment:
+      MYSQL_DATABASE: 'test_db'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - leofee-test-integration-data:/var/lib/mysql
+    ports:
+      - 3308:3306
     networks:
       - leofee-test-network
 
@@ -19,8 +32,9 @@ services:
       - 8083:8080
     networks:
       - leofee-test-network
-    depends_on: 
+    depends_on:
       - leofee-test-db
+      - leofee-test-db-integration
 
   leofee-test-web:
     image: nginx
@@ -42,6 +56,7 @@ services:
       - leofee-test-network
     depends_on:
       - leofee-test-db
+      - leofee-test-db-integration
 
   leofee-test-dashboard:
     image: samuel010203/dashboard
@@ -55,13 +70,12 @@ services:
 
 volumes:
   leofee-test-mssql-data:
-    
+  leofee-test-integration-data:
 
 networks:
   leofee-test-network:
     name: leofee-test-network
     driver: bridge
-    external: false
     ipam:
       config:
         - subnet: 10.7.0.0/16

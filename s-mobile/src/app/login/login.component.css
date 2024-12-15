@@ -1,0 +1,27 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    padding: 30px;
+  }
+  
+  .btn-primary {
+    background-color: #6c757d;/*#6c757d*/
+    border-color: #6c757d;/*#6c757d*/
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #495057;/*#495057*/
+    border-color: #495057;/*#495057*/
+  }
+
+  
+  

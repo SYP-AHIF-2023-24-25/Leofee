@@ -1,0 +1,5 @@
+.qr-code {
+    max-width: 300px; /* Ändere die Größe je nach deinen Anforderungen */
+    width: 100%;
+    height: auto;
+  }

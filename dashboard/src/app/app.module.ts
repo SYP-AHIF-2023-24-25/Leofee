@@ -14,6 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox'; 
 //import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentOverviewComponent } from './student-overview/student-overview.component';
@@ -23,11 +24,13 @@ import { BonManagementForStudentComponent } from './bon-management-for-student/b
 import {AddBonForStudentDialog} from './bon-management-for-student/bon-management-for-student.component'; // AddBonForStudentDialog hinzugefügt
 import { ImportDialog } from './student-overview/student-overview.component';
 import { AppRoutingModule } from './app.routes';
+import { MatTableModule } from '@angular/material/table';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
 import { AddUserDialog, ConfirmationWindow, UserManagementComponent } from './user-managment/user-managment.component';
 import { StudentDetailComponent } from './student-detail/student-detail.component';
 import { CommonModule } from '@angular/common';
+import { MatSortModule } from '@angular/material/sort';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,11 +51,14 @@ import { CommonModule } from '@angular/common';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatCheckboxModule,
     FormsModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    MatSortModule,
     MatProgressBarModule,
     MatDialogModule,
     MatInputModule,

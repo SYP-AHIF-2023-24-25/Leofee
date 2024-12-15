@@ -8,13 +8,30 @@
 .input{
     color: black;
 }
-
+.d-flex{
+    width: 100%;
+}
 .menu{
     margin-top: 20px;
     margin-left: 20px;
     align-items: right;
 }
-
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 50px;
+  
+}
+.mat-form-field {
+  width: 60px; /* Breite der Sortier- und Filter-Buttons */
+  margin-right: 20px; 
+  margin-left: 10px;/* Abstand zwischen den Buttons */
+}
+.search-input {
+  width: 380px;
+  max-width: 500px;
+}
 
 .container {
     display: flex;
