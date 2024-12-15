@@ -331,7 +331,7 @@ public class StudentsController : ControllerBase
     }
 
     #endregion
-
+    [HttpGet("balance/{studentId}")]
     private async Task<decimal> GetBalance(string studentId)
     {
         var currentBon = await _uow.BonRepository.GetCurrentBon();
