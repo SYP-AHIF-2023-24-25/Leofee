@@ -38,7 +38,7 @@ export class RestService {
     getStudentBalance(id: String): Observable<number> {
         let headers: HttpHeaders = new HttpHeaders();       
         return this.http.get<any>(
-          this.baseURL+ "api/Students/"+ id+"/balance",
+          this.baseURL+ "api/Students/"+"balance/"+  id,
             {headers});
     }
 

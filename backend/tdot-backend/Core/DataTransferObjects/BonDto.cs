@@ -11,8 +11,6 @@ public class BonCreateDto
     public decimal AmountPerStudent { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-
-
 }
 
 public class BonUpdateDto : BonCreateDto

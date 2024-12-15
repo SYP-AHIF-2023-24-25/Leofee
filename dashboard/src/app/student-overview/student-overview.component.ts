@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -12,6 +12,9 @@ import { KeycloakService } from 'keycloak-angular';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
 import { HttpClient } from '@angular/common/http';
 
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-student-overview',
@@ -19,12 +22,17 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./student-overview.component.css']
 })
 export class StudentOverviewComponent implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'details'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'actions'];
+  // displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'details'];
   filteredStudents: any[] = [];
   _students: Student[] = [];
   _studentsWithBalance: StudentBalance[] = [];
   _selectedFile: File | null = null;
   isLoading: boolean = false; 
+  dataSource = new MatTableDataSource<any>([]);
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     public restService: RestService,
@@ -46,7 +54,14 @@ export class StudentOverviewComponent implements OnInit {
       this._studentsWithBalance.push({ student: student, balance: studentBalance });
     });
 
+    this.dataSource.data = this._students;
+
     console.log(this._students);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   async getBalanceForStudent(studentId: string): Promise<number> {

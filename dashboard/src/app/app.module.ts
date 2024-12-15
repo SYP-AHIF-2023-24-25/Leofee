@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 //import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +29,9 @@ import { initializeKeycloak } from './app.config';
 import { AddUserDialog, ConfirmationWindow, UserManagementComponent } from './user-managment/user-managment.component';
 import { StudentDetailComponent } from './student-detail/student-detail.component';
 import { CommonModule } from '@angular/common';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +57,9 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     MatProgressBarModule,
     MatDialogModule,
     MatInputModule,
