@@ -190,6 +190,7 @@ export class StudentOverviewComponent implements OnInit {
     } else {
       this.filteredStudents = this._studentsWithBalance;
     }
+    this.dataSource.data = this.filteredStudents;
   }
 
   onFilterChange(event: any) {
