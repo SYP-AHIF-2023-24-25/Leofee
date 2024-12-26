@@ -21,9 +21,18 @@ export interface Student{
     lastName: string;
     studentClass: string;  
 }
-
+/*
 export interface StudentBalance{
     balance: number;
     student : Student;
+}*/
+
+export interface StudentWithBalance{
+    studentId: string;
+    firstName: string;
+    lastName: string;
+    studentClass: string;  
+    balance: number;
 }
+
 

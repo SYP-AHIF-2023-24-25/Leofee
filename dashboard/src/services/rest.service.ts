@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Student } from '../app/model/student';
+import { Student , StudentWithBalance} from '../app/model/student';
 import { Bons } from 'src/app/model/Bons';
 import { environment } from 'src/environments/environment.prod';
 import { Transaction } from 'src/app/model/Transaction';
+
 
 
 
@@ -26,6 +27,13 @@ export class RestService {
           this.baseURL + "api/Students",
             {headers});
     }
+
+    getStudentsWithBalance(): Observable<StudentWithBalance[]> {
+      let headers: HttpHeaders = new HttpHeaders();
+      return this.http.get<StudentWithBalance[]>(
+        this.baseURL + "api/Students/allStudentsWithBalances",
+          {headers});
+  }
 
     
     deleteStudent(id: String): Observable<void> {

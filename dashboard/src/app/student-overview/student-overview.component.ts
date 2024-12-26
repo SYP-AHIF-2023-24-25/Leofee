@@ -1,19 +1,17 @@
-import { Component, OnInit , ViewChild} from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Student, StudentBalance } from '../model/student';
+import { Student, StudentWithBalance } from '../model/student';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
+import { MatSort,Sort } from '@angular/material/sort';
 import { SharedService } from 'src/services/shared.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
 import { KeycloakService } from 'keycloak-angular';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
-import { HttpClient } from '@angular/common/http';
-
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -22,46 +20,29 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./student-overview.component.css']
 })
 export class StudentOverviewComponent implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'actions'];
-  // displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'details'];
-  filteredStudents: any[] = [];
-  _students: Student[] = [];
-  _studentsWithBalance: StudentBalance[] = [];
+  displayedColumns: string[] = ['firstName', 'lastName', 'balance', 'studentClass', 'details'];
+  filteredStudents: MatTableDataSource<any> = new MatTableDataSource();
+  _students: StudentWithBalance[] = [];
+  _studentsWithBalance: any[] = [];
   _selectedFile: File | null = null;
-  isLoading: boolean = false; 
-  dataSource = new MatTableDataSource<any>([]);
+  isLoading: boolean = false;
+  selectedFilters:string[] = [];
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource = new MatTableDataSource(this._students);
 
-  constructor(
-    public restService: RestService,
-    public dialog: MatDialog,
-    private router: Router,
-    private sharedService: SharedService,
-    private whiteListService: WhiteListServiceService,
-    private keyCloakService: KeycloakService
-  ) {
-    sharedService.accessAuthShared(keyCloakService, whiteListService);
-  }
+
+@ViewChild(MatSort) sort!: MatSort;
+  constructor(public restService: RestService, public dialog: MatDialog, private router: Router) {}
 
   async ngOnInit() {
-    this._students = await lastValueFrom(this.restService.getStudents());
-    this.filteredStudents = this._studentsWithBalance;
-
-    this._students.forEach(async student => {
-      let studentBalance = await this.getBalanceForStudent(student.studentId);
-      this._studentsWithBalance.push({ student: student, balance: studentBalance });
-    });
-
-    this.dataSource.data = this._students;
-
+    this._students = await lastValueFrom(this.restService.getStudentsWithBalance());
+    /*this._studentsWithBalance = await Promise.all(this._students.map(async student => {
+      const balance = await this.getBalanceForStudent(student.studentId);
+      return { student, balance };
+    }));*/
+    this.filteredStudents.data = this._students; // Daten zuweisen
+    this.filteredStudents.sort = this.sort;
     console.log(this._students);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   async getBalanceForStudent(studentId: string): Promise<number> {
@@ -69,7 +50,7 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   viewDetails(firstName: string, lastName: string) {
-    const student = this.filteredStudents.find(entry => entry.student.firstName === firstName && entry.student.lastName === lastName);
+    const student = this.filteredStudents.data.find(entry => entry.student.firstName === firstName && entry.student.lastName === lastName);
     if (student) {
       const dialogRef = this.dialog.open(StudentDetailComponent, {
         width: '400px',
@@ -92,8 +73,6 @@ export class StudentOverviewComponent implements OnInit {
   onFileSelected(event: any) {
     this._selectedFile = event.target.files[0];
   }
-
-  
 
   async exportToCSV() {
     if (this._students.length === 0) {
@@ -163,13 +142,36 @@ export class StudentOverviewComponent implements OnInit {
   async deleteAllStudents() {
     const confirmation = confirm('Sind Sie sicher, dass Sie alle Schüler löschen möchten?');
     if (confirmation) {
+      console.log(this._students);
       this.isLoading = true;
       await lastValueFrom(this.restService.deleteAllStudents());
-      this.isLoading = false;
+      this.isLoading = false;      
       location.reload();
     }
   }
+  compare(a: string | number, b: string | number, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+  customSort(event: Sort) {
+    const data = this.filteredStudents.data.slice();
+    if (!event.active || event.direction === '') {
+      this.filteredStudents.data = data;
+      return;
+    }
+  
+    this.filteredStudents.data = data.sort((a, b) => {
+      const isAsc = event.direction === 'asc';
+      switch (event.active) {
+        case 'firstName': return this.compare(a.student.firstName.toLowerCase(), b.student.firstName.toLowerCase(), isAsc);
+        case 'lastName': return this.compare(a.student.lastName.toLowerCase(), b.student.lastName.toLowerCase(), isAsc);
+        case 'balance': return this.compare(a.balance, b.balance, isAsc);
+        case 'studentClass': return this.compare(a.student.studentClass.toLowerCase(), b.student.studentClass.toLowerCase(), isAsc);
+        default: return 0;
+      }
+    });
+  }
 
+  
   async deleteStudentFromList(lastName: string, firstName: string) {
     const index = this._students.findIndex(
       student => student.firstName === firstName && student.lastName === lastName
@@ -183,43 +185,47 @@ export class StudentOverviewComponent implements OnInit {
   filterStudents(event: any) {
     const query = event.target.value.toLowerCase();
     if (query) {
-      this.filteredStudents = this._studentsWithBalance.filter(student => 
+      this.filteredStudents.data = this._studentsWithBalance.filter(student => 
         student.student.firstName.toLowerCase().includes(query) || 
-        student.student.lastName.toLowerCase().includes(query) 
+        student.student.lastName.toLowerCase().includes(query)
       );
     } else {
-      this.filteredStudents = this._studentsWithBalance;
+      this.filteredStudents.data = this._studentsWithBalance;
     }
-    this.dataSource.data = this.filteredStudents;
   }
 
   onFilterChange(event: any) {
-    console.log('Auswahl geändert:', event.value);
-    switch (event.value) {
-      case 'lastname':
-        this.filteredStudents = this._studentsWithBalance.sort((a, b) => a.student.lastName.localeCompare(b.student.lastName));
-        break;
-      case 'class':
-        this.filteredStudents = this._studentsWithBalance.sort((a, b) => a.student.studentClass.localeCompare(b.student.studentClass));
-        break;
-      case 'inf':
-        this.filteredStudents = this._studentsWithBalance.filter(student => student.student.studentClass.includes('HIF'));
-        break;
-      case 'medientechnik':
-        this.filteredStudents = this._studentsWithBalance.filter(student => student.student.studentClass.includes('HITM'));
-        break;
-      case 'medizien':
-        this.filteredStudents = this._studentsWithBalance.filter(student => student.student.studentClass.includes('HEl'));
-        break;
-      case 'elektro':
-        this.filteredStudents = this._studentsWithBalance.filter(student => student.student.studentClass.includes('FELA'));
-        break;
-      case 'all':
-        this.filteredStudents = this._studentsWithBalance;
-        break;
-      default:
-        this.filteredStudents = this._studentsWithBalance;
-        break;
+    const selectedValues: string[] = event.value;
+    console.log('Auswahl geändert:', selectedValues);
+  
+    if (selectedValues.length === 0 || selectedValues.includes('all')) {
+      this.filteredStudents.data = this._studentsWithBalance;
+    } else {
+      this.filteredStudents.data = this._studentsWithBalance.filter(student =>
+        selectedValues.some(filter => student.student.studentClass.includes(filter))
+      );
+    }
+  }
+  onFilterCheckboxChange(event: any, filter: string) {
+    if (event.checked) {
+      this.selectedFilters.push(filter);
+    } else {
+      const index = this.selectedFilters.indexOf(filter);
+      if (index > -1) {
+        this.selectedFilters.splice(index, 1);
+      }
+    }
+    this.applyFilters();
+  }
+
+
+  applyFilters() {
+    if (this.selectedFilters.length === 0) {
+      this.filteredStudents.data = this._studentsWithBalance;
+    } else {
+      this.filteredStudents.data = this._studentsWithBalance.filter(student => 
+        this.selectedFilters.some(filter => student.student.studentClass.includes(filter))
+      );
     }
   }
 
@@ -279,7 +285,7 @@ export class AddStudentDialog {
     this.dialogRef.close();
   }
 }
-
+//endregion
 @Component({
   selector: 'ImportDialog',
   templateUrl: './ImportDialog.html',
@@ -292,8 +298,7 @@ export class ImportDialog {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ImportDialog>,
-    private restService: RestService,
-    private http: HttpClient
+    private restService: RestService
   ) {}
 
   onFileSelected(event: any) {
@@ -301,19 +306,66 @@ export class ImportDialog {
   }
 
   async importStudent() {
-
+    this.isImporting = true;
     const formData = new FormData();
-    formData.append('file', this._selectedFile as Blob);
-    
-    try {
-      await lastValueFrom(this.restService.uploadStudentsWithFile(formData));      
-      alert('Datei erfolgreich hochgeladen!');
-    } catch (error) {
-      console.error('Fehler beim Hochladen der Datei:', error);
-      alert('Fehler beim Hochladen der Datei!');
-    }
-    this.dialogRef.close();
-    
+
+      if (this._selectedFile) {
+        formData.append('file', this._selectedFile); // 'file' ist der Schlüsselname, unter dem die Datei gesendet wird
+      } else {
+        console.error('File is undefined. Skipping file append.');
+      }
+
+      try {
+        const response = await lastValueFrom(this.restService.uploadStudentsWithFile(formData));
+        console.log('Upload erfolgreich:', response);
+      } catch (error) {
+        console.error('Fehler beim Hochladen:', error);
+      }
+
+      this.isImporting = false;
+      this.dialogRef.close();
+
+/*
+
+    // Students von der Datenbank holen
+    this.isImporting = true;
+    this._students = await lastValueFrom(this.restService.getStudents());
+
+    // File auslesen und Students machen
+    if (this._selectedFile) {
+      const reader = new FileReader();
+
+      reader.onload = async (e: ProgressEvent<FileReader>) => {
+        const fileContent = reader.result as string;
+        let lines = fileContent.split('\n');
+        console.log(lines);
+        for (let i = 1; i < lines.length; i++) {
+          let parts: string[] = lines[i].split(';');
+          if (parts.length === 4) {
+            let student: Student = {
+              studentId: parts[0],
+              firstName: parts[1],
+              lastName: parts[2],
+              studentClass: parts[3],
+            };
+
+            // Ist der Schüler schon vorhanden?
+            if (this._students.find(s => s.studentId === student.studentId)) {
+              console.log('Student bereits vorhanden');
+            } else {
+              // Nein => ab in die Datenbank
+              console.log(student.firstName);
+              await lastValueFrom(this.restService.addStudent(student));              
+            }
+          } else {
+            console.warn(`Invalid line format: ${lines[i]}`);
+          }
+        }
+        this.isImporting = false;
+        this.dialogRef.close();
+      };
+      reader.readAsText(this._selectedFile);  
+    }*/
   }
 
   validateAmount() {

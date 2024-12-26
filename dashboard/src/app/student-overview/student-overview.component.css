@@ -1,66 +1,83 @@
 
 
 .buttons{
-    margin-top: 70px;
-    padding: 50px;
+  margin-top: 70px;
+  padding: 50px;
 }   
 
 .input{
-    color: black;
+  color: black;
 }
-
+.d-flex{
+  width: 100%;
+}
 .menu{
-    margin-top: 20px;
-    margin-left: 20px;
-    align-items: right;
+  margin-top: 20px;
+  margin-left: 20px;
+  align-items: right;
 }
+.search-container {
+display: flex;
+justify-content: center;
+margin-top: 20px;
+margin-left: 50px;
 
+}
+.mat-form-field {
+width: 60px; /* Breite der Sortier- und Filter-Buttons */
+margin-right: 20px; 
+margin-left: 10px;/* Abstand zwischen den Buttons */
+}
+.search-input {
+width: 380px;
+max-width: 500px;
+}
 
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .container * {
-    font-size: 20px; /* Ändern Sie die Schriftgröße nach Bedarf */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.container * {
+  font-size: 20px; /* Ändern Sie die Schriftgröße nach Bedarf */
+}
+
 #studentTable {
-    padding-top: 50 px;
+  padding-top: 50 px;
 }
 /* CSS for student-overview.component.css */
 
 /* CSS for student-overview.component.css */
 
 .table tbody tr.student-row {
-    height: 34px; 
-  }
-  
-  .table tbody tr.student-row td {
-    padding-top: 5px; 
-    padding-bottom: 5px; 
-    height: 34px; 
-  }
-  
-  .table tbody tr.student-row td button.btn-sm {
-    padding: 2px 5px;
-    font-size: 12px; 
-  }
-  .table tbody td {
-    text-align: center; 
-  }
-  .table thead th {
-    text-align: center; 
-  }
-  
-  
+  height: 34px; 
+}
+
+.table tbody tr.student-row td {
+  padding-top: 5px; 
+  padding-bottom: 5px; 
+  height: 34px; 
+}
+
+.table tbody tr.student-row td button.btn-sm {
+  padding: 2px 5px;
+  font-size: 12px; 
+}
+.table tbody td {
+  text-align: center; 
+}
+.table thead th {
+  text-align: center; 
+}
+
+
 .details-button{
-    height: 30px;
-    width: 80px;
-    font-size: 18px;
+  height: 30px;
+  width: 80px;
+  font-size: 18px;
 }
 .container-fluid{
-    padding-top: 30px;
+  padding-top: 30px;
 }
