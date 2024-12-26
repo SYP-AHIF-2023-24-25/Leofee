@@ -6,3 +6,11 @@ export interface Transaction {
     value: number  
 
 }
+
+export interface StudentBonTransaction{
+    StudentId: number,
+    BonId: number,
+    bonValue: DoubleRange,
+    transactionTime: Date,
+    totalTransactionAmount: DoubleRange
+}

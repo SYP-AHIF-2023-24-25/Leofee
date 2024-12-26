@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Router } from '@angular/router';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
-import { Bons } from '../model/Bons';
+import { Bons, BonWithBalance,BonResponse } from '../model/Bons';
 import { Student } from '../model/student';
 import { Transaction } from '../model/Transaction';
 import Chart from 'chart.js/auto';
@@ -19,7 +19,7 @@ import { WhiteListServiceService } from 'src/services/white-list-service.service
 export class GuthabenVerwaltungComponent implements OnInit {
   public chart: any;
   _students: Student[] = [];
-  _activeBon?: Bons;
+  _activeBon?: BonWithBalance;
   isBonExpired: boolean = true;
   voucherForm: FormGroup;
   _transactions: Transaction[] = [];
@@ -44,6 +44,8 @@ export class GuthabenVerwaltungComponent implements OnInit {
   }
 
   async ngOnInit() {
+    let currentBon = await lastValueFrom(this.restService.getCurrentBon());
+    this._activeBon = currentBon.currentBon;
 
     // Fetch students and transactions
     this._students = await lastValueFrom(this.restService.getStudents());
@@ -51,17 +53,17 @@ export class GuthabenVerwaltungComponent implements OnInit {
     console.log(this._transactions);
 
     // Calculate total balance for all students
-    let balanceAllStudents = 0;
+    /*let balanceAllStudents = 0;
     for (const student of this._students) {
       console.log(student.studentId);
       const value = await lastValueFrom(this.restService.getStudentUsedValue(student.studentId));
 
       balanceAllStudents += value;
-    }
+    }*/
 
     const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
     console.log(bonsForStudent)
-    this._activeBon = bonsForStudent;
+   // this._activeBon = bonsForStudent;
     console.log(this._activeBon)
 
     const hoeheBons = this._activeBon.amountPerStudent ;
@@ -72,7 +74,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
         to: this._activeBon.endDate || "",
         hoehe: hoeheBons || 0,
         max: hoeheBons * this._students.length || 0,
-        ist: balanceAllStudents || 0
+        ist: currentBon.amount || 0
       });
 
       this.checkBonExpiry();

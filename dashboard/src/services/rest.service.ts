@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Student , StudentWithBalance} from '../app/model/student';
-import { Bons } from 'src/app/model/Bons';
+import { Bons , Bon, BonWithBalance,BonResponse} from 'src/app/model/Bons';
 import { environment } from 'src/environments/environment.prod';
 import { Transaction } from 'src/app/model/Transaction';
 
@@ -80,6 +80,14 @@ export class RestService {
       let headers: HttpHeaders = new HttpHeaders();       
       return this.http.get<number>(
         this.baseURL+ "api/Students/"+ id+"/usedValue",
+          {headers});
+    }
+
+    getCurrentBon(): Observable<BonResponse> {
+      let headers: HttpHeaders = new HttpHeaders();
+    
+      return this.http.get<BonResponse>(
+        this.baseURL+ "currentBonWithBalance",
           {headers});
     }
 
