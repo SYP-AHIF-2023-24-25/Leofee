@@ -17,3 +17,9 @@ public class BonUpdateDto : BonCreateDto
 {    
     public int Id { get; set; }
 }
+
+
+
+public record CurrentBonDto(int Id, DateTime StartDate, DateTime EndDate, decimal AmountPerStudent);
+
+public record CurrentBonWithAmountDto(CurrentBonDto CurrentBon, decimal Amount);
