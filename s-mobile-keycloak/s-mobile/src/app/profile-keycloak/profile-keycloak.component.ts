@@ -28,8 +28,6 @@ export class ProfileKeycloakComponent implements OnInit {
   public readonly fullName: WritableSignal<string | null> = signal(null);
   public leoUserRole: WritableSignal<string | null> = signal(null);
   public strQrCodeData: string = ""
-  //public valueTest = "";
-  //public amountOfMoney = 0;
 
   public generateQrCodeButton: boolean = false;
   public className: string = ""
@@ -59,16 +57,12 @@ export class ProfileKeycloakComponent implements OnInit {
     let classNumber: number = Number(student.studentClass[0])
 
     if(classNumber < 3) {
-      console.log("not passed")
       let result = await this.logout();
     }
-
-    console.log("student passed")
   }
   
   public generateQrCode(): string {
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
-    console.log("Qr-Code: ", studentId)
     return studentId;
   }
 
@@ -76,9 +70,7 @@ export class ProfileKeycloakComponent implements OnInit {
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
     let request = this.studentService.getStudentDataById(studentId);
     let student: Student = await lastValueFrom(request);
-    console.log(student)
     this.className = student.studentClass;
-
   }
 
   public async getFullName(user: LeoUser): Promise<void> {
@@ -102,20 +94,9 @@ export class ProfileKeycloakComponent implements OnInit {
 
   public async getBalance() {
     const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
-    console.log(studentId);
-    // this.valueTest = studentId
-    // this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
-    //    this.amountOfMoney = balance;
-    //    this.qrCodeData.set(`${studentId}-${balance}`);
-    //  });
-    
-      /*this.studentService.getStudentBalanceById(studentId).subscribe(balance => {
-        this.amountOfMoney = balance;
-      });*/
     await this.studentService.getStudentBalance(studentId).subscribe(balance => {
       this.userCredit = balance;
     })
-    console.log(this.userCredit);
   }
 
   public async clickOnQrCodeButton() {
@@ -124,6 +105,5 @@ export class ProfileKeycloakComponent implements OnInit {
     } else {
       this.generateQrCodeButton = true;
     }
-    console.log(this.generateQrCodeButton);
   }
 }

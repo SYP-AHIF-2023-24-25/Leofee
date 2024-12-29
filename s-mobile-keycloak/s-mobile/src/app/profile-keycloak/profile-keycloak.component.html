@@ -1,29 +1,36 @@
 <body>
     <!-- Add Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand">
                 <img src="https://www.htl-leonding.at/wp-content/uploads/2022/10/htllogo_2022_black_v2.png">
             </a>
-            <div class="navbar-brand">
-                {{fullName()}}
-            </div>
+            <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
         </div>
-    </nav>
+    </nav> -->
+    
+<!-- Just an image -->
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img
+        src="https://www.htl-leonding.at/wp-content/uploads/2022/10/htllogo_2022_black_v2.png"
+        height="20"
+        alt=""
+        loading="lazy"
+      />
+    </a>
+    <div class="d-flex justify-content-end">
+        <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
+    </div>
+  </div>
+</nav>
 
-    <div class="container mt-5">
+    <div class="container">
         <h1>Buffet-Gutschein</h1>
         <div class="table-responsive">
-            <table class="table blue-table">
+            <table class="table table-sm">
                 <tbody class="tbody blue-table">
-                    <tr class="tr blue-table">
-                        <td class=""><strong>If-Number</strong></td>
-                        <td>{{userName()}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Aktueller Kontostand</strong></td>
-                        <td>{{this.userCredit}} €</td>
-                    </tr>
                     <tr>
                         <td><strong>Name</strong></td>
                         <td>{{fullName()}}</td>
@@ -32,19 +39,17 @@
                         <td><strong>Klasse</strong></td>
                         <td>{{this.className}}</td>
                     </tr>
+                    <tr>
+                        <td><strong>Aktueller Kontostand</strong></td>
+                        <td>{{this.userCredit}} €</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="container mt-3 d-flex justify-content-center">
-            <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
-        </div>
-
-        <h1 class="mt-4 d-flex justify-content-center font-weight-bold"><strong>QR-Code</strong></h1>
         
         <div class="text-center mt-3">
             <div *ngIf="this.userCredit > 0 else noButton">
-                <button class="btn btn-dark btn-lg" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Qr-Code</button>
+                <button class="btn btn-dark btn-lg" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Gutschein einlösen</button>
                 <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center border border-dark">
                     <qrcode class="qrcode" [qrdata]="generateQrCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
                 </div>
