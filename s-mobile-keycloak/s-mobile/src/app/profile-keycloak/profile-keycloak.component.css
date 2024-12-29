@@ -28,7 +28,7 @@ td {
 }
 
 img {
-    width: 240px; /* Fixed width for logo/image */
+    width: 200px; /* Fixed width for logo/image */
     height: auto; /* Maintain aspect ratio */
 }
 
