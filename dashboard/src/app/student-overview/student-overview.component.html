@@ -3,25 +3,20 @@
     <div class="row w-100">      
       <div class="col-md-12 d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start">
-          <mat-form-field appearance="fill" class="mb-3">
-            <mat-label>Sortieren</mat-label>
-            <mat-select (selectionChange)="onFilterChange($event)">
-              <mat-option value="lastname">Nachname</mat-option>
-              <mat-option value="class">Klasse</mat-option>              
-            </mat-select>
-          </mat-form-field>
+          
           <mat-form-field appearance="fill" class="mb-3 ml-3">
-  <mat-label>Filter</mat-label>
-  <mat-select multiple (selectionChange)="onFilterChange($event)">
-    <mat-option value="HIF">Informatik</mat-option>
-    <mat-option value="HITM">Medientechnik</mat-option>
-    <mat-option value="HBG">Medizientechnik</mat-option>
-    <mat-option value="FELA">Elektrotechnik</mat-option>
-  </mat-select>
-</mat-form-field>
+        <mat-label>Filter</mat-label>
+        <mat-select multiple (selectionChange)="onFilterChange($event)">
+          <mat-option value="HIF">Informatik</mat-option>
+          <mat-option value="HITM">Medientechnik</mat-option>
+          <mat-option value="HBG">Medizientechnik</mat-option>
+          <mat-option value="FELA">Fachschule</mat-option>
+          <mat-option value="HEL">Elektrotechnik</mat-option>
+        </mat-select>
+      </mat-form-field>
         
 <div class="search-container">
-  <input type="text" class="form-control search-input" placeholder="Schülername eingeben" (input)="filterStudents($event)">
+  <input type="text" class="form-control search-input" placeholder="Schülername eingeben" (input)="filteredStudents">
 </div>
         <div class="col-md-4"></div> 
       </div>

@@ -182,29 +182,23 @@ export class StudentOverviewComponent implements OnInit {
     }
   }
 
-  filterStudents(event: any) {
-    const query = event.target.value.toLowerCase();
-    if (query) {
-      this.filteredStudents.data = this._studentsWithBalance.filter(student => 
-        student.student.firstName.toLowerCase().includes(query) || 
-        student.student.lastName.toLowerCase().includes(query)
-      );
-    } else {
-      this.filteredStudents.data = this._studentsWithBalance;
-    }
-  }
+ 
 
   onFilterChange(event: any) {
-    const selectedValues: string[] = event.value;
+    const selectedValues: string[] = [];
+    selectedValues.push(event.value);
     console.log('Auswahl geändert:', selectedValues);
+
+    console.log(this._students);
   
     if (selectedValues.length === 0 || selectedValues.includes('all')) {
-      this.filteredStudents.data = this._studentsWithBalance;
+      this.filteredStudents.data = this._students;
     } else {
-      this.filteredStudents.data = this._studentsWithBalance.filter(student =>
-        selectedValues.some(filter => student.student.studentClass.includes(filter))
+      this.filteredStudents.data = this._students.filter(student =>
+        selectedValues.some(filter => student.studentClass.includes(filter))
       );
     }
+    console.log(this.filteredStudents.data);
   }
   onFilterCheckboxChange(event: any, filter: string) {
     if (event.checked) {
@@ -221,10 +215,10 @@ export class StudentOverviewComponent implements OnInit {
 
   applyFilters() {
     if (this.selectedFilters.length === 0) {
-      this.filteredStudents.data = this._studentsWithBalance;
+      this.filteredStudents.data = this._students;
     } else {
-      this.filteredStudents.data = this._studentsWithBalance.filter(student => 
-        this.selectedFilters.some(filter => student.student.studentClass.includes(filter))
+      this.filteredStudents.data = this._students.filter(student => 
+        this.selectedFilters.some(filter => student.studentClass.includes(filter))
       );
     }
   }
