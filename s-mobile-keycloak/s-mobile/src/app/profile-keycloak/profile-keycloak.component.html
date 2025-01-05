@@ -1,73 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
 <body>
-
     <!-- Add Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">S-Mobile</a>
-            <div class="navbar-text ml-auto mr-3">
-                {{fullName()}}
-            </div>
-            <div class="navbar-text mr-3">
-                {{userCredit}} Credits
-            </div>
+            <a class="navbar-brand">
+                <img src="https://www.htl-leonding.at/wp-content/uploads/2022/10/htllogo_2022_black_v2.png">
+            </a>
+            <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
         </div>
-    </nav>
+    </nav> -->
+    
+<!-- Just an image -->
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img
+        src="https://www.htl-leonding.at/wp-content/uploads/2022/10/htllogo_2022_black_v2.png"
+        height="20"
+        alt=""
+        loading="lazy"
+      />
+    </a>
+    <div class="d-flex justify-content-end">
+        <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
+    </div>
+  </div>
+</nav>
 
-    <div class="container mt-5">
-        <h1>Your Profile</h1>
+    <div class="container">
+        <h1>Buffet-Gutschein</h1>
         <div class="table-responsive">
-            <table class="table">
-                <tbody>
+            <table class="table table-sm">
+                <tbody class="tbody blue-table">
                     <tr>
-                        <td><strong>Username:</strong></td>
-                        <td>{{userName()}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Role:</strong></td>
-                        <!-- <td>{{leoUserRole() == 1 ? 'Student' : 'Teacher'}}</td> -->
-                        <td>{{leoUserRole()}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fullname:</strong></td>
+                        <td><strong>Name</strong></td>
                         <td>{{fullName()}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Klasse</strong></td>
+                        <td>{{this.className}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aktueller Kontostand</strong></td>
+                        <td>{{this.userCredit}} €</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <h3 class="mt-4 d-flex justify-content-center font-weight-bold">QR-Code</h3>
         
         <div class="text-center mt-3">
-            <button class="btn btn-dark" type="button" (click)="clickOnQrCodeButton()"> Qr-Code</button>
-            <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center">
-                <qrcode [qrdata]="generateQRCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+            <div *ngIf="this.userCredit > 0 else noButton">
+                <button class="btn btn-dark btn-lg" type="button" [disabled]="false" (click)="clickOnQrCodeButton()">Gutschein einlösen</button>
+                <div *ngIf="generateQrCodeButton" class="container mt-3 d-flex justify-content-center border border-dark">
+                    <qrcode class="qrcode" [qrdata]="generateQrCode()" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+                </div>
             </div>
-
+            <ng-template #noButton>
+                <button class="btn btn-dark btn-lg" type="button" [disabled]="true" (click)="clickOnQrCodeButton()">Qr-Code</button>
+            </ng-template>
         </div>
-        
-    <!-- Logout Button -->
-    <div class="container mt-3 d-flex justify-content-center">
-        <button (click)="logout()" class="btn btn-danger btn-lg">Logout</button>
     </div>
-
-    </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
-
-</html>
