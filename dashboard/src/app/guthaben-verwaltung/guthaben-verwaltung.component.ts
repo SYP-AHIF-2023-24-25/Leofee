@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Router } from '@angular/router';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
-import { Bons } from '../model/Bons';
+import { Bons, BonWithBalance,BonResponse } from '../model/Bons';
 import { Student } from '../model/student';
 import { Transaction } from '../model/Transaction';
-import Chart from 'chart.js/auto';
+
+import { registerables, Chart } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import { SharedService } from 'src/services/shared.service';
 import { KeycloakService } from 'keycloak-angular';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
@@ -19,7 +21,7 @@ import { WhiteListServiceService } from 'src/services/white-list-service.service
 export class GuthabenVerwaltungComponent implements OnInit {
   public chart: any;
   _students: Student[] = [];
-  _activeBon?: Bons;
+  _activeBon?: BonWithBalance;
   isBonExpired: boolean = true;
   voucherForm: FormGroup;
   _transactions: Transaction[] = [];
@@ -44,6 +46,8 @@ export class GuthabenVerwaltungComponent implements OnInit {
   }
 
   async ngOnInit() {
+    let currentBon = await lastValueFrom(this.restService.getCurrentBon());
+    this._activeBon = currentBon.currentBon;
 
     // Fetch students and transactions
     this._students = await lastValueFrom(this.restService.getStudents());
@@ -51,17 +55,17 @@ export class GuthabenVerwaltungComponent implements OnInit {
     console.log(this._transactions);
 
     // Calculate total balance for all students
-    let balanceAllStudents = 0;
+    /*let balanceAllStudents = 0;
     for (const student of this._students) {
       console.log(student.studentId);
       const value = await lastValueFrom(this.restService.getStudentUsedValue(student.studentId));
 
       balanceAllStudents += value;
-    }
+    }*/
 
     const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
     console.log(bonsForStudent)
-    this._activeBon = bonsForStudent;
+   // this._activeBon = bonsForStudent;
     console.log(this._activeBon)
 
     const hoeheBons = this._activeBon.amountPerStudent ;
@@ -72,7 +76,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
         to: this._activeBon.endDate || "",
         hoehe: hoeheBons || 0,
         max: hoeheBons * this._students.length || 0,
-        ist: balanceAllStudents || 0
+        ist: currentBon.amount || 0
       });
 
       this.checkBonExpiry();
@@ -86,113 +90,90 @@ export class GuthabenVerwaltungComponent implements OnInit {
     this.createChart();
   }
 
+  
+
   createChart() {
+    Chart.register(...registerables);
     // Aggregate transactions within 2-hour intervals
     const aggregatedData: number[] = [];
+    const bonCounts: number[] = [];
     const interval = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-
+  
     // Sort transactions by time
     const sortedTransactions = this._transactions.sort((a, b) => new Date(a.transactionTime).getTime() - new Date(b.transactionTime).getTime());
-
+  
     if (sortedTransactions.length === 0) {
       return; // No transactions to display
     }
-
+  
     let currentIntervalStart = new Date(sortedTransactions[0].transactionTime).getTime(); // Start with the first transaction time
     let currentIntervalEnd = currentIntervalStart + interval;
     let currentSum = 0;
-
+    let currentBonCount = 0;
+  
     sortedTransactions.forEach(transaction => {
       const transactionTime = new Date(transaction.transactionTime).getTime();
       while (transactionTime >= currentIntervalEnd) {
         aggregatedData.push(currentSum);
+        bonCounts.push(currentBonCount);
         currentSum = 0;
+        currentBonCount = 0;
         currentIntervalStart = currentIntervalEnd;
-        currentIntervalEnd += interval;
+        currentIntervalEnd = currentIntervalStart + interval;
       }
-      currentSum += transaction.value;
+      currentSum += transaction.totalTransactionAmount;
+      currentBonCount += 1;
     });
-    aggregatedData.push(currentSum); // Push the last interval sum
+  
+    // Push the last interval data
+    aggregatedData.push(currentSum);
+bonCounts.push(currentBonCount);
 
-    this.chart = new Chart("MyChart", {
-      type: 'line',
+const canvas = document.getElementById('myChart') as HTMLCanvasElement;
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: aggregatedData.map((_, index) => currentIntervalStart + index * interval), // X-axis labels starting from the first transaction time
+        labels: aggregatedData.map((_, index) => new Date(currentIntervalStart + index * interval)),
         datasets: [
           {
-            label: "Summed Transaction Values",
+            label: 'Amount spent',
             data: aggregatedData,
-            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            fill: false,
-            tension: 0.1
+            borderWidth: 1
+          },
+          {
+            label: 'Number of Bons',
+            data: bonCounts,
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
           }
         ]
       },
       options: {
-        aspectRatio: 2.3,
         scales: {
           x: {
-            type: 'linear',
-            title: {
-              display: true,
-              text: 'Time Intervals (2 hours)',
-              font: {
-                size: 24,
-                weight: 'bold',
-                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-              },
-              padding: {
-                top: 10,
-                bottom: 30
-              }
-            },
-            ticks: {
-              display: false 
+            type: 'time',
+            time: {
+              unit: 'hour'
             }
           },
           y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Summed Values',
-              font: {
-                size: 24,
-                weight: 'bold',
-                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-              },
-              padding: {
-                top: 10,
-                bottom: 30
-              }
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              font: {
-                size: 16,
-                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-              }
-            }
-          },
-          tooltip: {
-            titleFont: {
-              size: 18,
-              weight: 'bold',
-              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-            },
-            bodyFont: {
-              size: 16,
-              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-            }
+            beginAtZero: true
           }
         }
       }
     });
+  } else {
+    console.error('Failed to get 2D context');
+  }
+} else {
+  console.error('Canvas element not found');
+}
   }
 
   dateRangeValidator(group: AbstractControl): { [key: string]: boolean } | null {
@@ -200,6 +181,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
     const to = group.get('to')?.value;
     return from && to && new Date(from) > new Date(to) ? { dateRangeInvalid: true } : null;
   }
+
 
   get maxValue(): number {
     const hoehe = this.voucherForm.get('hoehe')?.value;

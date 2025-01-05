@@ -81,6 +81,31 @@ public class BonsController : Controller
         return CreatedAtRoute(new { id = newBon.Id }, newBon);
     }
 
+    [HttpGet("/currentBonWithBalance")]
+    public async Task<IActionResult> GetCurrnetBon()
+    {
+       
+
+
+        var BonTransactions = await _uow.BonRepository.GetCurrentBon();
+        var currentBon = await _uow.BonRepository.GetCurrentBonWithoutTransactions();
+        if (BonTransactions is not null && currentBon is not null)
+        {
+            
+            var amount = BonTransactions.BonTransactions.Sum(t => t.TotalTransactionAmount);
+            var bonDto = new CurrentBonDto(currentBon.Id, currentBon.StartDate, currentBon.EndDate,  currentBon.AmountPerStudent);
+
+
+            var BonWithAmount = new CurrentBonWithAmountDto(bonDto, amount);
+            return Ok(BonWithAmount);
+        }
+        else
+        {
+            return NotFound();
+        }     
+       
+    }
+
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBon(int id, [FromBody] BonUpdateDto bonDto)
     {

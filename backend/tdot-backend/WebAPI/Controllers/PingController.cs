@@ -2,6 +2,7 @@
 using Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
@@ -31,28 +32,23 @@ namespace WebAPI.Controllers
         {
             await _uow.DeleteDatabaseAsync();
             await _uow.MigrateDatabaseAsync();
-           Console.WriteLine("Read data from file ...");
-            var students = await ImportController.ReadStudentsAsync();
-            Console.WriteLine($"- {students.Count} Students read");
 
-            var bons = await ImportController.ReadBonsAsync();
-            Console.WriteLine($"- {bons.Count} bons read");
+            Console.WriteLine("Read data from file ...");
 
+            var (studentsDemo,bonDemo,transactions) = DemoDataGenerator.CreateDemoData();
             var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
             Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
-
-
-            var bontransaction = await ImportController.ReadAllTogetherAsync(students.ToList(), bons.ToList());
 
             Console.WriteLine("Saving to database ...");
 
             await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
-           
+            await _uow.SaveChangesAsync();
 
-            await _uow.StudentBonTransactionRepository.AddRangeAsync(bontransaction);
+            await _uow.StudentBonTransactionRepository.AddRangeAsync(transactions);
             await _uow.SaveChangesAsync();
 
             return Ok("Database recreated, transactions, whitelist, bons and students imported");
         }
+
     }
 }

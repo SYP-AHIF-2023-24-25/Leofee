@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bogus;
 using Core.Entities;
 
-namespace Import
+namespace Core
 {
     public class DemoDataGenerator
     {
@@ -32,7 +32,7 @@ namespace Import
                      {
                          "HIF" => "Informatik",
                          "HEL" => "Elektrotechnik",
-                         "ITM" => "Medientechnik",
+                         "HITM" => "Medientechnik",
                          "HBG" => "Medizintechnik",
                          _ => throw new ArgumentOutOfRangeException()
                      };
@@ -48,7 +48,7 @@ namespace Import
                     DateTime startDate;
                     do
                     {
-                        startDate = f.Date.Past(1, DateTime.Now.AddDays(-2)).Date;
+                        startDate = f.Date.Past(1, DateTime.Now.AddDays(2)).Date;
                     } while (usedDates.Contains(startDate) || usedDates.Contains(startDate.AddDays(1)) || usedDates.Contains(startDate.AddDays(2)));
 
                     usedDates.Add(startDate);
@@ -56,7 +56,7 @@ namespace Import
                     usedDates.Add(startDate.AddDays(2));
                     return startDate;
                 })
-                .RuleFor(b => b.EndDate, (f, b) => b.StartDate.AddDays(2))
+                .RuleFor(b => b.EndDate, (f, b) => b.StartDate.AddDays(6))
                 .RuleFor(b => b.AmountPerStudent, f => f.Finance.Amount(1, 10))
                 .RuleFor(b => b.BonTransactions, f => new List<StudentBonTransaction>());
             //bons = passivBonsFaker.Generate(10);
@@ -64,7 +64,7 @@ namespace Import
             {
                 Id = 0,
                 StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddDays(1),
+                EndDate = DateTime.Today.AddDays(3),
                 AmountPerStudent = 3,
                 BonTransactions = new List<StudentBonTransaction>()
             };

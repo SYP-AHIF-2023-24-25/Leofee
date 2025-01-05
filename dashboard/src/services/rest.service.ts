@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Student } from '../app/model/student';
-import { Bons } from 'src/app/model/Bons';
+import { Student , StudentWithBalance} from '../app/model/student';
+import { Bons , Bon, BonWithBalance,BonResponse} from 'src/app/model/Bons';
 import { environment } from 'src/environments/environment.prod';
 import { Transaction } from 'src/app/model/Transaction';
+
 
 
 
@@ -27,6 +28,13 @@ export class RestService {
             {headers});
     }
 
+    getStudentsWithBalance(): Observable<StudentWithBalance[]> {
+      let headers: HttpHeaders = new HttpHeaders();
+      return this.http.get<StudentWithBalance[]>(
+        this.baseURL + "api/Students/allStudentsWithBalances",
+          {headers});
+  }
+
     
     deleteStudent(id: String): Observable<void> {
         let headers: HttpHeaders = new HttpHeaders();
@@ -38,7 +46,7 @@ export class RestService {
     getStudentBalance(id: String): Observable<number> {
         let headers: HttpHeaders = new HttpHeaders();       
         return this.http.get<any>(
-          this.baseURL+ "api/Students/"+ id+"/balance",
+          this.baseURL+ "api/Students/"+"balance/"+  id,
             {headers});
     }
 
@@ -72,6 +80,14 @@ export class RestService {
       let headers: HttpHeaders = new HttpHeaders();       
       return this.http.get<number>(
         this.baseURL+ "api/Students/"+ id+"/usedValue",
+          {headers});
+    }
+
+    getCurrentBon(): Observable<BonResponse> {
+      let headers: HttpHeaders = new HttpHeaders();
+    
+      return this.http.get<BonResponse>(
+        this.baseURL+ "currentBonWithBalance",
           {headers});
     }
 
