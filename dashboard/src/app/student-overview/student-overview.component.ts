@@ -12,6 +12,7 @@ import { SharedService } from 'src/services/shared.service';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
 import { KeycloakService } from 'keycloak-angular';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
+import{MatPaginator} from '@angular/material/paginator';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class StudentOverviewComponent implements OnInit {
 
 
 @ViewChild(MatSort) sort!: MatSort;
+@ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(public restService: RestService, public dialog: MatDialog, private router: Router) {}
 
   async ngOnInit() {
@@ -42,6 +44,7 @@ export class StudentOverviewComponent implements OnInit {
     }));*/
     this.filteredStudents.data = this._students; // Daten zuweisen
     this.filteredStudents.sort = this.sort;
+    this.filteredStudents.paginator = this.paginator;
     console.log(this._students);
   }
 
