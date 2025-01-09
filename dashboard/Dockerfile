@@ -10,12 +10,12 @@
 #COPY --from=build /usr/src/app/dist/dashboard /usr/share/nginx/html
 #COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-FROM node:19 AS builder
+FROM node:20 AS builder
 WORKDIR /app
 COPY ./package*.json .
 RUN npm install 
 COPY . .
-RUN npm run build --prod
+RUN npm run build
 
 FROM nginx:1.17.1-alpine
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
