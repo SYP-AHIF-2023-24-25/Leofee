@@ -89,7 +89,7 @@ export class ProfileKeycloakComponent implements OnInit {
     await this.keyCloakService.logout().then(() => {
       this.keyCloakService.clearToken();
     })
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
   }
 
   public async getBalance() {
