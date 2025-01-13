@@ -19,10 +19,14 @@ export class AuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
+    let addPathIfVM = "/s-mobile";
+    if(window.location.origin.toString().includes("localhost")){
+      addPathIfVM = "";
+    }
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
       await this.keycloakAngular.login({
-        redirectUri: window.location.origin + state.url
+        redirectUri: window.location.origin + addPathIfVM + state.url
       });
     }
 
