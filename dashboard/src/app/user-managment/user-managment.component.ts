@@ -30,7 +30,7 @@ export class UserManagementComponent implements OnInit{
     private sharedService: SharedService, 
     private keyCloakService: KeycloakService,
     private addUserDialog: MatDialog) {
-
+    console.log("local: ", window.location.origin)
     sharedService.accessAuthShared(keyCloakService, whiteListService);
   }
   public async ngOnInit() {

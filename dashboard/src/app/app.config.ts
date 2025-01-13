@@ -8,6 +8,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 // Function to initialize Keycloak with the necessary configurations
 export function initializeKeycloak(keycloak: KeycloakService) {
+  let addDashboardPath = "/dashboard";
+  if (window.location.origin.toString().includes("localhost")){
+    addDashboardPath = "";
+  }
   return () =>
     keycloak.init({
       config: {
@@ -24,7 +28,7 @@ export function initializeKeycloak(keycloak: KeycloakService) {
         // when retrieving the token with the access code - we leave it like this for the moment until a solution is found
         flow: 'implicit',
         silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html' // URI for silent SSO checks
+          window.location.origin + addDashboardPath + '/assets/silent-check-sso.html' // URI for silent SSO checks
       },
       // Enables Bearer interceptor
       enableBearerInterceptor: true,
