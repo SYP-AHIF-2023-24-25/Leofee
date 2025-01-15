@@ -31,9 +31,10 @@ export class StudentDetailComponent implements OnInit{
   }
 
   async ngOnInit() {
-    const studentIdString = this.data.studentId;    
+    const studentIdString = this.data.studentId;        
     if (studentIdString) {
-      this.student = await this.getStudentById(studentIdString);      
+      this.student = await this.getStudentById(studentIdString);     
+      console.log(this.student); 
       this.balance = await this.getStudentBalance(studentIdString);
       console.log(this.balance);
       this.usedValue = await this.getStudentUsedValue(studentIdString);

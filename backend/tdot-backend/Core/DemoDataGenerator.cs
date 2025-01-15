@@ -32,7 +32,7 @@ namespace Core
                      {
                          "HIF" => "Informatik",
                          "HEL" => "Elektrotechnik",
-                         "HITM" => "Medientechnik",
+                         "ITM" => "Medientechnik",
                          "HBG" => "Medizintechnik",
                          _ => throw new ArgumentOutOfRangeException()
                      };

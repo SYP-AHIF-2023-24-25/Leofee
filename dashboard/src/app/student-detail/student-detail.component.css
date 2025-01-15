@@ -9,3 +9,6 @@
   .mt-7 {
     margin-top: 7rem !important; /* Erhöhen Sie den oberen Rand */
   }
+#buttons{
+  margin-bottom: 50px;
+}
