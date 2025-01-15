@@ -57,11 +57,13 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   viewDetails(firstName: string, lastName: string) {
-    const student = this.filteredStudents.data.find(entry => entry.student.firstName === firstName && entry.student.lastName === lastName);
-    if (student) {
+    const student = this.filteredStudents.data.find(entry => entry.firstName === firstName && entry.lastName === lastName);
+    
+    if (student) {      
+      console.log(student.studentID);
       const dialogRef = this.dialog.open(StudentDetailComponent, {
         width: '400px',
-        data: { studentId: student.student.studentId },
+        data: { studentId: student.studentID },
         backdropClass: 'custom-dialog-backdrop' // Custom backdrop class
       });
       dialogRef.afterClosed().subscribe(() => {
@@ -192,20 +194,10 @@ export class StudentOverviewComponent implements OnInit {
  
 
   onFilterChange(event: any) {
-    const selectedValues: string[] = [];
-    selectedValues.push(event.value);
-    console.log('Auswahl geändert:', selectedValues);
-
-    console.log(this._students);
-  
-    if (selectedValues.length === 0 || selectedValues.includes('all')) {
-      this.filteredStudents.data = this._students;
-    } else {
-      this.filteredStudents.data = this._students.filter(student =>
-        selectedValues.some(filter => student.studentClass.includes(filter))
-      );
-    }
-    console.log(this.filteredStudents.data);
+    const selectedValues: string[] = event.value;
+    this.selectedFilters = selectedValues;
+    console.log('Auswahl geändert:', this.selectedFilters);
+    this.applyFilters();
   }
   onFilterCheckboxChange(event: any, filter: string) {
     if (event.checked) {
@@ -225,8 +217,11 @@ export class StudentOverviewComponent implements OnInit {
       this.filteredStudents.data = this._students;
     } else {
       this.filteredStudents.data = this._students.filter(student => 
-        this.selectedFilters.some(filter => student.studentClass.includes(filter))
+        this.selectedFilters.some(filter => student.studentClass.toUpperCase().includes(filter))
+        
       );
+      console.log("sdf");
+      console.log(this.filteredStudents.data);
     }
   }
 

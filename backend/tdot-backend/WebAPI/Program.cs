@@ -24,14 +24,14 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
-            /*
+            
             options.AddPolicy("AllowAllOrigins", b => b
                 //.WithOrigins("http://localhost:4200")
                 //.WithOrigins("http://49.12.203.83:8090")
                 //.WithOrigins("http://leofee.samuelatzi.com")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials());*/
+                .AllowCredentials());
             options.AddPolicy("AllowAllOrigins",
            builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         });

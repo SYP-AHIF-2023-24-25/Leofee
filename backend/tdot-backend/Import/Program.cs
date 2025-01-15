@@ -13,7 +13,7 @@ using Core.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Core;
 using Microsoft.EntityFrameworkCore;
-using Import;
+
 
 Console.WriteLine("Recreate Database");
 
