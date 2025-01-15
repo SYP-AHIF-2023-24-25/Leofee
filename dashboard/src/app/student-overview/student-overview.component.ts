@@ -47,6 +47,10 @@ export class StudentOverviewComponent implements OnInit {
     this.filteredStudents.paginator = this.paginator;
     console.log(this._students);
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filteredStudents.filter = filterValue.trim().toLowerCase();
+  }
 
   async getBalanceForStudent(studentId: string): Promise<number> {
     return await lastValueFrom(this.restService.getStudentBalance(studentId));

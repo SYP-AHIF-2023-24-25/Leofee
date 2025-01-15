@@ -5,22 +5,25 @@
         <div class="d-flex justify-content-start">
           
           <mat-form-field appearance="fill" class="mb-3 ml-3">
-        <mat-label>Filter</mat-label>
-        <mat-select multiple (selectionChange)="onFilterChange($event)">
-          <mat-option value="HIF">Informatik</mat-option>
-          <mat-option value="HITM">Medientechnik</mat-option>
-          <mat-option value="HBG">Medizientechnik</mat-option>
-          <mat-option value="FELA">Fachschule</mat-option>
-          <mat-option value="HEL">Elektrotechnik</mat-option>
-        </mat-select>
-      </mat-form-field>
+            <mat-label>Filter</mat-label>
+            <mat-select multiple (selectionChange)="onFilterChange($event)">
+              <mat-option value="HIF">Informatik</mat-option>
+              <mat-option value="HITM">Medientechnik</mat-option>
+              <mat-option value="HBG">Medizientechnik</mat-option>
+              <mat-option value="FELA">Fachschule</mat-option>
+              <mat-option value="HEL">Elektrotechnik</mat-option>
+            </mat-select>
+          </mat-form-field>
         
-<div class="search-container">
-  <input type="text" class="form-control search-input" placeholder="Schülername eingeben" (input)="filteredStudents">
-</div>
-        <div class="col-md-4"></div> 
-      </div>
-    </div>
+          <div class="search-container">
+            <mat-form-field appearance="fill" class="search-input">
+              <mat-label>Schülername eingeben</mat-label>
+              <input matInput (keyup)="applyFilter($event)">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4"></div> 
+          </div>
+        </div>
     <div *ngIf="isLoading" class="text-center mt-4">
       <mat-spinner ></mat-spinner>
     </div>
@@ -71,11 +74,10 @@
         <div class="d-flex justify-content-between mb-3">
           <button class="btn btn-primary menu" (click)="importStudents()">Import Students</button>
           <button class="btn btn-primary menu" (click)="exportToCSV()">Export CSV</button>
-          <div>Anzahl der Schüler: {{_students.length}}</div> 
+          
         </div>
         
       </div>
-           
       <div id="manageStudents" class="d-flex flex-column align-items-center">        
         <div class="d-flex justify-content-between w-100">
           <button class="btn btn-primary menu" (click)="AddStudent()">Add Student</button>   
@@ -83,5 +85,6 @@
         </div>
       </div>        
     </div>
+    
   </div>
 </div>
