@@ -66,8 +66,10 @@ export class StudentOverviewComponent implements OnInit {
         data: { studentId: student.studentID },
         backdropClass: 'custom-dialog-backdrop' // Custom backdrop class
       });
-      dialogRef.afterClosed().subscribe(() => {
-        location.reload();
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'deleted') {
+          window.location.reload();
+        }
       });
     }
   }

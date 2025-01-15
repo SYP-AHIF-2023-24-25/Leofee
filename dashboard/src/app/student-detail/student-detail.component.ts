@@ -68,7 +68,7 @@ export class StudentDetailComponent implements OnInit{
   async deleteStudentFromList() { 
     if (this.student) {
       await lastValueFrom(this.restService.deleteStudent(this.student.studentId));
-      this.dialogRef.close(); // Dialog schließen
+      this.dialogRef.close('deleted'); // Dialog schließen
     }
   }
 
