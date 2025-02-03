@@ -8,7 +8,7 @@ import { Student } from '../model/student';
 import { Transaction } from '../model/Transaction';
 
 import { registerables, Chart } from 'chart.js';
-//import 'chartjs-adapter-date-fns';
+import 'chartjs-adapter-date-fns';
 import { SharedService } from 'src/services/shared.service';
 import { KeycloakService } from 'keycloak-angular';
 import { WhiteListServiceService } from 'src/services/white-list-service.service';
@@ -54,14 +54,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
     this._transactions = await lastValueFrom(this.restService.getAllTransactions());
     console.log(this._transactions);
 
-    // Calculate total balance for all students
-    /*let balanceAllStudents = 0;
-    for (const student of this._students) {
-      console.log(student.studentId);
-      const value = await lastValueFrom(this.restService.getStudentUsedValue(student.studentId));
-
-      balanceAllStudents += value;
-    }*/
+   
 
     const bonsForStudent = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
     console.log(bonsForStudent)

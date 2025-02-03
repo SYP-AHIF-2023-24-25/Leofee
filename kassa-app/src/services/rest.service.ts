@@ -69,7 +69,7 @@ export class RestService {
     let headers: HttpHeaders = new HttpHeaders();
     //'http://localhost:5015/api/Students/if200145/balance
     //http://localhost:5015/api/Student/if200145/balance
-    return this.http.get<number>(this.baseUrlLeofeeBackend+ "api/Students/"+ id+"/balance",
+    return this.http.get<number>(this.baseUrlLeofeeBackend+ "api/Students/"+"balance/" +id,
         {headers});
 }
   async sendOrder(order: Order) {

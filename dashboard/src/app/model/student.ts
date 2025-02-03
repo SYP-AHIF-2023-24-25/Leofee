@@ -28,7 +28,7 @@ export interface StudentBalance{
 }*/
 
 export interface StudentWithBalance{
-    studentId: string;
+    studentID: string;
     firstName: string;
     lastName: string;
     studentClass: string;  

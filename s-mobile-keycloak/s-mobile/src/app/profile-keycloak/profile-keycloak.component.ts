@@ -42,11 +42,11 @@ export class ProfileKeycloakComponent implements OnInit {
 
   async ngOnInit(){
     const user: LeoUser = await createLeoUser(this.keyCloakService);
-    this.getFullName(user);
-    this.getRole(user);
-    this.getUsername(user);
-    this.getBalance();
-    this.getClass();
+    this.userName.set(user.username);
+    this.fullName.set(user.fullName);
+    this.leoUserRole.set(user.roleAsString);
+    this.loadBalance();
+    this.loadClass();
   }
 
   private async accessAuth(){
@@ -62,12 +62,18 @@ export class ProfileKeycloakComponent implements OnInit {
   }
   
   public generateQrCode(): string {
-    const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
+    const studentId = this.userName();
+    if(studentId == null){
+      return "";
+    }
     return studentId;
   }
 
-  public async getClass(){
-    const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
+  public async loadClass(){
+    const studentId = this.userName();
+    if(studentId == null){
+      return;
+    }
     let request = this.studentService.getStudentDataById(studentId);
     let student: Student = await lastValueFrom(request);
     this.className = student.studentClass;
@@ -81,7 +87,7 @@ export class ProfileKeycloakComponent implements OnInit {
     this.leoUserRole.set(user.roleAsString);
   }
 
-  public async getUsername(user: LeoUser): Promise<void> {
+  public getUsername(user: LeoUser) {
     this.userName.set(user.username);
   }
 
@@ -92,9 +98,13 @@ export class ProfileKeycloakComponent implements OnInit {
     //this.router.navigate(['/']);
   }
 
-  public async getBalance() {
-    const studentId = this.userName.toString().replace(/\[Signal: (.*)\]/, "$1");
-    await this.studentService.getStudentBalance(studentId).subscribe(balance => {
+  public loadBalance() {
+    const studentId = this.userName();
+    
+    if(studentId == null){
+      return;
+    }
+    this.studentService.getStudentBalance(studentId).subscribe(balance => {
       this.userCredit = balance;
     })
   }

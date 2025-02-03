@@ -57,11 +57,13 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   viewDetails(firstName: string, lastName: string) {
-    const student = this.filteredStudents.data.find(entry => entry.student.firstName === firstName && entry.student.lastName === lastName);
+    console.log(this.filteredStudents);
+    const student = this._students.find(entry => entry.firstName === firstName && entry.lastName === lastName);
+    console.log(this._students);
     if (student) {
       const dialogRef = this.dialog.open(StudentDetailComponent, {
         width: '400px',
-        data: { studentId: student.student.studentId },
+        data: { studentId: student.studentID},
         backdropClass: 'custom-dialog-backdrop' // Custom backdrop class
       });
       dialogRef.afterClosed().subscribe(() => {
@@ -184,7 +186,7 @@ export class StudentOverviewComponent implements OnInit {
       student => student.firstName === firstName && student.lastName === lastName
     );
     if (index !== -1) {
-      await lastValueFrom(this.restService.deleteStudent(this._students[index].studentId));
+      await lastValueFrom(this.restService.deleteStudent(this._students[index].studentID));
       location.reload();
     }
   }
@@ -192,6 +194,7 @@ export class StudentOverviewComponent implements OnInit {
  
 
   onFilterChange(event: any) {
+    /*
     const selectedValues: string[] = [];
     selectedValues.push(event.value);
     console.log('Auswahl geändert:', selectedValues);
@@ -205,7 +208,11 @@ export class StudentOverviewComponent implements OnInit {
         selectedValues.some(filter => student.studentClass.includes(filter))
       );
     }
-    console.log(this.filteredStudents.data);
+    console.log(this.filteredStudents.data);*/
+    const selectedValues: string[] = event.value;
+    this.selectedFilters = selectedValues;
+    console.log('Auswahl geändert:', this.selectedFilters);
+    this.applyFilters();
   }
   onFilterCheckboxChange(event: any, filter: string) {
     if (event.checked) {

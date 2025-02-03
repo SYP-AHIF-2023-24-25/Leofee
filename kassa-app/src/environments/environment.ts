@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  httpUrlTadeotBackend: "https://vm64.htl-leonding.ac.at/tadeot-backend/api/",
-  httpUrlLeofeeBackend: "https://vm64.htl-leonding.ac.at/leofee-backend/",
+ httpUrlTadeotBackend: "https://tadeot.htl-leonding.ac.at/tadeot-api/api/",
+  httpUrlLeofeeBackend: "https://vm45.htl-leonding.ac.at/leofee-backend/"
 
   //httpUrl: "https://localhost:7086/api/ https://vm64.htl-leonding.ac.at/leofee-backend/"
 };

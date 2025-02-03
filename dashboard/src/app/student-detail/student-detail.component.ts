@@ -20,6 +20,9 @@ export class StudentDetailComponent implements OnInit{
   balance: number|undefined;
   usedValue: number|undefined = 0;
   isLoading: boolean = true;
+  sharedService: SharedService | undefined;
+ 
+  /*
   constructor(private route: ActivatedRoute, private router: Router,public restService: RestService,
     sharedService: SharedService,
     keyCloakService: KeycloakService,
@@ -27,17 +30,30 @@ export class StudentDetailComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: { studentId: string },
     whiteListService: WhiteListServiceService
   ) {
-    sharedService.accessAuthShared(keyCloakService, whiteListService);
+   sharedService.accessAuthShared(keyCloakService, whiteListService);
+    
   }
 
-  async ngOnInit() {
-    const studentIdString = this.data.studentId;    
-    if (studentIdString) {
+  */
+  
+  constructor( public restService: RestService,    
+    public dialogRef: MatDialogRef<StudentDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { studentId: string },    
+  ) {
+
+  }
+
+  async ngOnInit() { 
+    
+    const studentIdString = this.data.studentId;  
+    console.log(studentIdString);  
+    if (studentIdString) {                                      
       this.student = await this.getStudentById(studentIdString);      
       this.balance = await this.getStudentBalance(studentIdString);
       console.log(this.balance);
       this.usedValue = await this.getStudentUsedValue(studentIdString);
     }
+    
     this.isLoading = false;
   } 
   async getStudentById(id: string): Promise<Student> {
