@@ -1,0 +1,34 @@
+:host {
+  background-color: grey;
+}
+
+.not-allowed-container {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+    a:hover {
+    text-decoration: underline;
+  }
+  

@@ -4,6 +4,7 @@ import { StudentOverviewComponent } from './student-overview/student-overview.co
 import { GuthabenVerwaltungComponent } from './guthaben-verwaltung/guthaben-verwaltung.component';
 import { BonManagementForStudentComponent } from './bon-management-for-student/bon-management-for-student.component';
 import { StudentDetailComponent } from './student-detail/student-detail.component';
+import { NotAllowedPageComponent } from './not-allowed-page/not-allowed-page.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'studentsOverview', component: StudentOverviewComponent},
   {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent},
   {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent},
-  {path: 'student-detail/:id', component: StudentDetailComponent }
+  {path: 'student-detail/:id', component: StudentDetailComponent },
+  {path: 'not-allowed-page', component: NotAllowedPageComponent }
 ];
 
 @NgModule({
