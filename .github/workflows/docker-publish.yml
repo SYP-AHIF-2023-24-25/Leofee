@@ -24,13 +24,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image for frontend
+      - name: Build and push Docker image for dashboard
         uses: docker/build-push-action@v2
         with:
           context: ./dashboard          
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:dashboard
+      - name: Docker Build frontend - kassa-app
+        uses: docker/build-push-action@v2
+        with:
+          context: ./kassa-app  
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:kassa-app
 
+      - name: Docker Build frontend - s-mobile-keycloak
+        uses: docker/build-push-action@v2
+        with:
+          context: ./s-mobile-keycloak/s-mobile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:s-mobile-keycloak
+          
       - name: Build and push Docker image for backend
         uses: docker/build-push-action@v2
         with:
