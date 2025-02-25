@@ -1,0 +1,52 @@
+name: Docker build & push
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io  # oder docker.io für Docker Hub
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log into Docker registry
+        uses: docker/login-action@v2
+
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image for dashboard
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dashboard          
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:dashboard
+      - name: Docker Build frontend - kassa-app
+        uses: docker/build-push-action@v2
+        with:
+          context: ./kassa-app  
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:kassa-app
+
+      - name: Docker Build frontend - s-mobile-keycloak
+        uses: docker/build-push-action@v2
+        with:
+          context: ./s-mobile-keycloak/s-mobile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:s-mobile-keycloak
+          
+      - name: Build and push Docker image for backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:backend
