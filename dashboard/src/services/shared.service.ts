@@ -19,7 +19,7 @@ export class SharedService {
       console.log('User is not null');
       let isUserInWhiteList = await whiteListService.checkIfUserIsWhiteListed(leoUser.username);
       console.log('bool: ' + isUserInWhiteList);
-      if (!isUserInWhiteList) {
+      if (isUserInWhiteList) {
         
         console.log('User is white listed');
         //await this.keyCloakService.login();

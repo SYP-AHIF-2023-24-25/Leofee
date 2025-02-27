@@ -18,12 +18,15 @@ export class WhiteListServiceService {
   
   getAllWhiteListUsers(): Observable<WhiteListUser[]> {
     let headers: HttpHeaders = new HttpHeaders();
+    console.log("url: " +this.baseURL)
     return this.http.get<WhiteListUser[]>(
       this.baseURL, 
       {headers});
   }
 
   getWhiteListUserById(userId: string): Observable<WhiteListUser> {
+    console.log("url: " +this.baseURL)
+
     let headers: HttpHeaders = new HttpHeaders();
     let newUrl = this.baseURL + '/' + userId;
     return this.http.get<WhiteListUser>(
@@ -32,6 +35,8 @@ export class WhiteListServiceService {
   }
 
   deleteWhiteListUser(userId: string): Observable<WhiteListUser> {
+    console.log("url: " +this.baseURL)
+
     let headers: HttpHeaders = new HttpHeaders();
     let newUrl = this.baseURL + '/' + userId;
     let deltedUser: Observable<WhiteListUser> = this.http.delete<WhiteListUser>(
@@ -42,6 +47,8 @@ export class WhiteListServiceService {
   }
 
   addWhiteListUser(user: WhiteListUser): Observable<any> {
+    console.log("url: " +this.baseURL)
+
     let headers: HttpHeaders = new HttpHeaders();
     let addedUser: Observable<any> = this.http.post<any>(
       this.baseURL, 

@@ -1,10 +1,23 @@
+<!-- <div class="not-allowed-container">
+   <h1>Access Denied</h1>
+   <p>You do not have permission to access this page.</p>
+   <img src="/assets/png-clipart-no-entry-logo-no-symbol-sign-forbidden-miscellaneous-text-thumbnail.png"
+        alt="No Entry" width="200">
+   <button (click)="backToLoginScreen()">Return to Login</button>
+</div> -->
 
-<div class="not-allowed-container">
-    <h1>You do not have the permission to enter this
-       part of the Website</h1>
-    <p>You do not have permission to access this page.</p>
-    <img ngSrc="/assets/png-clipart-no-entry-logo-no-symbol-sign-forbidden-miscellaneous-text-thumbnail.png" 
-    width="400" height="300" >
-    <a routerLink="/">Back to KeyCloak-Login Screen</a>
-  </div>
-  
+<div class="container d-flex justify-content-center align-items-center vh-100">
+   <div class="card text-center shadow-lg p-5 border-danger w-50">
+       <div class="card-body">
+           <h1 class="text-danger fw-bold">Access Denied</h1>
+           <p class="text-muted">You do not have permission to access this page.</p>
+           
+           <img src="/assets/istockphoto-1294482883-612x612.jpg" 
+               alt="No Entry" class="img-fluid my-5" width="250">
+
+       </div>
+       <button class="btn btn-danger px-4 py-2 mt-4" (click)="backToLoginScreen()">Return to Login</button>
+
+   </div>
+</div>
+
