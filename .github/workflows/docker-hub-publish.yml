@@ -1,60 +1,54 @@
-name: Docker Hub Publish
+name: Docker build & push
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - fixes-GithubActions  
 
 env:
-  REGISTRY: docker.io  
-  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/kassa-app  
-  IMAGE_NAME_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/s-mobile-keycloak  
-  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/dashboard
-  IMAGE_NAME_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/backend  
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
+      - name: Log into Docker registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker Build frontend - dashboard
+      - name: Build and push Docker image for dashboard
         uses: docker/build-push-action@v2
         with:
-          context: ./dashboard          
+          context: ./dashboard
           push: true
-          tags: ${{ env.IMAGE_NAME_DASHBOARD }}:dashboard
+          tags: ${{ env.REGISTRY }}/${{ github.repository | toLowerCase }}:dashboard
 
       - name: Docker Build frontend - kassa-app
         uses: docker/build-push-action@v2
         with:
-          context: ./kassa-app  
+          context: ./kassa-app
           push: true
-          tags: ${{ env.IMAGE_NAME_KASSA_APP }}:kassa-app
+          tags: ${{ env.REGISTRY }}/${{ github.repository | toLowerCase }}:kassa-app
 
       - name: Docker Build frontend - s-mobile-keycloak
         uses: docker/build-push-action@v2
         with:
           context: ./s-mobile-keycloak/s-mobile
           push: true
-          tags: ${{ env.IMAGE_NAME_KEYCLOAK }}:s-mobile-keycloak
-          
-      - name: Docker Build backend
+          tags: ${{ env.REGISTRY }}/${{ github.repository | toLowerCase }}:s-mobile-keycloak
+
+      - name: Build and push Docker image for backend
         uses: docker/build-push-action@v2
         with:
           context: ./backend
           push: true
-          tags: ${{ env.IMAGE_NAME_BACKEND }}:backend
+          tags: ${{ env.REGISTRY }}/${{ github.repository | toLowerCase }}:backend
