@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fixes-GithubActions
 
 permissions:
   contents: read  # Allows reading the contents of the repository (default)
