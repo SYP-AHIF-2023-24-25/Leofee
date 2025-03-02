@@ -1,0 +1,60 @@
+name: Docker Hub Publish
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: docker.io  
+  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/kassa-app  
+  IMAGE_NAME_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/s-mobile-keycloak  
+  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/dashboard
+  IMAGE_NAME_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/backend  
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker Build frontend - dashboard
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dashboard          
+          push: true
+          tags: ${{ env.IMAGE_NAME_DASHBOARD }}:dashboard
+
+      - name: Docker Build frontend - kassa-app
+        uses: docker/build-push-action@v2
+        with:
+          context: ./kassa-app  
+          push: true
+          tags: ${{ env.IMAGE_NAME_KASSA_APP }}:kassa-app
+
+      - name: Docker Build frontend - s-mobile-keycloak
+        uses: docker/build-push-action@v2
+        with:
+          context: ./s-mobile-keycloak/s-mobile
+          push: true
+          tags: ${{ env.IMAGE_NAME_KEYCLOAK }}:s-mobile-keycloak
+          
+      - name: Docker Build backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.IMAGE_NAME_BACKEND }}:backend
