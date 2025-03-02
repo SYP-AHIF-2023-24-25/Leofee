@@ -37,27 +37,27 @@ jobs:
       - name: Build and push Docker image for dashboard
         uses: docker/build-push-action@v2
         with:
-          context: ./dashboard
+          context: ./dashboard/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:dashboard
 
       - name: Docker Build frontend - kassa-app
         uses: docker/build-push-action@v2
         with:
-          context: ./kassa-app
+          context: ./kassa-app/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:kassa-app
 
       - name: Docker Build frontend - s-mobile-keycloak
         uses: docker/build-push-action@v2
         with:
-          context: ./s-mobile-keycloak/s-mobile
+          context: ./s-mobile-keycloak/s-mobile/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:s-mobile-keycloak
 
       - name: Build and push Docker image for backend
         uses: docker/build-push-action@v2
         with:
-          context: ./backend
+          context: ./backend/tdot-backend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:backend
