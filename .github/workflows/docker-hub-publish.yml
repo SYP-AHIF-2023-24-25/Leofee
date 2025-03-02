@@ -4,15 +4,12 @@ on:
   push:
     branches: 
       - main
-      - fixes-GithubActions
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: docker.io  #  ghcr.io  entfernt
-  # github.repository as <account>/<repo>
-  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-dashboard  #  Neuer Name für Dashboard-Image
-  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-kassa-app  #  Neuer Name für kassa-app Image
-  IMAGE_NAME_S_MOBILE_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-s-mobile-keycloak  #  Neuer Name für s-mobile-keycloak Image
+  REGISTRY: docker.io
+  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-dashboard  
+  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-kassa-app  
+  IMAGE_NAME_S_MOBILE_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-s-mobile-keycloak  
   IMAGE_NAME_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/leohoot-backend
 
 jobs:
@@ -36,27 +33,27 @@ jobs:
       - name: Docker Build dashboard
         uses: docker/build-push-action@v4
         with:
-          context: ./dashboard  #  Korrigierter Kontext
+          context: ./dashboard  
           push: true
-          tags: ${{ env.IMAGE_NAME_DASHBOARD }}  #  Neuer Image-Name
+          tags: ${{ env.IMAGE_NAME_DASHBOARD }}  
 
       - name: Docker Build kassa-app
         uses: docker/build-push-action@v4
         with:
-          context: ./kassa-app  #  Korrigierter Kontext
+          context: ./kassa-app  
           push: true
-          tags: ${{ env.IMAGE_NAME_KASSA_APP }}  #  Neuer Image-Name
+          tags: ${{ env.IMAGE_NAME_KASSA_APP }}  
 
       - name: Docker Build s-mobile-keycloak
         uses: docker/build-push-action@v4
         with:
-          context: ./s-mobile-keycloak/s-mobile  #  Korrigierter Kontext
+          context: ./s-mobile-keycloak/s-mobile  
           push: true
-          tags: ${{ env.IMAGE_NAME_S_MOBILE_KEYCLOAK }}  #  Neuer Image-Name
+          tags: ${{ env.IMAGE_NAME_S_MOBILE_KEYCLOAK }}  
 
       - name: Docker Build backend
         uses: docker/build-push-action@v4
         with:
-          context: ./backend/tdot-backend  #  Korrigierter Kontext
+          context: ./backend/tdot-backend  
           push: true
           tags: ${{ env.IMAGE_NAME_BACKEND }}

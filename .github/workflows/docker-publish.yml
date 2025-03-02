@@ -7,12 +7,12 @@ on:
       - fixes-GithubActions
 
 env:
-  REGISTRY: ghcr.io  # oder docker.io für Docker Hub
+  REGISTRY: ghcr.io  
 
 permissions:
-  contents: read  # Allows reading the contents of the repository (default)
-  packages: write # Allows publishing Docker images to GitHub Packages
-  id-token: write # Needed for container image publishing
+  contents: read  
+  packages: write 
+  id-token: write 
 
 jobs:
   build:
