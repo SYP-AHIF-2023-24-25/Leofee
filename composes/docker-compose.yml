@@ -1,91 +1,96 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  traefik:
-    image: traefik:v2.11
-    container_name: traefik
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:444"
-    ports:
-      - "80:80"
-      - "444:444"
-      - "8098:8098" # traefik Dashboard
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./trafik.yml:/etc/traefik/traefik.yml:ro  # Update the file name here
-      - ./certs:/letsencrypt
-    networks:
-      - leofee-network
-
-  mobileapp:
-    image: samuel010203/mobileapp
-    container_name: mobileapp
-    ports:
-      - "8120:80"  
+  leofee-test-db:
+    image: mysql:5.7 #mysql:5.6
+    container_name: leofee-test-db
     restart: always
-
-  Dashboard:
-    image: samuel010203/dashboard
-    container_name: dashboard
-    ports:
-      - "8121:80"  
-    restart: always
-
-  leofee-db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: leofee-db-sqlserver
-    restart: always
+    #healthcheck:
+    #  test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 3
     environment:
-      # MSSQL_SA_USERNAME: "sa"
+      MYSQL_ROOT_PASSWORD: 'password'
       MYSQL_DATABASE: 'db'
-      MSSQL_SA_PASSWORD: "Your_password123"
-      ACCEPT_EULA: "Y"
+      MYSQL_USER: 'leofeedb'
+      MYSQL_PASSWORD: 'password'
     volumes:
-      - leofee-mssql-data:/var/lib/mssql
-    ports:
-      - 1433:1433
+      - leofee_leofee-mysql-data:/var/lib/mysql
     networks:
-      - leofee-network
+      - tadeotnet
 
-  leofee-adminer:
+  leofee-test-adminer:
     image: adminer
-    container_name: leofee-adminer
-    ports:
-      - 8083:8080
+    container_name: leofee-test-adminer
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leofee-test-adminer.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/adminer`)"
+      - "traefik.http.services.leofee-test-adminer.loadbalancer.server.port=8080"
     depends_on:
-      - leofee-db
+      - leofee-test-db
     networks:
-      - leofee-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.adminer.rule=Host(`adminer.samuelatzi.com`)"
-      - "traefik.http.services.adminer.loadbalancer.server.port=8099"
+      - tadeotnet
 
-  leofee-backend:
-    image: samuel010203/leofeebackend
-    container_name: leofee-backend
-    environment:
-      ASPNETCORE_ENVIRONMENT: 'Production'
-    links:
-      - leofee-db
+  leofee-test-backend:
+    image: samuel010203/leofee-backend:latest
+    container_name: leofee-test-backend
+    restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.leofee-backend.rule=Host(`leofee.samuelatzi.com`) && (PathPrefix(`/WebAPI`))"
-      - "traefik.http.services.leofee-backend.loadbalancer.server.port=8090"
+      #- "traefik.docker.network=tadeotnet"
+      - "traefik.http.routers.leofee-test-backend.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/leofee-backend`)"
+      - "traefik.http.services.leofee-test-backend.loadbalancer.server.port=5015"
     networks:
-      - leofee-network
+      - tadeotnet
+
+
+  leofee-test-dashboard:
+    #image: brudermichael07/dashboard
+    image: samuel010203/dashboard
+    container_name: leofee-test-dashboard
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leofee-test-dashboard.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/dashboard`)"
+      - "traefik.http.middlewares.leofee-test-dashboard-strip-prefix.stripprefix.prefixes=/dashboard"
+      - "traefik.http.routers.leofee-test-dashboard.middlewares=leofee-test-dashboard-strip-prefix"
+      - "traefik.http.services.leofee-test-dashboard.loadbalancer.server.port=80"
+    networks:
+      - tadeotnet
+
+  leofee-test-smobile:
+    restart: always
+    #image: brudermichael07/s-mobile
+    image: samuel010203/s-mobile
+    container_name: leofee-test-smobile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leofee-test-smobile.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/s-mobile`)"
+      - "traefik.http.services.leofee-test-smobile.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.leofee-smobile-strip-prefix.stripprefix.prefixes=/s-mobile"
+      - "traefik.http.routers.leofee-test-smobile.middlewares=leofee-smobile-strip-prefix"
+    networks:
+      - tadeotnet
+
+  leofee-test-kassa-app:
+    restart: always
+    image: brudermichael07/kassa-app
+    container_name: leofee-test-kassa-app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leofee-test-kassa-app.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/kassa`)"
+      - "traefik.http.services.leofee-test-kassa-app.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.leofee-kassa-app-strip-prefix.stripprefix.prefixes=/kassa"
+      - "traefik.http.routers.leofee-test-kassa-app.middlewares=leofee-kassa-app-strip-prefix"
+    networks:
+      - tadeotnet
 
 volumes:
-  leofee-mssql-data:
+  leofee_leofee-mysql-data:
 
 networks:
-  leofee-network:
-    driver: bridge
-    external: false
-    ipam:
-      config:
-        - subnet: 10.4.0.0/16
+  tadeotnet:
+    external: true
+    name: tadeotnet
