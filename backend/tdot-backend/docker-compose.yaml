@@ -1,14 +1,16 @@
 services:
   leofee-test-db:
-    image: mysql
+    image: mysql:5.7
     container_name: leofee-test-db
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_USER: 'leofeedb'
+      MYSQL_PASSWORD: 'password'
     volumes:
       - leofee-test-mssql-data:/var/opt/mysql
     ports:
-      - 3307:3306
+      - 3306:3306
     networks:
       - leofee-test-network
 
@@ -37,7 +39,7 @@ services:
       dockerfile: Dockerfile
     container_name: leofee-test-backend
     ports:
-      - 8088:8080
+      - 5015:5015
     networks:
       - leofee-test-network
     depends_on:

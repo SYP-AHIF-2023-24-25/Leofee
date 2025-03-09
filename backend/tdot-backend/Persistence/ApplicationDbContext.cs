@@ -42,7 +42,7 @@ public class ApplicationDbContext : DbContext
             
             */
             //var connectionString = "Server=127.0.0.1;Port=3307;Database=db;User=root;Password=password;";
-            var connectionString = "Server=127.0.0.1;Port=3308;Database=test_db;User=root;Password=password;";
+            var connectionString = "server=127.0.0.1;Port=3306;Database=db;user=leofeedb;password=password;SslMode=None;";
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
@@ -78,7 +78,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var connectionString = "server=127.0.0.1;Port=3307;Database=db;user=root;password=password;";
+        var connectionString = "server=127.0.0.1;Port=3306;Database=db;user=leofeedb;password=password;SslMode=None;";
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         return new ApplicationDbContext(optionsBuilder.Options);

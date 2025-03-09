@@ -46,5 +46,22 @@ namespace Persistence
 				.FirstAsync();
 
 		}
+
+		public async Task<bool> DeleteWhiteListUser(string userId)
+        {
+            var test = await _dbContext.WhiteListUsers!
+                .Where(u => u.UserId == userId)
+                .FirstAsync();
+
+            _dbContext.WhiteListUsers!.Remove(test);
+            await _dbContext.SaveChangesAsync();
+            var userExists =  await _dbContext.WhiteListUsers!.AnyAsync(user => user.UserId == userId);
+            if (userExists)
+            {
+                return false;
+            }
+            return true;
+
+        }
 	}
 }

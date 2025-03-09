@@ -11,13 +11,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PingController : ControllerBase
     {
-
         private readonly IUnitOfWork _uow;
         private readonly ILogger<PingController> _logger;
-        public PingController(ILogger<PingController> logger, IUnitOfWork uow)
+        private readonly IConfiguration _configuration;
+        public PingController(ILogger<PingController> logger, IUnitOfWork uow, IConfiguration configuration)
         {
             _logger = logger;
             _uow = uow;
+            _configuration = configuration;
         }
         // GET: api/<PingController>
         [HttpGet]
@@ -29,19 +30,33 @@ namespace WebAPI.Controllers
 
         [HttpPatch]
         public async Task<ActionResult<string>> Patch()
+            //[FromHeader(Name = "X-Admin-Secret")] string? secretFromHeader)
         {
+            // (1) Secret aus der Config holen
+            /*var expectedSecret = _configuration["Security:AdminSecret"];
+            if (string.IsNullOrWhiteSpace(expectedSecret))
+            {
+                _logger.LogError("AdminSecret is not set in configuration.");
+                return StatusCode(500, "Missing server configuration. Contact Admin.");
+            }
+
+            // (2) Secret im Header prüfen
+            if (string.IsNullOrWhiteSpace(secretFromHeader) || secretFromHeader != expectedSecret)
+            {
+                _logger.LogWarning("Unauthorized attempt to call Patch endpoint.");
+                return Unauthorized("Invalid or missing admin secret.");
+            }*/
+
+            // (3) Nur wenn der Header-Secret stimmt, führen wir die Logik aus
             await _uow.DeleteDatabaseAsync();
-			await _uow.CreateDatabaseAsync(); 
-            //await _uow.MigrateDatabaseAsync();
+            await _uow.CreateDatabaseAsync();
 
             Console.WriteLine("Read data from file ...");
-
-            var (studentsDemo,bonDemo,transactions) = DemoDataGenerator.CreateDemoData();
+            var (studentsDemo, bonDemo, transactions) = DemoDataGenerator.CreateDemoData();
             var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
             Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
 
             Console.WriteLine("Saving to database ...");
-
             await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
             await _uow.SaveChangesAsync();
 
@@ -51,5 +66,21 @@ namespace WebAPI.Controllers
             return Ok("Database recreated, transactions, whitelist, bons and students imported");
         }
 
+        [HttpPatch("OnlyWhiteListUsers")]
+        public async Task<ActionResult<string>> PatchOnlyWhiteListUsers(){
+            await _uow.DeleteDatabaseAsync();
+            await _uow.CreateDatabaseAsync();
+
+            Console.WriteLine("Read data from file ...");
+            var (studentsDemo, bonDemo, transactions) = DemoDataGenerator.CreateDemoData();
+            var whiteListUsers = await ImportController.ReadWhiteListUserAsync();
+            Console.WriteLine($"- {whiteListUsers.Count} WhiteListUsers read");
+
+            Console.WriteLine("Saving to database ...");
+            await _uow.WhiteListUserRepository.AddRangeAsync(whiteListUsers);
+            await _uow.SaveChangesAsync();
+
+            return Ok("Database recreated, whitelist imported");
+        }
     }
 }

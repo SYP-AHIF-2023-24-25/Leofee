@@ -16,5 +16,6 @@ namespace Core.Contracts
 		Task<WhiteListUserDto> GetWhiteListUserPerIdAsync(string userId);
 		//Task GetWhiteListUserPerUsernameAsync(string firstName, string lastName);
 		Task<bool> CheckIfUserExists(string userId);
+		Task<bool> DeleteWhiteListUser(string userId);
 	}
 }
