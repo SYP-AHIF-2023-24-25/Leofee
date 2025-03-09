@@ -2,11 +2,15 @@ name: Docker build & push
 
 on:
   push:
-    branches: [ "main" ]
-
+    branches: 
+      - main
 env:
-  REGISTRY: ghcr.io  # oder docker.io für Docker Hub
-  IMAGE_PREFIX: ${{ github.repository }}
+  REGISTRY: ghcr.io  
+
+permissions:
+  contents: read  
+  packages: write 
+  id-token: write 
 
 jobs:
   build:
@@ -16,24 +20,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Convert repository name to lowercase
+        run: |
+          echo "IMAGE_PREFIX=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Log into Docker registry
         uses: docker/login-action@v2
-
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image for dashboard
         uses: docker/build-push-action@v2
         with:
-          context: ./dashboard          
+          context: ./dashboard
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:dashboard
+
       - name: Docker Build frontend - kassa-app
         uses: docker/build-push-action@v2
         with:
-          context: ./kassa-app  
+          context: ./kassa-app
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:kassa-app
 
@@ -43,10 +51,10 @@ jobs:
           context: ./s-mobile-keycloak/s-mobile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:s-mobile-keycloak
-          
+
       - name: Build and push Docker image for backend
         uses: docker/build-push-action@v2
         with:
-          context: ./backend
+          context: ./backend/tdot-backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}:backend
