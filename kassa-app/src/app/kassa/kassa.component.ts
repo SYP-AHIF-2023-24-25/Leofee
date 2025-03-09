@@ -56,7 +56,7 @@ export class KassaComponent implements OnInit {
     this.resizeObservable$ = fromEvent(window, 'resize')
     this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
       this.numberColumns = window.innerWidth / 250;
-    })
+    });
   }
 
   inc(p: Product) {
@@ -88,7 +88,7 @@ export class KassaComponent implements OnInit {
 
  
     //console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
-    console.log(this.AmountOfBon);
+    //console.log(this.AmountOfBon);
     var result = ((products / 100.0) - this.AmountOfBon);
      
     return result;
@@ -165,6 +165,11 @@ export class KassaComponent implements OnInit {
   }
 
   hasSelectedProducts() {
+    
+    if(this.selectedBuffet.products === undefined) {
+      return 
+    }
+    
     return this.selectedBuffet.products.find(p => p.amount > 0) !== undefined;
   }
 
@@ -191,8 +196,7 @@ export class KassaComponent implements OnInit {
       data: { message: Messeage }
     });
 
-    dialogRef.afterClosed().subscribe(result => { 
-      
+    dialogRef.afterClosed().subscribe(result => {      
      
     });
 
@@ -215,6 +219,7 @@ export class KassaComponent implements OnInit {
         let bon: BonBooking = new BonBooking(this.studentID, this.AmountOfBon )
       
         this.restService.saveBookings(this.selectedBuffet, bon );
+       
       }
       else{
         this.restService.saveBookings(this.selectedBuffet, new BonBooking('', 0.0));

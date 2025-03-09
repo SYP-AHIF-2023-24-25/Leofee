@@ -31,7 +31,8 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<string>> Patch()
         {
             await _uow.DeleteDatabaseAsync();
-            await _uow.MigrateDatabaseAsync();
+			await _uow.CreateDatabaseAsync(); 
+            //await _uow.MigrateDatabaseAsync();
 
             Console.WriteLine("Read data from file ...");
 

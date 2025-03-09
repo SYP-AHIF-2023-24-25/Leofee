@@ -29,27 +29,35 @@ export class RestService {
 
   async saveBookings(buffet: IBuffet, bonBooking: BonBooking) {    
     const order = new Order(new Date(), buffet, bonBooking);    
-    console.log(order.bonBooking);
-    console.log(buffet.products);
-    console.log(buffet.location);
+    
     order.orderItems = buffet.products.filter(b => b.amount > 0).map(p => {
       console.log(p);
       const oi = new OrderItem(p.id, p.amount);
       return oi;
     });
 
-    //// console.log(order);
+    if(bonBooking.studentId != '')
+    {
+      var gutschein = buffet.products.find(p => p.name == "Gutschein");
+      if(gutschein != undefined)
+      {
+        gutschein.amount = bonBooking.amount;
+        order.orderItems.push(new OrderItem(gutschein.id, 1));
+      }
+    }
+    console.log(order.orderItems);
+
     await this.sendOrder(order)
-      .then(
-        ok => console.log(`Response: ${JSON.stringify(ok)}`),
-        rejected => console.log(rejected));
+    .then(
+      ok => console.log(`Response: ${JSON.stringify(ok)}`),
+      rejected => console.log(rejected));   
   }
 
   getProducts() : Observable<Product[]> {
     console.log(this.baseUrlTadeotBackend);
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.get<Product[]>(
-        this.baseUrlTadeotBackend + 'Products',
+        this.baseUrlTadeotBackend + 'products',
         {headers});
   }
   getBuffets() : Observable<IBuffet[]> {

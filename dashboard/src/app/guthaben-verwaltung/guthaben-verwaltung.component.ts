@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Router } from '@angular/router';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
-import { Bons, BonWithBalance,BonResponse } from '../model/Bons';
+import { Bons, BonWithBalance,BonResponse, Bon } from '../model/Bons';
 import { Student } from '../model/student';
 import { Transaction } from '../model/Transaction';
 
@@ -46,8 +46,15 @@ export class GuthabenVerwaltungComponent implements OnInit {
   }
 
   async ngOnInit() {
+
     let currentBon = await lastValueFrom(this.restService.getCurrentBon());
-    this._activeBon = currentBon.currentBon;
+    if(currentBon != null)
+    {
+      this._activeBon = currentBon.currentBon;
+    }
+   
+    console.log("Current Bon: " + currentBon);
+  
 
     // Fetch students and transactions
     this._students = await lastValueFrom(this.restService.getStudents());
@@ -60,7 +67,16 @@ export class GuthabenVerwaltungComponent implements OnInit {
     console.log(bonsForStudent)
    // this._activeBon = bonsForStudent;
     console.log(this._activeBon)
-
+    if(this._activeBon == null)
+    {
+      this._activeBon = {
+        id: 0,
+        startDate: new Date(),
+        endDate: new Date(),
+        amountPerStudent: 0,
+        BonsConsumed: 0
+      };
+    }
     const hoeheBons = this._activeBon.amountPerStudent ;
 
     if (this._activeBon) {
@@ -69,7 +85,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
         to: this._activeBon.endDate || "",
         hoehe: hoeheBons || 0,
         max: hoeheBons * this._students.length || 0,
-        ist: currentBon.amount || 0
+        ist: this._activeBon.amountPerStudent || 0
       });
 
       this.checkBonExpiry();
@@ -187,13 +203,15 @@ if (canvas) {
   }
 
   async onSubmit() {
+    console.log('Form submitted');
     if (this.voucherForm.valid) {
 
-        const currentBon = await lastValueFrom(this.restService.getBonsForStudent(this._students[0].studentId));
+        const currentBon = await lastValueFrom(this.restService.getCurrentBon());
         if (currentBon != null) {
+          console.log('Updating existing bon');
           const existingBon = currentBon;
           await lastValueFrom(this.restService.updateBonForStudent(
-            1,
+            currentBon.currentBon.id,
             this.voucherForm.value.from,
             this.voucherForm.value.to,
             this.voucherForm.value.hoehe,
@@ -202,12 +220,13 @@ if (canvas) {
           alert(`Bon wurde geupdatet`);   
         // console.log(`Bon für Student ${student.studentId} wurde aktualisiert.`);
         } else {
-          await lastValueFrom(this.restService.addBon(          
+          console.log('Creating new bon');
+          await lastValueFrom(this.restService.addBon( 
             this.voucherForm.value.from,
             this.voucherForm.value.to,
             this.voucherForm.value.hoehe
           ));  
-          alert(`Bon in der höhe von ${this.voucherForm.value.hoehe}€ wurden erfolgreich erstellt`);        
+          alert(`Bon in der höhe von ${this.voucherForm.value.hoehe}€ wurden erfolgreich erstellt`);
         }
            
     } else {

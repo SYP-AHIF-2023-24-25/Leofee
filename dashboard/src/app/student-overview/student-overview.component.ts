@@ -47,6 +47,7 @@ export class StudentOverviewComponent implements OnInit {
     this.filteredStudents.paginator = this.paginator;
     console.log(this._students);
   }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filteredStudents.filter = filterValue.trim().toLowerCase();
@@ -214,6 +215,7 @@ export class StudentOverviewComponent implements OnInit {
     console.log('Auswahl geändert:', this.selectedFilters);
     this.applyFilters();
   }
+
   onFilterCheckboxChange(event: any, filter: string) {
     if (event.checked) {
       this.selectedFilters.push(filter);
