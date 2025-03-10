@@ -1,1 +1,40 @@
+name: Lint
 
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - 133-dashboard-usermanagment-tabelle-fixen
+  # Replace pull_request with pull_request_target if you
+  # plan to use this action with forks, see the Limitations section
+  pull_request:
+    branches:
+      - 133-dashboard-usermanagment-tabelle-fixen
+
+permissions:
+  contents: read
+  packages: read
+  statuses: read
+  checks: read
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          dotnet_format: true
+
+    
