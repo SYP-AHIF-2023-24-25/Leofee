@@ -91,7 +91,7 @@ export class RestService {
     ).pipe(
       catchError(error => {
         console.error("Error in getCurrentBon", error);
-        return of(null); // Gibt ein Observable mit null zurück
+        return of(null); 
       })
     );
     console.log("Fertig");
