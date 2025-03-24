@@ -36,6 +36,7 @@ export class ProfileKeycloakComponent implements OnInit {
     public studentService: StudentService,
     private router: Router) {
     this.accessAuth()
+    console.log("Connected to keycloak")
   }
   //example variables
   public userCredit: number = 0;
