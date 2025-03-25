@@ -12,7 +12,7 @@ on:
     branches:
       - 154-lint-und-code-coverage-einfügen
 permissions:
-  contents: read
+  contents: write
   packages: write
   statuses: write
   checks: write
