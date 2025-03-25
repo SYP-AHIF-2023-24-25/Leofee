@@ -19,4 +19,5 @@ public interface IBonRepository: IGenericRepository<Bon>
     Task<Bon?> GetCurrentBon();
 
     Task<Bon?> GetCurrentBonWithoutTransactions();
+    Task<BonDto> DeleteBonWithIdAsync(int Id);
 }
