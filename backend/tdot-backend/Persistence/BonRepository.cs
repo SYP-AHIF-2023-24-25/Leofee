@@ -17,18 +17,19 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
         _dbContext = dbContext;
     }    
     public async Task<IList<BonDto>> GetAllAsync()
-{
-    var bonDtos = await _dbContext.Bons!
-        .Include(b => b.BonTransactions)
-        .Select(c => new BonDto(
-            c.Id,            
-            c.StartDate, 
-            c.EndDate, 
-            c.BonTransactions,
-            c.AmountPerStudent))
-        .ToListAsync();
-    return bonDtos;
-}
+    {
+        var bonDtos = await _dbContext.Bons!
+            .Include(b => b.BonTransactions)
+            .Select(c => new BonDto(
+                c.Id,            
+                c.StartDate, 
+                c.EndDate, 
+                c.BonTransactions,
+                c.AmountPerStudent
+                ))
+            .ToListAsync();
+        return bonDtos;
+    }
 
     public async Task<BonDto?> GetBonWithIdAsync(int Id)
     {
@@ -44,10 +45,29 @@ public class BonRepository: GenericRepository<Bon>, IBonRepository
             bon.Id,            
             bon.StartDate,
             bon.EndDate,
-            bon.BonTransactions,           
-            bon.AmountPerStudent);
+            bon.BonTransactions,
+            bon.AmountPerStudent
+            );
     }  
-   
+
+    public async Task<BonDto> DeleteBonWithIdAsync(int Id){
+        var bon = await _dbContext.Bons!
+            .Include(b => b.BonTransactions)
+            .SingleOrDefaultAsync(c => c.Id == Id);
+        if (bon is not null)
+        {
+            _dbContext.Bons!.Remove(bon);
+            await _dbContext.SaveChangesAsync();
+        }
+        return new BonDto(
+            bon!.Id,            
+            bon.StartDate,
+            bon.EndDate,
+            bon.BonTransactions,
+            bon.AmountPerStudent
+            );
+    }
+
     public async Task<BonUpdateDto> UpdateBonsWithIdAsync(int bonId, BonUpdateDto updateBonDto)
     {
         var bon = await _dbContext.Bons!

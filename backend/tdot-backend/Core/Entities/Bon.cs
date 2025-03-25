@@ -15,4 +15,6 @@ public class Bon : EntityObject
 
     public List<StudentBonTransaction> BonTransactions { get; set; } = [];
 
+    //public bool IsActive = false;
+
 }
