@@ -1,6 +1,18 @@
-<h1 mat-dialog-title>Willst Du diese Buchung speichern?</h1>
-<div mat-dialog-actions align="center">
+<h1 mat-dialog-title style="text-align: center; margin-bottom: 20px;">Zahlen und Speichern oder Gutschein scannen?</h1>
+<!--<div mat-dialog-actions align="center">
   <button style="margin-right: 50px" class="mat-raised-button" (click)="clicked('no')">Nein</button>
   <button class="mat-raised-button mat-primary" (click)="clicked('yes')" cdkFocusInitial>Ja!</button>
+
+  <button class="ButtonMargin" mat-raised-button color="accent" (click)="clicked('QRCodeScannen')"  >QR Code Scannen</button>
+</div>-->
+
+<div mat-dialog-actions style="text-align: center; padding: 20px 0;">
+  <button mat-raised-button color="accent" style="  margin-right: 50px" (click)="clicked('no')">Nein</button>
+  <button  mat-raised-button color="accent" style="  margin-right: 50px" (click)="clicked('yes')" cdkFocusInitial>Ja!</button>
+  <button  mat-raised-button color="accent" style="  margin: auto;" (click)="clicked('QRCodeScannen')"  >QR Code Scannen</button>
+</div>
+
+<div *ngIf="bonAmount > 0" class="bon-overlay">
+  <p>Gutscheinbetrag: {{ bonAmount }}€</p>
 </div>
 

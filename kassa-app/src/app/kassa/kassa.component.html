@@ -24,7 +24,10 @@
     </button>
   
 
-    <button class="ButtonMargin" mat-raised-button color="accent" (click)="openDialogQRCodeScanner()">QR Code Scannen</button>
+    
+    <div *ngIf="AmountOfBon > 0" class="bon-overlay">
+      <p>Gutscheinbetrag: {{ AmountOfBon }}€</p>
+    </div>
 
  
  

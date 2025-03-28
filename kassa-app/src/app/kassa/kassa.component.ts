@@ -197,21 +197,28 @@ export class KassaComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {      
-     
+      this.openDialog();
+      
     });
 
 
   }
 
    openDialog(): void {
+   
     const dialogRef = this.dialog.open(DialogQuestion, {
-      width: '400px'
+      width: '400px',
+      data: { bonAmount: this.AmountOfBon }
     });
 
     dialogRef.afterClosed().subscribe(result => {
      
       if (result === 'no') {
         this.clear();
+        return;
+      }
+      else if(result === 'QRCodeScannen'){
+        this.openDialogQRCodeScanner();
         return;
       }
      
@@ -251,9 +258,13 @@ export interface DialogData {
 })
 
 export class DialogQuestion {
+  bonAmount: number = 0;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogQuestion>) { }
+    public dialogRef: MatDialogRef<DialogQuestion>,
+    @Inject(MAT_DIALOG_DATA) public data: { bonAmount: number }) { 
+      this.bonAmount = data.bonAmount;
+    }
 
   clicked(answer: string) {
     this.dialogRef.close(answer);
@@ -280,5 +291,8 @@ export class DialogRespond{
   clicked(){
     this.dialogRef.close();
   }
+
+
+
   
 }
