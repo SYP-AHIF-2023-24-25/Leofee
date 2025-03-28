@@ -21,11 +21,13 @@ export class AuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
+
     let addDashboardPath = "/dashboard"
     if(window.location.origin.toString().includes("localhost"))
     {
       addDashboardPath = ""
     }
+   
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
       await this.keycloakAngular.login({

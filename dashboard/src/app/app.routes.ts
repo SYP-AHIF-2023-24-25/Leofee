@@ -11,11 +11,11 @@ import { StudentDetailComponent } from './student-detail/student-detail.componen
 export const routes: Routes = [
   
     {path: '', redirectTo: '/studentsOverview', pathMatch: 'full'},
-    {path: 'studentsOverview', component: StudentOverviewComponent, canActivate: [AuthGuard]},
+    {path: 'studentsOverview', component: StudentOverviewComponent ,canActivate: [AuthGuard]},
     {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent, canActivate: [AuthGuard]},
-    {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent, canActivate: [AuthGuard]},
-    {path: 'userManagement', component: UserManagementComponent, canActivate: [AuthGuard]},
-    {path: 'student-detail/:id', component: StudentDetailComponent, canActivate: [AuthGuard]}
+    {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent ,canActivate: [AuthGuard]},
+    {path: 'userManagement', component: UserManagementComponent ,canActivate: [AuthGuard]},
+    {path: 'student-detail/:id', component: StudentDetailComponent ,canActivate: [AuthGuard]}
 ];
 
 @NgModule({

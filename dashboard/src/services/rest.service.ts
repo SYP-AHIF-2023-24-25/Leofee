@@ -34,6 +34,13 @@ export class RestService {
       { headers });
   }
 
+  deleteBon(id: number): Observable<void> {
+    let headers: HttpHeaders = new HttpHeaders();
+    return this.http.delete<any>(
+      this.baseURL + "api/Bons/" + id,
+      { headers });
+  }
+
 
   deleteStudent(id: String): Observable<void> {
     let headers: HttpHeaders = new HttpHeaders();
@@ -106,14 +113,25 @@ export class RestService {
     return this.http.post<any>(url, student, { headers });
   }
 
+
+
   addBon(from: Date, to: Date, amount: number): Observable<any> {
 
     const url = this.baseURL + `api/Bons`;
     const headers: HttpHeaders = new HttpHeaders();
+    //console.log(from.toISOString(), to.toISOString(), amount, url);
+
+    const fromDate = from.toISOString();
+    const toDate = to.toISOString();
+
+    console.log(from, to);
+
+
+
     const payload = {
       amountPerStudent: amount,
-      startDate: from,
-      endDate: to,
+      startDate: new Date(from.getTime() - (from.getTimezoneOffset() * 60000)).toISOString(),
+      endDate: new Date(to.getTime() - (to.getTimezoneOffset() * 60000)).toISOString(),
     };
 
     console.log(payload)
@@ -123,8 +141,11 @@ export class RestService {
   updateBonForStudent(id: number, from: Date, to: Date, amount: number, usedValue: number): Observable<any> {
     const url = this.baseURL + `api/Bons/${id}`;
     // console.log(id, from.toISOString(), to, amount, usedValue, url);
+    console.log(id, from, to, amount, usedValue, url);
     const fromDate = new Date(from);
     const toDate = new Date(to);
+    
+    console.log(toDate, fromDate);
 
     if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
       throw new Error('Invalid date format');
@@ -136,8 +157,8 @@ export class RestService {
     });
     const payload = {
       amountPerStudent: amount,
-      startDate: fromDate.toISOString(),
-      endDate: toDate.toISOString(),
+      startDate: new Date(from.getTime() - (from.getTimezoneOffset() * 60000)).toISOString(),
+      endDate: new Date(to.getTime() - (to.getTimezoneOffset() * 60000)).toISOString(),
       id: id
     };
     console.log(payload, url);
