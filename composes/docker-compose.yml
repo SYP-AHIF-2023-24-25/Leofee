@@ -80,7 +80,8 @@ services:
 
   leofee-test-kassa-app:
     restart: always
-    image: brudermichael07/kassa-app
+    #image: brudermichael07/kassa-app
+    image: samuel010203/kassa-app
     container_name: leofee-test-kassa-app
     environment:
       httpUrlLeofeeBackend: "https://vm45.htl-leonding.ac.at/leofee-backend/"
