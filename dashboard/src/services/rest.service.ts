@@ -142,15 +142,7 @@ export class RestService {
     const url = this.baseURL + `api/Bons/${id}`;
     // console.log(id, from.toISOString(), to, amount, usedValue, url);
     console.log(id, from, to, amount, usedValue, url);
-    const fromDate = new Date(from);
-    const toDate = new Date(to);
-    
-    console.log(toDate, fromDate);
-
-    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-      throw new Error('Invalid date format');
-    }
-
+   
 
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json'

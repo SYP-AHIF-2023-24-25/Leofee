@@ -22,7 +22,7 @@ export class SharedService {
       if (test) {
         
         console.log('User is white listed');
-        await keycloakServiceLocal.login();
+        //await this.keyCloakService.login();
         //this.router.navigate(['/guthabenVerwaltung']);
         return true;
       }
