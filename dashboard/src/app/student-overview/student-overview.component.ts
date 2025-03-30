@@ -28,7 +28,9 @@ export class StudentOverviewComponent implements OnInit {
   _selectedFile: File | null = null;
   isLoading: boolean = false;
   selectedFilters:string[] = [];
-
+  selectedClasses: string[] = []; 
+  filteredClasses: string[] = [];
+  allClasses: string[] = [];
   dataSource = new MatTableDataSource(this._students);
 
 
@@ -38,6 +40,8 @@ export class StudentOverviewComponent implements OnInit {
 
   async ngOnInit() {
     this._students = await lastValueFrom(this.restService.getStudentsWithBalance());
+    this.allClasses = this.getAllClasses(); 
+    console.log('Alle Klassen:', this.allClasses);
     /*this._studentsWithBalance = await Promise.all(this._students.map(async student => {
       const balance = await this.getBalanceForStudent(student.studentId);
       return { student, balance };
@@ -47,7 +51,31 @@ export class StudentOverviewComponent implements OnInit {
     this.filteredStudents.paginator = this.paginator;
     console.log(this._students);
   }
+  onClassChange(selected:string[]) {
+    this.selectedClasses = selected;
+    console.log('Auswahl s geändert:', this.selectedClasses);
+    this.applyFilters();
+  }
+  getAllClasses(): string[] {
+    // Beispiel: Klassen von der API abrufen
+    return Array.from(new Set(this._students.map(student => student.studentClass)));
+  }
+
+  getFilteredClasses(): string[] {
+    if (this.selectedFilters.length === 0) {
+      // Wenn keine Abteilungen ausgewählt sind, alle Klassen zurückgeben
+      return Array.from(new Set(this.allClasses));
+    }
   
+    // Filtere die Klassen basierend auf den ausgewählten Abteilungen
+    return Array.from(
+      new Set(
+        this.allClasses.filter(cls =>
+          this.selectedFilters.some(filter => cls.endsWith(filter))
+        )
+      )
+    );
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filteredStudents.filter = filterValue.trim().toLowerCase();
@@ -210,9 +238,14 @@ export class StudentOverviewComponent implements OnInit {
       );
     }
     console.log(this.filteredStudents.data);*/
-    const selectedValues: string[] = event.value;
-    this.selectedFilters = selectedValues;
-    console.log('Auswahl geändert:', this.selectedFilters);
+    this.selectedFilters = event.value;
+    if(this.selectedFilters.length === 0) {
+      this.filteredClasses = [];
+    }
+    else{
+      this.filteredClasses = this.getFilteredClasses();
+    }
+    
     this.applyFilters();
   }
 
@@ -230,12 +263,16 @@ export class StudentOverviewComponent implements OnInit {
 
 
   applyFilters() {
-    if (this.selectedFilters.length === 0) {
+    if (this.selectedFilters.length === 0 && this.selectedClasses.length === 0) {
+      // Wenn keine Abteilungen oder Klassen ausgewählt sind, zeige alle Studenten
       this.filteredStudents.data = this._students;
     } else {
-      this.filteredStudents.data = this._students.filter(student => 
-        this.selectedFilters.some(filter => student.studentClass.includes(filter))
-      );
+      // Filtere die Studenten basierend auf den ausgewählten Abteilungen und Klassen
+      this.filteredStudents.data = this._students.filter(student => {
+        const matchesDepartment = this.selectedFilters.length === 0 || this.selectedFilters.some(filter => student.studentClass.includes(filter));
+        const matchesClass = this.selectedClasses.length === 0 || this.selectedClasses.includes(student.studentClass);
+        return matchesDepartment && matchesClass;
+      });
     }
   }
 
