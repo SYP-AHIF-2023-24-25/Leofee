@@ -48,6 +48,7 @@ namespace WebAPI.Controllers
             }*/
 
             // (3) Nur wenn der Header-Secret stimmt, führen wir die Logik aus
+         
             await _uow.DeleteDatabaseAsync();
             await _uow.CreateDatabaseAsync();
 

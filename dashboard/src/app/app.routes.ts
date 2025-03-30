@@ -12,12 +12,13 @@ import { NotAllowedPageComponent } from './not-allowed-page/not-allowed-page.com
 export const routes: Routes = [
   
     {path: '', redirectTo: '/studentsOverview', pathMatch: 'full'},
-    {path: 'studentsOverview', component: StudentOverviewComponent, canActivate: [AuthGuard]},
+    {path: 'studentsOverview', component: StudentOverviewComponent ,canActivate: [AuthGuard]},
     {path: 'guthabenVerwaltung', component: GuthabenVerwaltungComponent, canActivate: [AuthGuard]},
     {path: 'bonManagementForStudent/:id', component: BonManagementForStudentComponent, canActivate: [AuthGuard]},
     {path: 'userManagement', component: UserManagementComponent, canActivate: [AuthGuard]},
     {path: 'student-detail/:id', component: StudentDetailComponent, canActivate: [AuthGuard]},
     {path: 'not-allowed-page', component: NotAllowedPageComponent}
+
 ];
 
 @NgModule({

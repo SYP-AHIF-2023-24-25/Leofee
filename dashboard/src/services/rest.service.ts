@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Student, StudentWithBalance } from '../app/model/student';
 import { Bons, Bon, BonWithBalance, BonResponse } from 'src/app/model/Bons';
 import { Transaction } from 'src/app/model/Transaction';
@@ -29,6 +31,13 @@ export class RestService {
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.get<StudentWithBalance[]>(
       this.baseURL + "api/Students/allStudentsWithBalances",
+      { headers });
+  }
+
+  deleteBon(id: number): Observable<void> {
+    let headers: HttpHeaders = new HttpHeaders();
+    return this.http.delete<any>(
+      this.baseURL + "api/Bons/" + id,
       { headers });
   }
 
@@ -79,12 +88,22 @@ export class RestService {
       { headers });
   }
 
-  getCurrentBon(): Observable<BonResponse> {
+  getCurrentBon(): Observable<BonResponse | null> {
     let headers: HttpHeaders = new HttpHeaders();
-
-    return this.http.get<BonResponse>(
+    let bon:  Observable<BonResponse | null>;
+    console.log("getCurrentBon");
+    bon = this.http.get<BonResponse>(
       this.baseURL + "currentBonWithBalance",
-      { headers });
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error("Error in getCurrentBon", error);
+        return of(null); 
+      })
+    );
+    console.log("Fertig");
+    console.log(bon);
+    return bon
   }
 
 
@@ -94,39 +113,44 @@ export class RestService {
     return this.http.post<any>(url, student, { headers });
   }
 
+
+
   addBon(from: Date, to: Date, amount: number): Observable<any> {
 
     const url = this.baseURL + `api/Bons`;
     const headers: HttpHeaders = new HttpHeaders();
+    //console.log(from.toISOString(), to.toISOString(), amount, url);
+
+    const fromDate = from.toISOString();
+    const toDate = to.toISOString();
+
+    console.log(from, to);
+
+
+
     const payload = {
       amountPerStudent: amount,
-      startDate: from,
-      endDate: to,
+      startDate: new Date(from.getTime() - (from.getTimezoneOffset() * 60000)).toISOString(),
+      endDate: new Date(to.getTime() - (to.getTimezoneOffset() * 60000)).toISOString(),
     };
 
     console.log(payload)
     return this.http.post<any>(url, payload, { headers });
-
   }
 
   updateBonForStudent(id: number, from: Date, to: Date, amount: number, usedValue: number): Observable<any> {
     const url = this.baseURL + `api/Bons/${id}`;
     // console.log(id, from.toISOString(), to, amount, usedValue, url);
-    const fromDate = new Date(from);
-    const toDate = new Date(to);
-
-    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-      throw new Error('Invalid date format');
-    }
-
+    console.log(id, from, to, amount, usedValue, url);
+   
 
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json'
     });
     const payload = {
       amountPerStudent: amount,
-      startDate: fromDate.toISOString(),
-      endDate: toDate.toISOString(),
+      startDate: new Date(from.getTime() - (from.getTimezoneOffset() * 60000)).toISOString(),
+      endDate: new Date(to.getTime() - (to.getTimezoneOffset() * 60000)).toISOString(),
       id: id
     };
     console.log(payload, url);

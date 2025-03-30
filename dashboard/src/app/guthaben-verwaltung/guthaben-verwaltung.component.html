@@ -4,64 +4,86 @@
 
 <h1 class="headline">Gutscheinverwaltung</h1>
 
-<form [formGroup]="voucherForm" (ngSubmit)="onSubmit()">
-  <div class="container mt-5">
-    <div class="row text-center">
 
-      <div class="col">
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>From</mat-label>
-          <input matInput [matDatepicker]="fromPicker" formControlName="from" required>
-          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-          <mat-datepicker #fromPicker></mat-datepicker>
-          <mat-error *ngIf="voucherForm.get('from')?.invalid">Valid From date is required</mat-error>
-        </mat-form-field>
-      </div>
+<div class="container mt-4">
+  <div class="row">
 
-      <div class="col">
-        <br>
-        <mat-form-field appearance="fill">        
-          <mat-label>To</mat-label>
-          <input matInput [matDatepicker]="toPicker" formControlName="to" required>
-          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-          <mat-datepicker #toPicker></mat-datepicker>
-          <mat-error *ngIf="voucherForm.get('to')?.invalid">Valid To date is required</mat-error>
-        </mat-form-field>
-      </div>      
+    <!-- From Date & Time -->
+    <div class="col">
+      <mat-form-field appearance="fill">
+        <mat-label>From Date</mat-label>
+        <input matInput [matDatepicker]="fromPicker"  [(ngModel)]="fromDate" [min]="today" (dateChange)="validateFromDate()">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    
+    <div class="col">
+      <mat-form-field>
+        <input matInput type="time"  [(ngModel)]="fromTime" (change)="validateFromTime()">
+      </mat-form-field>
+    </div>
+  
+  </div>
+  <div class="row">
 
-      <!-- Höhe input -->
-      <div class="col">
-        <label for="hoeheInput" class="form-label">Höhe</label>
-        <input type="number" class="form-control" id="hoeheInput" [value]="hoeheValue" formControlName="hoehe" placeholder="0">
-        <div *ngIf="voucherForm.get('hoehe')?.hasError('min')">
-          <small class="text-danger">Die Höhe muss größer als 0 sein.</small>
-        </div>
-      </div>
 
-      <!-- Max input -->
-      <div class="col">
-        <label for="maxInput" class="form-label">Max</label>
-        <input type="number" class="form-control" id="maxInput"  [value]="maxValue" formControlName="max" placeholder="0">
-        <div *ngIf="voucherForm.get('hoehe')?.hasError('min')">
-          <small class="text-danger">Die Höhe muss größer als 0 sein.</small>
-        </div>
-      </div>
-
-      <!-- Ist input -->
-      <div class="col">
-        <label for="istInput" class="form-label">Ist</label>
-        <input type="number" class="form-control" id="istInput" formControlName="ist" placeholder="0">
-      </div>
+    <!-- To Date & Time -->
+    <div class="col">
+      <mat-form-field appearance="fill">
+        <mat-label>To Date</mat-label>
+        <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" [min]="fromDate" (dateChange)="validateToDate()">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
     </div>
 
-    <div class="row mt-4">
-      <div class="col text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="voucherForm.invalid">Bon festlegen</button>
-      </div>
+    <div class="col">
+      <mat-form-field>
+        <input matInput type="time"  [(ngModel)]="toTime" (change)="validateToTime()">
+      </mat-form-field>
     </div>
   </div>
-</form>
+
+
+  
+  <div class="row mt-3">
+    <!-- Höhe -->
+    <div class="col">
+      <label for="hoeheInput">Höhe</label>
+      <input type="number" id="hoeheInput" [(ngModel)]="hoehe" (input)="updateMax()" class="form-control">
+    </div>
+
+    <!-- Max -->
+    <div class="col">
+      <label for="maxInput">Max</label>
+      <input type="number" id="maxInput" [(ngModel)]="max" (input)="updateHoehe()" class="form-control">
+    </div>
+
+    <!-- Ist (nicht änderbar) -->
+    <div class="col">
+      <label for="istInput">Ist</label>
+      <input type="number" id="istInput" [(ngModel)]="ist" class="form-control" disabled>
+    </div>
+  </div>
+
+<div class="row mt-4">
+  <div class="col text-center">
+    <button  class="btn btn-primary" (click)="addBon()" [disabled]="isBonActive">Bon festlegen</button>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col text-center">
+    <button class="btn btn-danger" (click)="deleteBon()" [disabled]="!isBonActive" >Bon löschen</button>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col text-center">
+    <button  class="btn btn-primary" (click)="updateBon()"[disabled]="!isBonActive">Bon updaten</button>
+  </div>
+</div>
 
 <br>
 <br>

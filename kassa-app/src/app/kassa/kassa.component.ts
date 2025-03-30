@@ -56,7 +56,7 @@ export class KassaComponent implements OnInit {
     this.resizeObservable$ = fromEvent(window, 'resize')
     this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
       this.numberColumns = window.innerWidth / 250;
-    })
+    });
   }
 
   inc(p: Product) {
@@ -88,7 +88,7 @@ export class KassaComponent implements OnInit {
 
  
     //console.log("Products: " + (products/100.0) + " Bon: " + this.AmountOfBon + " Total:)");
-    console.log(this.AmountOfBon);
+    //console.log(this.AmountOfBon);
     var result = ((products / 100.0) - this.AmountOfBon);
      
     return result;
@@ -165,6 +165,11 @@ export class KassaComponent implements OnInit {
   }
 
   hasSelectedProducts() {
+    
+    if(this.selectedBuffet.products === undefined) {
+      return 
+    }
+    
     return this.selectedBuffet.products.find(p => p.amount > 0) !== undefined;
   }
 
@@ -191,17 +196,19 @@ export class KassaComponent implements OnInit {
       data: { message: Messeage }
     });
 
-    dialogRef.afterClosed().subscribe(result => { 
+    dialogRef.afterClosed().subscribe(result => {      
+      this.openDialog();
       
-     
     });
 
 
   }
 
    openDialog(): void {
+   
     const dialogRef = this.dialog.open(DialogQuestion, {
-      width: '400px'
+      width: '400px',
+      data: { bonAmount: this.AmountOfBon }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -210,11 +217,16 @@ export class KassaComponent implements OnInit {
         this.clear();
         return;
       }
+      else if(result === 'QRCodeScannen'){
+        this.openDialogQRCodeScanner();
+        return;
+      }
      
       if(this.bonUsed){
         let bon: BonBooking = new BonBooking(this.studentID, this.AmountOfBon )
       
         this.restService.saveBookings(this.selectedBuffet, bon );
+       
       }
       else{
         this.restService.saveBookings(this.selectedBuffet, new BonBooking('', 0.0));
@@ -246,9 +258,13 @@ export interface DialogData {
 })
 
 export class DialogQuestion {
+  bonAmount: number = 0;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogQuestion>) { }
+    public dialogRef: MatDialogRef<DialogQuestion>,
+    @Inject(MAT_DIALOG_DATA) public data: { bonAmount: number }) { 
+      this.bonAmount = data.bonAmount;
+    }
 
   clicked(answer: string) {
     this.dialogRef.close(answer);
@@ -275,5 +291,8 @@ export class DialogRespond{
   clicked(){
     this.dialogRef.close();
   }
+
+
+
   
 }

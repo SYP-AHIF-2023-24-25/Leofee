@@ -38,7 +38,7 @@ export class QRScannerDialogComponent  {
 
     if( value != "[]") {
       //Json data
-      console.log('Scanned Value:', value);
+      //console.log('Scanned Value:', value);
 
       //Parse Json data
       const jsonData = JSON.parse(value);

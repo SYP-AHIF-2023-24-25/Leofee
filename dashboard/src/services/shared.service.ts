@@ -14,6 +14,7 @@ export class SharedService {
   
   public async accessAuthShared(keycloakServiceLocal: KeycloakService, whiteListService: WhiteListServiceService): Promise<boolean> {
     console.log('SharedService.accessAuthShared()');
+ 
     const leoUser: LeoUser = await createLeoUser(keycloakServiceLocal);
     if (!(leoUser.username === null)) {
       console.log('User is not null');
@@ -27,13 +28,14 @@ export class SharedService {
         return true;
       }
     }
+
     this.router.navigate(['/not-allowed-page']);
     // keycloakServiceLocal.logout().then(() => {
     //   console.log('User is not white listed');
     //   keycloakServiceLocal.clearToken();
       
-    // });
-    
+    // });   
+
 
     return false;
   }
