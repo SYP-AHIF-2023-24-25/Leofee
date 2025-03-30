@@ -51,11 +51,12 @@ public class Program
         // Configure the HTTP request pipeline.
         //var basePath = "";
         // NOTE: Swagger is now both enabled in Development and in Production mode!!
-        if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
-        {
+        //if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+        //{
+        app.UsePathBase("/leofee-backend");
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
+        //}
         /*else{
             basePath = "/leofee-backend";
             app.UsePathBase(basePath + "/");

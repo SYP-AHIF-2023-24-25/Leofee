@@ -38,6 +38,17 @@ public class BonsController : Controller
        
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBon(int id)
+    {
+        var bon = await _uow.BonRepository.DeleteBonWithIdAsync(id);
+        if (bon == null)
+        {
+            return NotFound();
+        }
+        return Ok(bon);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<BonDto?>> GetBonById(int id)
     { 

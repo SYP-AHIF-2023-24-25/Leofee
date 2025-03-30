@@ -76,21 +76,26 @@ namespace WebAPI.Controllers
 		public async Task<IActionResult> DeleteWhiteListUser(string userId)
 		{
 			bool check = await _uow.WhiteListUserRepository.CheckIfUserExists(userId);
-			if (!check)
-			{
-				return NotFound("User does not exits");
-			}
-			WhiteListUserDto whiteListUser = await _uow.WhiteListUserRepository.GetWhiteListUserPerIdAsync(userId);
-			WhiteListUser deletedUser = new WhiteListUser
-			{
-				UserId = whiteListUser.UserId,
-				FirstName = whiteListUser.FirstName,
-				LastName = whiteListUser.LastName
-			};
-			_uow.WhiteListUserRepository.Remove(deletedUser);
-			await _uow.SaveChangesAsync();
+            if (!check)
+            {
+                return NotFound("User does not exits");
+            }
+            //WhiteListUserDto whiteListUser = await _uow.WhiteListUserRepository.GetWhiteListUserPerIdAsync(userId);
+            //WhiteListUser deletedUser = new WhiteListUser
+            //{
+            //    UserId = whiteListUser.UserId,
+            //    FirstName = whiteListUser.FirstName,
+            //    LastName = whiteListUser.LastName
+            //};
+            //_uow.WhiteListUserRepository.Remove(deletedUser);
+            await _uow.WhiteListUserRepository.DeleteWhiteListUser(userId);
+            if (await _uow.WhiteListUserRepository.CheckIfUserExists(userId))
+            {
+                return BadRequest("User not deleted");
+            }
+            await _uow.SaveChangesAsync();
 
-			return Accepted($"User {userId} deleted");
+            return Accepted($"User {userId} deleted");
 		}
 	}
 }

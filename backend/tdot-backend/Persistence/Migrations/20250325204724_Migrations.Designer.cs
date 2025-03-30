@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241107110213_Migrations")]
+    [Migration("20250325204724_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -34,7 +34,8 @@ namespace Persistence.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AmountPerStudent")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
@@ -92,13 +93,15 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("BonValue")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalTransactionAmount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("TransactionTime")
                         .HasColumnType("datetime(6)");
@@ -130,7 +133,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 

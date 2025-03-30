@@ -28,9 +28,10 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app.config';
 import { AddUserDialog, ConfirmationWindow, UserManagementComponent } from './user-managment/user-managment.component';
 import { StudentDetailComponent } from './student-detail/student-detail.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { NotAllowedPageComponent } from './not-allowed-page/not-allowed-page.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     UserManagementComponent,
     StudentDetailComponent,
     AddUserDialog,
-    ConfirmationWindow
+    ConfirmationWindow,
+    NotAllowedPageComponent
    // DialogFormComponent // DialogFormComponent hinzugefügt
   ],
   imports: [
@@ -73,7 +75,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    NgOptimizedImage
   ],
   providers: [
     {

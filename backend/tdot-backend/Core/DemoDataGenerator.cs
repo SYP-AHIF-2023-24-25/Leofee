@@ -17,7 +17,7 @@ namespace Core
             HITM,
             HBG
         }
-        public static (List<Student> students, List<Bon> bons,List<StudentBonTransaction> transactions) CreateDemoData()
+        public static (List<Student> students, List<Bon> bons, List<StudentBonTransaction> transactions) CreateDemoData()
         {
             var studentFaker = new Faker<Student>();
             studentFaker
@@ -34,10 +34,10 @@ namespace Core
                          "HEL" => "Elektrotechnik",
                          "HITM" => "Medientechnik",
                          "HBG" => "Medizintechnik",
-                         _ => throw new ArgumentOutOfRangeException()
+                         _ => "not available"
                      };
                  });
-            var students = studentFaker.Generate(50);
+            var students = studentFaker.Generate(20);
             var passivBonsFaker = new Faker<Bon>();
             var bons = new List<Bon>();
             var usedDates = new HashSet<DateTime>();

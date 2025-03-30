@@ -21,7 +21,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AmountPerStudent = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AmountPerStudent = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -60,7 +60,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "longtext", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -82,8 +82,8 @@ namespace Persistence.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     BonId = table.Column<int>(type: "int", nullable: false),
                     TransactionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    BonValue = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    TotalTransactionAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    BonValue = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    TotalTransactionAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {

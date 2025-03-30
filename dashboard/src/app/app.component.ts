@@ -26,6 +26,10 @@ export class AppComponent {
     //this.router.navigate(['/userInWhiteList']);
   }
 
+  public isNotAllowed() {
+    return this.router.url === '/not-allowed-page';
+  }
+
   // async ngOnInit() {
   //   console.log('whiteList ins app.component.ts');
   //   let whiteListService: WhiteListServiceService = inject(WhiteListServiceService);
