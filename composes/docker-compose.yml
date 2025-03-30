@@ -51,6 +51,8 @@ services:
     image: samuel010203/dashboard
     container_name: leofee-test-dashboard
     restart: always
+    environment:
+      httpUrlLeofeeBackend: "https://vm45.htl-leonding.ac.at/leofee-backend/"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.leofee-test-dashboard.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/dashboard`)"
@@ -65,6 +67,8 @@ services:
     #image: brudermichael07/s-mobile
     image: samuel010203/s-mobile
     container_name: leofee-test-smobile
+    environment:
+      httpUrlLeofeeBackend: "https://vm45.htl-leonding.ac.at/leofee-backend"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.leofee-test-smobile.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/s-mobile`)"
@@ -78,6 +82,9 @@ services:
     restart: always
     image: brudermichael07/kassa-app
     container_name: leofee-test-kassa-app
+    environment:
+      httpUrlLeofeeBackend: "https://vm45.htl-leonding.ac.at/leofee-backend/"
+      httpUrlTadeotBackend: "https://tadeot.htl-leonding.ac.at/tadeot-api/api/"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.leofee-test-kassa-app.rule=Host(`vm45.htl-leonding.ac.at`) && PathPrefix(`/kassa`)"
