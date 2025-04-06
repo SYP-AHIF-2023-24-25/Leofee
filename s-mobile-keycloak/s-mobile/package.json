@@ -35,7 +35,7 @@
     "@angular/localize": "^17.2.0",
     "@eslint/js": "^9.23.0",
     "@types/jasmine": "~5.1.0",
-    "eslint": "^9.23.0",
+    "eslint": "^9.24.0",
     "globals": "^16.0.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -43,6 +43,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.5.3",
     "typescript": "~5.3.2",
     "typescript-eslint": "^8.28.0"
   }
