@@ -38,6 +38,9 @@ jobs:
       - name: Install TypeScript globally
         run: npm install -g typescript
       
+      - name: Install Tsc globally
+        run: npm i -g tsc
+
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
