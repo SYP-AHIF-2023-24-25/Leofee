@@ -38,6 +38,6 @@ jobs:
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
-          eslint: true
+          tsc: true
 
     
