@@ -34,6 +34,12 @@ jobs:
       - name: Install TypeScript globally
         run: npm install -g typescript
 
+      - name: Show installed npm packages
+        run: npm list --all
+      
+      - name: Show ESLint version
+        run: npx eslint --version
+      
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
