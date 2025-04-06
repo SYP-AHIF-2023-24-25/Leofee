@@ -1,6 +1,21 @@
 name: Code Coverage
 
-on: [pull_request]
+on: 
+# Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - 154-lint-und-code-coverage-einfügen
+  # Replace pull_request with pull_request_target if you
+  # plan to use this action with forks, see the Limitations section
+  pull_request:
+    branches:
+      - 154-lint-und-code-coverage-einfügen
+permissions:
+  contents: write
+  packages: write
+  statuses: write
+  checks: write
 
 jobs:
   base_branch_cov:
