@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4   # << upgraded to v4
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
@@ -39,10 +39,9 @@ jobs:
       
       - name: Show ESLint version
         run: npx eslint --version
-      
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          tsc: true
-          prettier: true
-          eslint: true
+
+      - name: Run Prettier on project-a
+        run: npx prettier --check ./s-mobile-keycloak/s-mobile
+
+      - name: Run ESLint on project-a
+        run: npx eslint ./s-mobile-keycloak/s-mobile
