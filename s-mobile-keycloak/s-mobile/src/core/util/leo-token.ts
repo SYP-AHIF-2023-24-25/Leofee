@@ -1,12 +1,13 @@
-import { jwtDecode, JwtPayload } from "jwt-decode";
-import { KeycloakService } from "keycloak-angular";
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { KeycloakService } from 'keycloak-angular';
 
 export class LeoUser {
-  constructor(public readonly firstName: string | null,
-              public readonly lastName: string | null,
-              public readonly username: string | null,
-              public readonly role: Role | null) {
-  }
+  constructor(
+    public readonly firstName: string | null,
+    public readonly lastName: string | null,
+    public readonly username: string | null,
+    public readonly role: Role | null,
+  ) {}
 
   public get fullName(): string | null {
     if (this.firstName === null || this.lastName === null) {
@@ -16,10 +17,10 @@ export class LeoUser {
   }
 
   public get roleAsString(): string | null {
-    if (this.role === null){
+    if (this.role === null) {
       return null;
     }
-    return Role[this.role]
+    return Role[this.role];
   }
 
   public hasRole(role: Role): boolean {
@@ -34,14 +35,21 @@ export enum Role {
   Unknown = 0,
   Student = 1,
   Teacher = 2,
-  TestUser = 3
+  TestUser = 3,
 }
 
-export async function createLeoUser(keycloakService: KeycloakService): Promise<LeoUser> {
+export async function createLeoUser(
+  keycloakService: KeycloakService,
+): Promise<LeoUser> {
   const token = await decode(keycloakService);
   const values = getValues(token);
 
-  return new LeoUser(values.firstName, values.lastName, values.username, values.role);
+  return new LeoUser(
+    values.firstName,
+    values.lastName,
+    values.username,
+    values.role,
+  );
 }
 
 async function decode(keycloakService: KeycloakService): Promise<JwtPayload> {
@@ -55,18 +63,34 @@ function getValues(token: JwtPayload): IValues {
     firstName: null,
     lastName: null,
     username: null,
-    role: null
+    role: null,
   };
   const defaultConverter = (rawValue: string) => rawValue;
 
-  trySetValue<string>("given_name", value => values.firstName = value, defaultConverter);
-  trySetValue<string>("family_name", value => values.lastName = value, defaultConverter);
-  trySetValue<string>("preferred_username", value => values.username = value, defaultConverter);
-  trySetValue("LDAP_ENTRY_DN", value => values.role = value, ldapToRole);
+  trySetValue<string>(
+    'given_name',
+    (value) => (values.firstName = value),
+    defaultConverter,
+  );
+  trySetValue<string>(
+    'family_name',
+    (value) => (values.lastName = value),
+    defaultConverter,
+  );
+  trySetValue<string>(
+    'preferred_username',
+    (value) => (values.username = value),
+    defaultConverter,
+  );
+  trySetValue('LDAP_ENTRY_DN', (value) => (values.role = value), ldapToRole);
 
   return values;
 
-  function trySetValue<T>(propertyName: string, setter: (value: T) => void, converter: (rawValue: string) => T){
+  function trySetValue<T>(
+    propertyName: string,
+    setter: (value: T) => void,
+    converter: (rawValue: string) => T,
+  ) {
     try {
       if (raw[propertyName]) {
         const value: T = converter(raw[propertyName]);
@@ -78,7 +102,7 @@ function getValues(token: JwtPayload): IValues {
   }
 
   function ldapToRole(ldap: string): Role {
-    const prefix = "OU=";
+    const prefix = 'OU=';
     if (ldap.includes(`${prefix}Students`)) {
       return Role.Student;
     }

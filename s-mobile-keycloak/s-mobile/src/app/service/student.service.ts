@@ -5,12 +5,11 @@ import { Student } from '../model/student';
 import { environment } from '../enviorment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudentService {
- 
   private baseUrl = '';
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.baseUrl = environment.httpUrlLeofeeBackend;
   }
 
@@ -20,10 +19,8 @@ export class StudentService {
   }
 
   // Methode zum Abrufen des Guthabens eines Studenten anhand seiner ID
-  getStudentBalance(studentId: string): Observable<number>{
+  getStudentBalance(studentId: string): Observable<number> {
     let url: string = `${this.baseUrl}/api/Students/balance/${studentId}`;
     return this.http.get<number>(url);
   }
-
-
 }

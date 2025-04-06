@@ -1,23 +1,27 @@
-import {APP_INITIALIZER, ApplicationConfig, Provider} from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, Provider } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 // Function to initialize Keycloak with the necessary configurations
 function initializeKeycloak(keycloak: KeycloakService) {
-  let addPathIfVM = "/s-mobile";
-  if(window.location.origin.toString().includes("localhost")){
-    addPathIfVM = "";
+  let addPathIfVM = '/s-mobile';
+  if (window.location.origin.toString().includes('localhost')) {
+    addPathIfVM = '';
   }
   return () =>
     keycloak.init({
       config: {
         url: 'https://auth.htl-leonding.ac.at', // URL of the Keycloak server
         realm: 'htlleonding', // Realm to be used in Keycloak
-        clientId: 'htlleonding-service' // Client ID for the application in Keycloak,
+        clientId: 'htlleonding-service', // Client ID for the application in Keycloak,
       },
       initOptions: {
         onLoad: 'check-sso', // Action to take on load
@@ -27,7 +31,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
         // when retrieving the token with the access code - we leave it like this for the moment until a solution is found
         flow: 'implicit',
         silentCheckSsoRedirectUri:
-          window.location.origin + addPathIfVM + '/assets/silent-check-sso.html' // URI for silent SSO checks
+          window.location.origin +
+          addPathIfVM +
+          '/assets/silent-check-sso.html', // URI for silent SSO checks
       },
       // Enables Bearer interceptor
       enableBearerInterceptor: true,
@@ -42,7 +48,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
 const KeycloakBearerInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
   useClass: KeycloakBearerInterceptor,
-  multi: true
+  multi: true,
 };
 
 // Provider for Keycloak Initialization
@@ -50,8 +56,8 @@ const KeycloakInitializerProvider: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initializeKeycloak,
   multi: true,
-  deps: [KeycloakService]
-}
+  deps: [KeycloakService],
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -60,6 +66,6 @@ export const appConfig: ApplicationConfig = {
     KeycloakBearerInterceptorProvider, // Provides Keycloak Bearer Interceptor
     KeycloakService, // Service for Keycloak
     provideRouter(routes),
-    provideAnimationsAsync()
-  ]
+    provideAnimationsAsync(),
+  ],
 };

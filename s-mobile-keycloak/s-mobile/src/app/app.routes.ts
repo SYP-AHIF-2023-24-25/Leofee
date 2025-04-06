@@ -4,16 +4,16 @@ import { ProfileKeycloakComponent } from './profile-keycloak/profile-keycloak.co
 import { AuthGuard } from '../core/util/auth-guard';
 
 export const routes: Routes = [
-    {path:'', redirectTo:'/profile-keycloak', pathMatch:'full'},
-    {
-        path: 'profile-keycloak',
-        component: ProfileKeycloakComponent,
-        canActivate: [AuthGuard]
-    }
+  { path: '', redirectTo: '/profile-keycloak', pathMatch: 'full' },
+  {
+    path: 'profile-keycloak',
+    component: ProfileKeycloakComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
-  })
-  export class AppRoutingModule { }
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

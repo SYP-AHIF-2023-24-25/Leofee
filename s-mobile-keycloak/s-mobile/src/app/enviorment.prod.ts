@@ -1,5 +1,4 @@
 export const environment = {
-    production: true,   
-    httpUrlLeofeeBackend: "http://localhost:5015",  
-  };
-
+  production: true,
+  httpUrlLeofeeBackend: 'http://localhost:5015',
+};
