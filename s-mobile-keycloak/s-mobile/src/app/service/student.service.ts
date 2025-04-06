@@ -25,5 +25,9 @@ export class StudentService {
     return this.http.get<number>(url);
   }
 
+  getStudentUsedvalue(studentId: string): Observable<number> {
+    let url: string = `${this.baseUrl}/api/Students/${studentId}/usedValue`;
+    return this.http.get<number>(url);
+  }
 
 }

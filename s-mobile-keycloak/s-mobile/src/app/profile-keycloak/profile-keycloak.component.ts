@@ -29,6 +29,7 @@ export class ProfileKeycloakComponent implements OnInit {
   public leoUserRole: WritableSignal<string | null> = signal(null);
   public strQrCodeData: string = ""
 
+  public usedValue: number = 0;
   public generateQrCodeButton: boolean = false;
   public className: string = ""
 
@@ -47,6 +48,7 @@ export class ProfileKeycloakComponent implements OnInit {
     this.leoUserRole.set(user.roleAsString);
     this.loadBalance();
     this.loadClass();
+    this.loadUsedValue();
   }
 
   private async accessAuth(){
@@ -115,5 +117,15 @@ export class ProfileKeycloakComponent implements OnInit {
     } else {
       this.generateQrCodeButton = true;
     }
+  }
+
+  public loadUsedValue(){
+    let studentId = this.userName();
+    if(studentId === null){
+      return;
+    }
+    this.studentService.getStudentUsedvalue(studentId).subscribe(balance => {
+      this.usedValue = balance;
+    })
   }
 }
