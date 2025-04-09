@@ -56,11 +56,14 @@ export class GuthabenVerwaltungComponent implements OnInit {
     let currentBon = await lastValueFrom(this.restService.getCurrentBon());
     if(currentBon != null)
     {
+      this.ist = currentBon.amount;
+      
       this._activeBon = currentBon.currentBon;
       
     }
    
     console.log("Current Bon: " + currentBon);
+    //console.log(currentBon?.amount);
   
 
     // Fetch students and transactions
@@ -90,7 +93,7 @@ export class GuthabenVerwaltungComponent implements OnInit {
      // console.log(   this.toTime );
       this.hoehe = hoeheBons || 0;
       this.max = hoeheBons * this._students.length || 0;
-      this.ist = this._activeBon.BonsConsumed || 0; 
+      
       this.isBonActive= true;     
     }
     else{
