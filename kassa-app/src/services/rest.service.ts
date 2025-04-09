@@ -8,6 +8,9 @@ import { IBuffet } from 'src/model/buffet/buffet';
 import { Student } from '../model/Student';
 import { OrderItem } from 'src/model/buffet/order-items';
 import { BonBooking } from 'src/model/buffet/bonBooking';
+import { BonResponse } from 'src/model/Bon';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,29 @@ export class RestService {
   getStudentById(id: string): Observable<Student> {
     return this.http.get<Student>(this.baseUrlLeofeeBackend+ "api/Students/id/" + id);
   }
+
+
+  getCurrentBon(): Observable<BonResponse | null> {
+    let headers: HttpHeaders = new HttpHeaders();
+    let bon:  Observable<BonResponse | null>;
+    console.log("getCurrentBon");
+    bon = this.http.get<BonResponse>(
+      this.baseUrlLeofeeBackend + "currentBonWithBalance",
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error("Error in getCurrentBon", error);
+        return of(null); 
+      })
+    );
+    console.log("Fertig");
+    console.log(bon);
+    return bon
+  }
+
+
+
+  
 
   async saveBookings(buffet: IBuffet, bonBooking: BonBooking) {    
     const order = new Order(new Date(), buffet, bonBooking);    

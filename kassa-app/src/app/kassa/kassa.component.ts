@@ -10,6 +10,7 @@ import { BonBooking } from 'src/model/buffet/bonBooking';
 import { RestService } from 'src/services/rest.service';
 import { lastValueFrom } from 'rxjs';
 import { Student } from 'src/model/Student';
+import { BonResponse } from 'src/model/Bon';
 
 
 
@@ -98,6 +99,25 @@ export class KassaComponent implements OnInit {
   async AmountDeduct(studentID: string) {     
     
 
+    //check Bon
+    
+    let bon: BonResponse | null = await lastValueFrom(this.restService.getCurrentBon());
+    if (bon !== null || bon !== undefined) {
+    {
+     
+      const currentDate = new Date();
+      const BonStartDate = new Date(bon!.currentBon.startDate);
+      const BonEndDate = new Date(bon!.currentBon.endDate);
+   
+      if( BonStartDate.getTime() >= currentDate.getTime()|| BonEndDate.getTime() <= new Date().getTime()) { 
+        this.openDialogBonRespond("Kein gültiger Gutschein vorhanden!");
+        console.log("Kein gültiger Gutschein vorhanden!");
+        return;
+      }
+
+    }
+    
+    //check studentID
     let student: Student;
     try {
       console.log(studentID);
@@ -107,6 +127,8 @@ export class KassaComponent implements OnInit {
         this.openDialogBonRespond("Kein gültiger QR Code!");
         return;
     } 
+
+    //check Balance
 
     let balance = await lastValueFrom(this.restService.getStudentBalance(studentID));
     
@@ -139,6 +161,8 @@ export class KassaComponent implements OnInit {
     await this.restService.Pay(studentID, this.AmountOfBon).subscribe();
     this.openDialogBonRespond(`Gutschein wurde erfolgreich eingelöst! Wert: ${this.AmountOfBon}€`);
    
+   } 
+
   }
 
   //Bon Amount speichern 
