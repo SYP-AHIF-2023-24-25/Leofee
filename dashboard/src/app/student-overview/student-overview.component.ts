@@ -330,7 +330,7 @@ export class AddStudentDialog {
       else{
         await lastValueFrom(this.restService.addStudent(student));
         this.dialogRef.close(this.form.value);
-      //  location.reload();
+        location.reload();
       }
      
     }
