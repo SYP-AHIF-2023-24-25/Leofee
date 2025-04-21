@@ -34,6 +34,22 @@ export class RestService {
       { headers });
   }
 
+  checkStudentExists(id: String): Observable<boolean> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    var student = this.http.get<Student>(
+      this.baseURL + "api/Students/id" + id ,
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error("Student doese not exists", );
+        return of(false); // Return false if the request fails
+      })
+    );
+
+    return of(true);
+  }
+
   deleteBon(id: number): Observable<void> {
     let headers: HttpHeaders = new HttpHeaders();
     return this.http.delete<any>(
