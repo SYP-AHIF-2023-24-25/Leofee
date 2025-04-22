@@ -7,9 +7,9 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/leofee-dashboard  
-  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/leofee-kassa-app  
-  IMAGE_NAME_S_MOBILE_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/leofee-s-mobile-keycloak  
+  IMAGE_NAME_DASHBOARD: ${{ secrets.DOCKERHUB_USERNAME }}/dashboard  
+  IMAGE_NAME_KASSA_APP: ${{ secrets.DOCKERHUB_USERNAME }}/kassa-app  
+  IMAGE_NAME_S_MOBILE_KEYCLOAK: ${{ secrets.DOCKERHUB_USERNAME }}/s-mobile
   IMAGE_NAME_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/leofee-backend
 
 jobs:
