@@ -318,9 +318,21 @@ export class AddStudentDialog {
         studentClass: this.form.value.klasse
       };
 
-      await lastValueFrom(this.restService.addStudent(student));
-      this.dialogRef.close(this.form.value);
-      location.reload();
+      var checkStudent = await lastValueFrom(this.restService.checkStudentExists(student.studentId));
+      console.log(checkStudent);
+
+      if(checkStudent === true ) {
+        alert("Schüler existiert bereits!");
+        this.dialogRef.close(this.form.value);
+       // location.reload();    
+        return;    
+      }
+      else{
+        await lastValueFrom(this.restService.addStudent(student));
+        this.dialogRef.close(this.form.value);
+        location.reload();
+      }
+     
     }
   }
 

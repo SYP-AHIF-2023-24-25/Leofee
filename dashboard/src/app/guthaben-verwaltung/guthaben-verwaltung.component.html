@@ -39,8 +39,9 @@
     </div>
 
     <div class="col">
-      <mat-form-field>
-        <input matInput type="time"  [(ngModel)]="toTime" (change)="validateToTime()">
+      <mat-form-field appearance="fill">
+        <mat-label>To Time</mat-label>
+        <input matInput type="time" [(ngModel)]="toTime" (change)="validateToTime()">
       </mat-form-field>
     </div>
   </div>
@@ -67,23 +68,17 @@
     </div>
   </div>
 
-<div class="row mt-4">
-  <div class="col text-center">
-    <button  class="btn btn-primary" (click)="addBon()" [disabled]="isBonActive">Bon festlegen</button>
+  <div class="row mt-4 justify-content-center">
+    <div class="col-auto text-center">
+      <button class="btn btn-primary" (click)="addBon()" [disabled]="isBonActive">Bon festlegen</button>
+    </div>
+    <div class="col-auto text-center">
+      <button class="btn btn-danger" (click)="deleteBon()" [disabled]="!isBonActive">Bon löschen</button>
+    </div>
+    <div class="col-auto text-center">
+      <button class="btn btn-primary" (click)="updateBon()" [disabled]="!isBonActive">Bon updaten</button>
+    </div>
   </div>
-</div>
-
-<div class="row mt-4">
-  <div class="col text-center">
-    <button class="btn btn-danger" (click)="deleteBon()" [disabled]="!isBonActive" >Bon löschen</button>
-  </div>
-</div>
-
-<div class="row mt-4">
-  <div class="col text-center">
-    <button  class="btn btn-primary" (click)="updateBon()"[disabled]="!isBonActive">Bon updaten</button>
-  </div>
-</div>
 
 <br>
 <br>
