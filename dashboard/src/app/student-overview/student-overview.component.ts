@@ -268,7 +268,7 @@ export class StudentOverviewComponent implements OnInit {
 
   applyFilters() {
     if (this.selectedFilters.length === 0 && this.selectedClasses.length === 0) {
-      // Wenn keine Abteilungen oder Klassen ausgewählt sind, zeige alle Studenten
+      // Wenn keine Abteilungen oder Klassen ausgewählt sind, zeige alle Studenten an
       this.filteredStudents.data = this._students;
     } else {
       // Filtere die Studenten basierend auf den ausgewählten Abteilungen und Klassen
