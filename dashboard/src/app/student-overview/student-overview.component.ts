@@ -58,7 +58,7 @@ export class StudentOverviewComponent implements OnInit {
   }
   getAllClasses(): string[] {
     // Beispiel: Klassen von der API abrufen
-    return Array.from(new Set(this._students.map(student => student.studentClass)));
+    return Array.from(new Set(this._students.map(student => student.studentClass.trim())));
   }
 
   getFilteredClasses(): string[] {
@@ -223,6 +223,8 @@ export class StudentOverviewComponent implements OnInit {
  
 
   onFilterChange(event: any) {
+    this.allClasses = this.getAllClasses(); 
+         console.log('Dialog closed:', this.allClasses);
     /*
     const selectedValues: string[] = [];
     selectedValues.push(event.value);
@@ -241,9 +243,11 @@ export class StudentOverviewComponent implements OnInit {
     this.selectedFilters = event.value;
     if(this.selectedFilters.length === 0) {
       this.filteredClasses = [];
+      
     }
     else{
       this.filteredClasses = this.getFilteredClasses();
+      
     }
     
     this.applyFilters();
@@ -269,8 +273,9 @@ export class StudentOverviewComponent implements OnInit {
     } else {
       // Filtere die Studenten basierend auf den ausgewählten Abteilungen und Klassen
       this.filteredStudents.data = this._students.filter(student => {
-        const matchesDepartment = this.selectedFilters.length === 0 || this.selectedFilters.some(filter => student.studentClass.includes(filter));
-        const matchesClass = this.selectedClasses.length === 0 || this.selectedClasses.includes(student.studentClass);
+        const studentClass = student.studentClass.trim(); // Bereinige die Klasse in den Daten
+        const matchesDepartment = this.selectedFilters.length === 0 || this.selectedFilters.some(filter => studentClass.includes(filter));
+        const matchesClass = this.selectedClasses.length === 0 || this.selectedClasses.includes(studentClass);
         return matchesDepartment && matchesClass;
       });
     }
@@ -283,7 +288,7 @@ export class StudentOverviewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      location.reload();
+      location.reload();      
     });
   }
 }
@@ -377,6 +382,7 @@ export class ImportDialog {
       try {
         const response = await lastValueFrom(this.restService.uploadStudentsWithFile(formData));
         console.log('Upload erfolgreich:', response);
+        
       } catch (error) {
         console.error('Fehler beim Hochladen:', error);
       }
