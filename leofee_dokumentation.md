@@ -107,6 +107,7 @@ ng serve
 
 Dies ist die mobile Webanwendung, welche von Schüler:innen verwendet wird.  
 Sie dient dazu, eingelöste Gutscheine anzuzeigen und einzulösen. Die Benutzeroberfläche ist dabei speziell für Mobilgeräte optimiert, um eine möglichst einfache und schnelle Bedienung zu ermöglichen.
+Für das Authentifizierungssystem Keycloak befindet sich eine gesonderte Dokumentation im Verzeichnis s-mobile-keycloak.
 
 ### `Dashboard`
 
