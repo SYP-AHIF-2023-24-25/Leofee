@@ -1,9 +1,0 @@
-S-mobile umbauen:
-
-Anstatt S-mobile oben links: HTL Leonding Logo
-Geld im Userinterface anzeigen, über fullname
-Ist die balance auf 0, sollte der Qr-Code nicht mehr angezeigt werden
-"Username"-Spalte auf "edufs-number" umbennen
-Anstatt "Your Profile" Buffet-Gutscheinapp anzeigen
-Klasse des Schülers anzeigen lassen
-s-mobile alle Schüler unter der 3 Klasse sind nicht zugelassen
